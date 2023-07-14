@@ -6,7 +6,7 @@
 /*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 11:34:57 by amontign          #+#    #+#             */
-/*   Updated: 2023/07/14 12:28:32 by amontign         ###   ########.fr       */
+/*   Updated: 2023/07/14 12:58:00 by amontign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,11 @@ int main(void)
 	int fd[2];
 	int pid1;
 	int pid2;
-	char *filename = "/bin/ping";
-	char *argv[] = { "ping", "-c", "5", "google.com", NULL };
+	char *filename = "/bin/yes";
+	char *argv[] = { "yes", NULL };
 	char *envp[] = { NULL };
-	char *filename2 = "/bin/grep";
-	char *argv2[] = { "grep", "rtt", NULL };
+	char *filename2 = "/bin/head";
+	char *argv2[] = { "head", "-1", NULL };
 
 	if (pipe(fd) == -1)
 	{
