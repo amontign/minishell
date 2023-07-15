@@ -1,0 +1,73 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    old_main_tester.txt                                :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2023/06/09 14:43:09 by cbernaze          #+#    #+#              #
+#    Updated: 2023/07/09 19:56:38 by cbernaze         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
+#include "../includes/minishell.h"
+
+int	main(int argc, char **argv, char **envp)
+{
+	t_parsing	*lexing = NULL;
+	char		*cmd_line;
+	void	*verif;
+	// int		fd;
+	char	*name_eval;
+
+	// printf("Hello evaluator, tell me your name : \n");
+	// name_eval = get_next_line(0);
+	// remove_newline(&name_eval);
+	// fd = open("./sources/tests_cmds.txt", O_RDONLY);
+	// if (fd == -1)
+	// 	return (ft_printf("%s", strerror(errno)));
+	(void)argc;
+	(void)argv;
+	(void)envp;
+	verif = malloc(3000);
+	if (!verif)
+		return (ft_printf("not enough memory available\n"), 42);
+	free (verif);
+		name_eval = readline("Hello evaluator, tell me your name : ");
+	remove_newline(&name_eval);
+	name_eval = ft_strjoin(name_eval, "@minishell> ");
+	while (42)
+	{
+		cmd_line = readline(name_eval);
+		remove_newline(&cmd_line);
+		add_history(cmd_line);
+		// cmd_line = get_next_line(0);
+		// if (!cmd_line)
+		// {
+		// 	close(fd);
+		// 	fd = 0;
+		// }
+		// if (cmd_line)
+		// {
+			// if (ft_strcmp_minishell(cmd_line, "cd"))
+			// 	builtin_cd(cmd_line + 3);
+			lexing = tokenisation(cmd_line);
+		// }
+		if (lexing)
+		{
+			expand(&lexing);
+		}
+		if (lexing != NULL)
+		{
+			print_cmd(lexing);
+		}
+		// if (execve(lexing->cmd_split[0], lexing->cmd_split, envp) == -1)
+		// 	printf("%s\n", strerror(errno));
+		ft_lstclear_minishell(&lexing);
+		free(cmd_line);
+	}
+	if (lexing != NULL)
+		ft_lstclear_minishell(&lexing);
+	// return (free(name_eval), 0);
+	return (free(cmd_line), 0);
+}

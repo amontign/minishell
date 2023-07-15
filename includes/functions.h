@@ -1,0 +1,191 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   functions.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/07/10 11:56:11 by cbernaze          #+#    #+#             */
+/*   Updated: 2023/07/11 15:24:27 by cbernaze         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#ifndef FUNCTIONS_H
+# define FUNCTIONS_H
+
+# include "structures.h"
+# include "libft.h"
+
+//////////////////////////////////////////////////////
+//													//
+//						LEXING						//
+//													//
+//////////////////////////////////////////////////////
+
+/*lexing.c*/
+
+t_concatcmd	init_concatcmd(t_parsing *tmp);
+void		free_cmds(char **cmd1, char **cmd2);
+int			check_empty_cmd(t_parsing **lexing);
+t_parsing	*tokenisation(char	*cmd_line);
+void		print_cmd(t_parsing *lexing);
+
+/*split_cmd.c*/
+
+int			len_cmd(char *cmd_line);
+char		*trim_cmd(char	*cmd_line, int *i, int *len);
+void		concatenate_cmds(t_parsing **lexing, t_parsing *node);
+void		commands_assemble(t_parsing **lexing);
+int			split_cmd(t_parsing **lexing, char *cmd_line);
+
+/*utils_lexing.c*/
+
+void		set_index(t_parsing **lexing);
+void		is_redir(char *cmd_line, char c, char c_plus_one, int *i);
+void		is_redir_2(char *cmd_line, int *i);
+int			is_meta(char c, char c_plus_one);
+int			which_token_type(char	*cmd);
+
+/*utils_list.c*/
+
+t_parsing	*ft_lstnew_minishell(char *str, int size_str, int type);
+void		ft_lstclear_minishell(t_parsing **lexing);
+void		clear_node(t_parsing **node);
+void		ft_lstadd_back_minishell(t_parsing **lexing, t_parsing *new);
+void		free_quotes(t_parsing *lexing);
+
+/*main.c*/
+
+void		remove_newline(char **name_eval);
+
+//////////////////////////////////////////////////////
+//													//
+//						EXPAND						//
+//													//
+//////////////////////////////////////////////////////
+
+/*expand.c*/
+
+int			ft_isalnum_env(int c);
+char		*remove_cmd_quotes(t_data_qt dt);
+void		how_many_cmd_quotes_3(char *arg, int *i, int *quotes);
+void		expand(t_parsing **expand, t_data *env);
+
+/*pre_expand_dollars.c*/
+
+int			pre_expand_dollar(t_parsing **exp_dollar);
+int			pre_expand_dollar_2(t_parsing **tmp, int *i, int tab);
+int			pre_expand_dollar_3(t_parsing **tmp, int *i, int choice, int *tab);
+void		pre_expand_dollar_4(t_parsing **tmp, int *i, int choice);
+int			pre_expand_dollar_5(t_parsing **tmp, int *i, int choice, int *tab);
+
+/*utils_pre_expand_dollars.c*/
+
+int			am_a_lonesome_dollar(char *cmd, int dollar_pos);
+int			how_many_dollars(t_parsing **tmp);
+void		how_many_dollars_2(t_parsing **tmp, int *i, int *size_subt_tab);
+char		*remove_dollar(char *str, int dol_pos);
+int			i_need_a_dollar(t_parsing **tmp, int dol_pos, int choice, int *tab);
+
+/*expand_dollars.c*/
+
+int			expand_dollars(t_parsing **expand, t_data *env);
+char		*substitute_dollars(t_parsing **tmp, t_data *env, int nb_dol);
+void		substitute_dollars_2(char **new, t_exp_dol data, t_parsing **tmp);
+int			f_dt_dol(t_exp_dol *data, t_data *env, t_parsing *tmp, int nb_dol);
+int			fill_data_dol_2(t_exp_dol *data, t_parsing *tmp, int *j, int tab);
+
+/*utils_expand_dollars.c*/
+
+int			malloc_data_strs(t_exp_dol *data, int nb_dol);
+void		free_data(t_exp_dol	*data);
+void		go_through_quotes(char *str, int *i);
+char		*getenv_minish(t_data *data, char *var);
+
+/*split_args.c*/
+
+void		arg_count(t_parsing *tmp, int *nb_arg);
+int			len_arg(char *str);
+int			create_arg(char *str, char ***split, int *i, int *j);
+int			trim_args(t_parsing **tmp);
+int			split_args(t_parsing **expand);
+
+/*expand_cmd_quotes.c*/
+
+int			expand_cmd_quotes(t_parsing **expand);
+void		expand_cmd_quotes_2(t_parsing **tmp, t_data_qt *dt, char *arg);
+void		expand_cmd_quotes_3(t_parsing **tmp, t_data_qt *dt, char *arg);
+int			how_many_cmd_quotes(t_parsing **tmp);
+int			how_many_cmd_quotes_2(t_parsing **tmp, int tab);
+
+/*expand_redir_quotes.c*/
+
+int			expand_redir_quotes(t_parsing **expand);
+void		expand_redir_quotes_2(t_parsing **tmp, int *i, int *j);
+int			how_many_redir_quotes(t_parsing **tmp);
+void		how_many_redir_quotes_2(t_parsing **tmp, int *i, int *size_tab);
+char		*rmv_redir_quotes(char *str, int *quote_pos);
+
+//////////////////////////////////////////////////////
+//													//
+//						 GETENV						//
+//													//
+//////////////////////////////////////////////////////
+
+/*create_env.c*/
+
+int			create_env(t_data **data);
+int			create_env_2(t_data **data, char *pwd);
+int			ft_getenv(t_data **data, char **envp);
+
+/*utils_create_env.c*/
+
+t_data		*ft_lstnew_data(char *var_env);
+void		ft_lstadd_back_data(t_data **data, t_data *new);
+void		ft_lstclear_data(t_data **data);
+
+//////////////////////////////////////////////////////
+//													//
+//						BUILTINS					//
+//													//
+//////////////////////////////////////////////////////
+
+/*echo.c*/
+
+int			ft_strcmp_minishell(char *s1, char *s2);
+char		**newline_terminated(char **echo, int size_echo);
+void		builtin_echo(char **echo);
+
+/*cd.c*/
+
+void		builtin_cd(char *dir_name);
+
+/*unset.c*/
+
+void		remove_env_var(t_data **tmp);
+void		builtin_unset(t_data **data, char **to_unset);
+
+//////////////////////////////////////////////////////
+//													//
+//					NON INTERACTIVE					//
+//													//
+//////////////////////////////////////////////////////
+
+/*non_interactive.c*/
+
+int			is_not_command(char *cmd, char **argv);
+void		exec_single_cmd(char **cmd, char **argv, char **envp);
+
+/*find_path.c*/
+
+int			check_for_backslash(char *argv);
+char		*check_path(char *cmd, char *folder);
+char		*check_cmd(char *cmd, char **potential_paths);
+char		*find_path(char *cmd, char	**envp);
+
+/*utils_non_interactive.c*/
+
+void		ft_delete_str(char **line);
+int			ft_strcmd(char *str);
+
+#endif
