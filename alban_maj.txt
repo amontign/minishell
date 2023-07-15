@@ -1,0 +1,19 @@
+ - Modification de l'ordre de free dans minishell_prompt :
+	Avant :
+		parsing(&lexing, env, cmd_line);
+		// execution
+
+		// end of execution
+		ft_lstclear_minishell(&lexing);
+		free(cmd_line);
+	Apres :
+		parsing(&lexing, env, cmd_line);
+		free(cmd_line);
+		// execution
+
+		// end of execution
+		ft_lstclear_minishell(&lexing);
+ - Modification du Makefile pour ajouter les fichiers
+ - Modification de functions.h pour ajouter les fonctions
+ - Modification de structures.h pour ajouter la/les structure(s)
+ - Ajout de l'include sys/wait

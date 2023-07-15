@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structures.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 11:52:17 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/07/10 14:20:46 by cbernaze         ###   ########.fr       */
+/*   Updated: 2023/07/15 15:32:39 by amontign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,5 +103,24 @@ typedef struct s_exp_dol
 	int			*size_value;
 	t_data		*env;
 }			t_exp_dol;
+
+//////////////////////////////////////////////////////
+//													//
+//					  EXECUTION						//
+//													//
+//////////////////////////////////////////////////////
+
+typedef struct s_cmd_tab
+{
+	int					id;
+	char				*cmd_name;
+	char				**args;
+	char				*path;
+	char				*infile; // null = default
+	char				*outfile; // null = default
+	char				*errfile; // null = default
+	struct s_cmd_tab	*prev;
+	struct s_cmd_tab	*next;
+}						t_cmd_tab;
 
 #endif

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 12:00:49 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/07/11 16:02:46 by cbernaze         ###   ########.fr       */
+/*   Updated: 2023/07/15 16:37:12 by amontign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,8 @@ void	parsing(t_parsing **lexing, t_data *env, char *cmd_line)
 	if (*lexing)
 	{
 		expand(lexing, env);
-		if (*lexing)
-			print_cmd(*lexing);
+		//if (*lexing)
+			//print_cmd(*lexing);
 	}
 }
 
@@ -61,9 +61,11 @@ void	minishell_prompt(t_data *env)
 		if (cmd_line[0] != '\0')
 			add_history(cmd_line);
 		parsing(&lexing, env, cmd_line);
-		// execution();
-		ft_lstclear_minishell(&lexing);
 		free(cmd_line);
+		// execution
+		prompt_execution(&lexing, env);
+		// end of execution
+		ft_lstclear_minishell(&lexing);
 	}
 	free(name_eval);
 }

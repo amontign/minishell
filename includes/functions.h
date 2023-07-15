@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   functions.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 11:56:11 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/07/11 15:24:27 by cbernaze         ###   ########.fr       */
+/*   Updated: 2023/07/15 15:43:32 by amontign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -187,5 +187,32 @@ char		*find_path(char *cmd, char	**envp);
 
 void		ft_delete_str(char **line);
 int			ft_strcmd(char *str);
+
+//////////////////////////////////////////////////////
+//													//
+//					  EXECUTION						//
+//													//
+//////////////////////////////////////////////////////
+
+/*cmd_to_struct.c*/
+
+int	find_place_path(t_cmd_tab **cmd_struct, t_data *env);
+void	lexing_to_cmd_tab(t_parsing *lexing, t_cmd_tab **cmd_struct);
+
+/*execution_utils.c*/
+
+void		free_char_tab(char **tab);
+void		print_node_content(void *arg);
+
+/*main_execution.c*/
+
+int	prompt_execution(t_parsing **lexing, t_data *env);
+
+/*cmd_struct_utils.c*/
+
+t_cmd_tab	*cmd_struct_last(t_cmd_tab *lst);
+void		cmd_struct_add_back(t_cmd_tab **lst, t_cmd_tab *new);
+t_cmd_tab	*cmd_struct_new(char **args, void *content2, int id);
+void		cmd_struct_iter(t_cmd_tab *lst, void (*f)(void *));
 
 #endif
