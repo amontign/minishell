@@ -6,7 +6,7 @@
 /*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 11:05:22 by amontign          #+#    #+#             */
-/*   Updated: 2023/07/18 13:33:55 by amontign         ###   ########.fr       */
+/*   Updated: 2023/07/18 17:22:43 by amontign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ t_cmd_tab	*cmd_struct_new(char **args, void *content2, int id)
 	new->args = args;
 	new->cmd_name = content2;
 	new->id = id;
+	new->outfile_delete = 1;
+	new->heredoc = NULL;
 	new->path = NULL;
 	new->infile = NULL;
 	new->outfile = NULL;

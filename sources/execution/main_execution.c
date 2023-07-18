@@ -6,7 +6,7 @@
 /*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 09:57:58 by amontign          #+#    #+#             */
-/*   Updated: 2023/07/18 15:08:18 by amontign         ###   ########.fr       */
+/*   Updated: 2023/07/18 19:20:57 by amontign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ int	execute_cmds(t_cmd_tab **cmd_struct, t_data *env)
 	int			pipefd[2];
 	int			input_fd;
 	int			new_fd_in;
+	int			heredoc_fd;
 	int			new_fd_out;
 	char		**env_tab;
 	pid_t		pid;
@@ -72,6 +73,15 @@ int	execute_cmds(t_cmd_tab **cmd_struct, t_data *env)
 				dup2(new_fd_in, 0);
 				close(new_fd_in);
 			}
+			else if (current->heredoc)
+			{
+				heredoc_fd = open("heredoc_tmp.txt", O_WRONLY | O_CREAT | O_TRUNC, 0644);
+				write(heredoc_fd, current->heredoc, strlen(current->heredoc) + 1);
+				close(heredoc_fd);
+    			heredoc_fd = open("heredoc_tmp.txt", O_RDONLY);
+				dup2(heredoc_fd, 0);
+				close(heredoc_fd);
+			}
 			else if (input_fd)
 			{
 				dup2(input_fd, 0);
@@ -79,7 +89,10 @@ int	execute_cmds(t_cmd_tab **cmd_struct, t_data *env)
 			}
 			if (current->outfile)
 			{
-				new_fd_out = open(current->outfile, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+				if (current->outfile_delete)
+					new_fd_out = open(current->outfile, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+				else
+					new_fd_out = open(current->outfile, O_WRONLY | O_CREAT | O_APPEND, 0644);
 				if (new_fd_out < 0)
 				{
 					//error
@@ -114,6 +127,7 @@ int	execute_cmds(t_cmd_tab **cmd_struct, t_data *env)
 		}
 		current = current->next;
 	}
+	unlink("heredoc_tmp.txt");
 	return (1);
 }
 

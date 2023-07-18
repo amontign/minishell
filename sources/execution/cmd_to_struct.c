@@ -6,7 +6,7 @@
 /*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:41:01 by amontign          #+#    #+#             */
-/*   Updated: 2023/07/18 16:27:40 by amontign         ###   ########.fr       */
+/*   Updated: 2023/07/18 18:19:34 by amontign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,26 @@ int	char_redirect_start(char *str)
 	return (i);
 }
 
+char	*heredoc_complete(char *str)
+{
+	char	*res;
+	char	*current_line;
+	int		diff;
+	
+	current_line = readline(">");
+	res = malloc(sizeof(char));
+	res[0] = '\0';
+	diff = ft_strcmp(current_line, str);
+	while (diff != 0)
+	{
+		res = ft_strjoin(res, current_line);
+		res = ft_strjoin(res, "\n");
+		current_line = readline(">");
+		diff = ft_strcmp(current_line, str);
+	}
+	return (res);
+}
+
 int	put_redirect(t_cmd_tab *cmd_struct, char *str, int id)
 {
 	t_cmd_tab	*first;
@@ -95,25 +115,22 @@ int	put_redirect(t_cmd_tab *cmd_struct, char *str, int id)
 	{
 		if (str[1] == '>')
 		{
-			//ajouter + rediriger
+			cmd_struct->outfile_delete = 0;
 		}
-		else
-		{
-			cmd_struct->outfile = str + char_redirect_start(str);
-		}
+		cmd_struct->outfile = str + char_redirect_start(str);
 	}
 	else
 	{
 		if (str[1] == '<')
 		{
-			//heredoc
+			cmd_struct->heredoc = heredoc_complete(str + char_redirect_start(str) + 1);
 		}
 		else
 		{
 			cmd_struct->infile = str + char_redirect_start(str);
 		}
 	}
-	return (0);
+	return (1);
 }
 
 void	put_redirects(t_parsing *lexing, t_cmd_tab **cmd_struct)
@@ -136,6 +153,7 @@ void	put_redirects(t_parsing *lexing, t_cmd_tab **cmd_struct)
 				if (lexing2->token_type == TOKEN_CMD)
 				{
 					put_r = put_redirect(*cmd_struct, lexing->cmd, id);
+					break ;
 				}
 				lexing2 = lexing2->previous;
 			}
@@ -146,6 +164,7 @@ void	put_redirects(t_parsing *lexing, t_cmd_tab **cmd_struct)
 		}
 		lexing = lexing->next;
 	}
+	fflush(stdout);
 }
 
 void	lexing_to_cmd_tab(t_parsing *lexing, t_cmd_tab **cmd_struct)

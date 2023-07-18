@@ -6,7 +6,7 @@
 /*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 11:52:17 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/07/15 15:32:39 by amontign         ###   ########.fr       */
+/*   Updated: 2023/07/18 17:22:29 by amontign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,6 +118,8 @@ typedef struct s_cmd_tab
 	char				*path;
 	char				*infile; // null = default
 	char				*outfile; // null = default
+	int					outfile_delete; // 1 = normal | 0 = ne pas supprimer
+	char				*heredoc;
 	char				*errfile; // null = default
 	struct s_cmd_tab	*prev;
 	struct s_cmd_tab	*next;
