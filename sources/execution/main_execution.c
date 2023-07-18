@@ -6,22 +6,53 @@
 /*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 09:57:58 by amontign          #+#    #+#             */
-/*   Updated: 2023/07/15 22:13:46 by amontign         ###   ########.fr       */
+/*   Updated: 2023/07/18 15:08:18 by amontign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
+char	**env_to_tab(t_data *env)
+{
+	int		i;
+	char	**env_tab;
+	t_data	*first;
+
+	i = 0;
+	first = env;
+	while (env)
+	{
+		env = env->next;
+		i++;
+	}
+	env_tab = malloc(sizeof(char *) * i);
+	if (!env_tab)
+		return (NULL);
+	env = first;
+	i = 0;
+	while (env)
+	{
+		env_tab[i] = ft_strdup(env->var);
+		if (!env_tab[i])
+			return (NULL);
+		env = env->next;
+		i++;
+	}
+	return (env_tab);
+}
+
 int	execute_cmds(t_cmd_tab **cmd_struct, t_data *env)
 {
-	t_cmd_tab	*current = *cmd_struct;
+	t_cmd_tab	*current;
 	int			pipefd[2];
 	int			input_fd;
 	int			new_fd_in;
 	int			new_fd_out;
+	char		**env_tab;
 	pid_t		pid;
-	(void)env;
 
+	(void)env;
+	current = *cmd_struct;
 	input_fd = 0;
 	while (current)
 	{
@@ -60,9 +91,12 @@ int	execute_cmds(t_cmd_tab **cmd_struct, t_data *env)
 			else if (current->next)
 				dup2(pipefd[1], 1);
 			close(pipefd[0]);
+			env_tab = env_to_tab(env);
+			if (!env_tab)
+				return (0);
 			//free tout avant ce point
-			execve(current->path, current->args, NULL);
-			//error si on est ici
+			execve(current->path, current->args, env_tab);
+			//error si on est ici = liberer current->args et env_tab
 			exit(1);
 		}
 		else if (pid < 0)
