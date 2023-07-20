@@ -6,11 +6,31 @@
 /*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:41:01 by amontign          #+#    #+#             */
-/*   Updated: 2023/07/18 18:19:34 by amontign         ###   ########.fr       */
+/*   Updated: 2023/07/19 16:33:11 by amontign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+
+int	custom_path(t_cmd_tab *cmd_struct)
+{
+	int		i;
+	char	*tmp;
+
+	i = ft_strlen(cmd_struct->cmd_name) - 1;
+	while (cmd_struct->cmd_name[i] && cmd_struct->cmd_name[i] != '/')
+	{
+		i--;
+	}
+	if (i == -1)
+		return (0);
+	tmp = ft_strdup(cmd_struct->cmd_name);
+	free(cmd_struct->cmd_name);
+	cmd_struct->cmd_name = ft_strdup(tmp + i + 1);
+	cmd_struct->path = ft_strdup(tmp);
+	free(tmp);
+	return (1);
+}
 
 int	place_path(char **paths, t_cmd_tab *cmd_struct)
 {
@@ -34,7 +54,7 @@ int	place_path(char **paths, t_cmd_tab *cmd_struct)
 				cmd_struct->path = ft_strdup(path2);
 			free(path2);
 		}
-		if (!cmd_struct->path)
+		if (!cmd_struct->path && !custom_path(cmd_struct))
 			return (0);
 		cmd_struct = cmd_struct->next;
 	}
@@ -81,17 +101,20 @@ int	char_redirect_start(char *str)
 char	*heredoc_complete(char *str)
 {
 	char	*res;
+	char	*res2;
 	char	*current_line;
 	int		diff;
-	
+
 	current_line = readline(">");
 	res = malloc(sizeof(char));
 	res[0] = '\0';
 	diff = ft_strcmp(current_line, str);
 	while (diff != 0)
 	{
-		res = ft_strjoin(res, current_line);
-		res = ft_strjoin(res, "\n");
+		res2 = ft_strjoin(res, current_line);
+		free(res);
+		res = ft_strjoin(res2, "\n");
+		free(res2);
 		current_line = readline(">");
 		diff = ft_strcmp(current_line, str);
 	}
@@ -114,21 +137,15 @@ int	put_redirect(t_cmd_tab *cmd_struct, char *str, int id)
 	if (str[0] == '>')
 	{
 		if (str[1] == '>')
-		{
 			cmd_struct->outfile_delete = 0;
-		}
 		cmd_struct->outfile = str + char_redirect_start(str);
 	}
 	else
 	{
 		if (str[1] == '<')
-		{
 			cmd_struct->heredoc = heredoc_complete(str + char_redirect_start(str) + 1);
-		}
 		else
-		{
 			cmd_struct->infile = str + char_redirect_start(str);
-		}
 	}
 	return (1);
 }
@@ -151,25 +168,19 @@ void	put_redirects(t_parsing *lexing, t_cmd_tab **cmd_struct)
 			while (lexing2 && lexing2->token_type != TOKEN_PIPE)
 			{
 				if (lexing2->token_type == TOKEN_CMD)
-				{
 					put_r = put_redirect(*cmd_struct, lexing->cmd, id);
-					break ;
-				}
 				lexing2 = lexing2->previous;
 			}
 			if (put_r == 0)
-			{
 				put_redirect(*cmd_struct, lexing->cmd, (id + 1));
-			}
 		}
 		lexing = lexing->next;
 	}
-	fflush(stdout);
 }
 
 void	lexing_to_cmd_tab(t_parsing *lexing, t_cmd_tab **cmd_struct)
 {
-	int	id;
+	int			id;
 	t_parsing	*lexing_start;
 
 	id = 0;
@@ -180,7 +191,7 @@ void	lexing_to_cmd_tab(t_parsing *lexing, t_cmd_tab **cmd_struct)
 		{
 			cmd_struct_add_back(cmd_struct,
 				cmd_struct_new(lexing->cmd_split,
-					ft_strdup(lexing->cmd_split[0]), id)); //free cmd_struct->cmd_name et cmd_struct->path et cmd_struct
+					ft_strdup(lexing->cmd_split[0]), id));
 			id++;
 		}
 		lexing = lexing->next;

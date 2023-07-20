@@ -6,11 +6,13 @@
 /*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 12:00:49 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/07/18 15:09:20 by amontign         ###   ########.fr       */
+/*   Updated: 2023/07/20 13:43:35 by amontign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+int child_process;
 
 /*This function removes the newline at the end of a command line.*/
 
@@ -36,8 +38,8 @@ void	parsing(t_parsing **lexing, t_data *env, char *cmd_line)
 	if (*lexing)
 	{
 		expand(lexing, env);
-		if (*lexing)
-			print_cmd(*lexing);
+		//if (*lexing)
+		//	print_cmd(*lexing);
 	}
 }
 
@@ -54,9 +56,12 @@ void	minishell_prompt(t_data *env)
 	name_eval = readline("Hello evaluator, tell me your name : ");
 	remove_newline(&name_eval);
 	name_eval = ft_strjoin(name_eval, "@minishell> ");
+	main_signal();
 	while (42)
 	{
 		cmd_line = readline(name_eval);
+		if (!cmd_line)
+			break ;
 		remove_newline(&cmd_line);
 		if (cmd_line[0] != '\0')
 			add_history(cmd_line);
@@ -119,14 +124,18 @@ int	main(int argc, char **argv, char **envp)
 {
 	t_data	*env;
 	void	*verif;
+	struct termios oldt;
+	struct termios newt;
 
 	(void)argc;
-	(void)argv;
-	(void)envp;
 	verif = malloc(3000);
 	if (!verif)
 		return (ft_printf("not enough memory available\n"), 42);
 	free (verif);
+	tcgetattr(STDIN_FILENO, &oldt);
+	newt = oldt;
+	newt.c_lflag &= ~ECHOCTL;
+	tcsetattr(STDIN_FILENO, TCSANOW, &newt);
 	env = NULL;
 	if (ft_strcmp_minishell(argv[1], "c") == TRUE)
 		non_interactive_sh(argv, envp);
@@ -135,5 +144,6 @@ int	main(int argc, char **argv, char **envp)
 		ft_getenv(&env, envp);
 		minishell_prompt(env);
 	}
+	tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
 	return (ft_lstclear_data(&env), 0);
 }

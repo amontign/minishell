@@ -26,6 +26,7 @@ SOURCES =	./sources/main.c										\
 			./sources/execution/cmd_struct_utils.c					\
 			./sources/execution/execution_utils.c					\
 			./sources/execution/cmd_to_struct.c						\
+			./sources/signals/main_signals.c						\
 			# ./sources/main_tester.c								\
 
 CC = cc

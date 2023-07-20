@@ -6,7 +6,7 @@
 /*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 11:52:17 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/07/18 17:22:29 by amontign         ###   ########.fr       */
+/*   Updated: 2023/07/19 17:13:46 by amontign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,5 +124,13 @@ typedef struct s_cmd_tab
 	struct s_cmd_tab	*prev;
 	struct s_cmd_tab	*next;
 }						t_cmd_tab;
+
+//////////////////////////////////////////////////////
+//													//
+//					  SIGNALS						//
+//													//
+//////////////////////////////////////////////////////
+
+extern int child_process;
 
 #endif

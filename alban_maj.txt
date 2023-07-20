@@ -16,4 +16,4 @@
  - Modification du Makefile pour ajouter les fichiers
  - Modification de functions.h pour ajouter les fonctions
  - Modification de structures.h pour ajouter la/les structure(s)
- - Ajout de l'include sys/wait
+ - Ajout de l'include sys/wait et signals.h

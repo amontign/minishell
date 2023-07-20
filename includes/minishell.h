@@ -6,7 +6,7 @@
 /*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 18:46:02 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/07/15 16:36:10 by amontign         ###   ########.fr       */
+/*   Updated: 2023/07/19 17:46:12 by amontign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <sys/wait.h>
+# include <signal.h>
+# include <termios.h>
 # include "functions.h"
 
 #endif

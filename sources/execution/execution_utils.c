@@ -6,7 +6,7 @@
 /*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 14:59:25 by amontign          #+#    #+#             */
-/*   Updated: 2023/07/15 15:44:19 by amontign         ###   ########.fr       */
+/*   Updated: 2023/07/19 15:45:15 by amontign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,4 +43,43 @@ void	free_char_tab(char **tab)
 		i++;
 	}
 	free(tab);
+}
+
+char	**str_tab_dup(char **str_tab)
+{
+	char	**new_str_tab;
+	int		i;
+
+	i = 0;
+	while (str_tab[i])
+	{
+		i++;
+	}
+	new_str_tab = malloc(sizeof(char *) * (i + 1));
+	i = 0;
+	while (str_tab[i])
+	{
+		new_str_tab[i] = ft_strdup(str_tab[i]);
+		i++;
+	}
+	new_str_tab[i] = NULL;
+	return (new_str_tab);
+}
+
+void	free_cmd_struct(t_cmd_tab **cmd_struct)
+{
+	t_cmd_tab	*tmp;
+
+	while (*cmd_struct != NULL)
+	{
+		tmp = (*cmd_struct)->next;
+		if ((*cmd_struct)->heredoc)
+		{
+			free((*cmd_struct)->heredoc);
+		}
+		free((*cmd_struct)->cmd_name);
+		free((*cmd_struct)->path);
+		free(*cmd_struct);
+		*cmd_struct = tmp;
+	}
 }

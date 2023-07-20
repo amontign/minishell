@@ -6,7 +6,7 @@
 /*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 11:56:11 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/07/15 15:43:32 by amontign         ###   ########.fr       */
+/*   Updated: 2023/07/19 17:09:10 by amontign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -196,13 +196,15 @@ int			ft_strcmd(char *str);
 
 /*cmd_to_struct.c*/
 
-int	find_place_path(t_cmd_tab **cmd_struct, t_data *env);
-void	lexing_to_cmd_tab(t_parsing *lexing, t_cmd_tab **cmd_struct);
+int			find_place_path(t_cmd_tab **cmd_struct, t_data *env);
+void		lexing_to_cmd_tab(t_parsing *lexing, t_cmd_tab **cmd_struct);
 
 /*execution_utils.c*/
 
 void		free_char_tab(char **tab);
 void		print_node_content(void *arg);
+char		**str_tab_dup(char **str_tab);
+void		free_cmd_struct(t_cmd_tab **cmd_struct);
 
 /*main_execution.c*/
 
@@ -214,5 +216,9 @@ t_cmd_tab	*cmd_struct_last(t_cmd_tab *lst);
 void		cmd_struct_add_back(t_cmd_tab **lst, t_cmd_tab *new);
 t_cmd_tab	*cmd_struct_new(char **args, void *content2, int id);
 void		cmd_struct_iter(t_cmd_tab *lst, void (*f)(void *));
+
+
+/*main_signals.c*/
+void	main_signal(void);
 
 #endif
