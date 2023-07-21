@@ -6,7 +6,7 @@
 /*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/21 16:39:07 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/07/21 18:45:11 by cbernaze         ###   ########.fr       */
+/*   Updated: 2023/07/21 19:02:03 by cbernaze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@ int	is_dq_spe_char(char c)
 
 int	is_metachar(char c)
 {
-	if (c == '&' || c == ';' || c == 92 || c== '#'
-		|| c == '`' || c == '(' || c == ')' || c == 96)
+	if (c == '&' || c == ';' || c == 92 || c == '#'
+		|| c == '`' || c == '(' || c == ')' || c == 96 || c == '*')
 		return (ft_printf("minishell: '%c' not treated\n", c), TRUE);
 	return (FALSE);
 }
@@ -33,12 +33,12 @@ int	closed_quotes(char *cmd_line, int	*i)
 	{
 		while (cmd_line[*i] != SINGLE_QUOTE && cmd_line[*i])
 			*i += 1;
+		if (cmd_line[*i] == '\0')
+			return (ft_printf("minishell: unexpected EOF while looking for \
+matching `''\nminishell: syntax error: unexpected end of file\n")
+				, ERROR_SYNTAX);
 		*i += 1;
 	}
-	if (cmd_line[*i] == '\0')
-		return (ft_printf("minishell: unexpected EOF while looking for\
-				matching `''\nminishell: syntax error: unexpected\
-				end of file\n"), ERROR_SYNTAX);
 	if (cmd_line[*i] == DOUBLE_QUOTE)
 	{
 		while (cmd_line[*i] != DOUBLE_QUOTE)
@@ -47,10 +47,12 @@ int	closed_quotes(char *cmd_line, int	*i)
 				return (ERROR_SYNTAX);
 			*i += 1;
 		}
+		if (cmd_line[*i] == '\0')
+			return (ft_printf("minishell: unexpected EOF while looking for \
+matching `''\nminishell: syntax error: unexpected end of file\n")
+				, ERROR_SYNTAX);
 		*i += 1;
 	}
-	if (cmd_line[*i] == '\0')
-		return (ERROR_SYNTAX);
 	return (0);
 }
 
@@ -91,17 +93,18 @@ int	syntax(char *cmd_line)
 		if (cmd_line[i] == '|')
 			return (ERROR_SYNTAX);
 	}
-	while (cmd_line[i])
+	i = -1;
+	while (cmd_line[++i])
 	{
 		if (closed_quotes(cmd_line, &i) == ERROR_SYNTAX)
 			return (ERROR_SYNTAX);
 		if (is_metachar(cmd_line[i]) == TRUE)
 			return (ERROR_SYNTAX);
 		if (cmd_line[i] == '|' && cmd_line[i + 1] == '|')
-			return (ERROR_SYNTAX);
+			return (ft_printf("minishell: '||' not treated\n")
+				, ERROR_SYNTAX);
 		if (untreat_redir(cmd_line, &i) == ERROR_SYNTAX)
 			return (ERROR_SYNTAX);
-		i++;
 	}
 	if (pipe_at_end(cmd_line) == TRUE)
 		return (ft_printf("minishell: syntax error near \
