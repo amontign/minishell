@@ -6,7 +6,7 @@
 /*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 12:00:49 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/07/20 13:43:35 by amontign         ###   ########.fr       */
+/*   Updated: 2023/07/21 14:25:07 by amontign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ void	minishell_prompt(t_data *env)
 		// end of execution
 		ft_lstclear_minishell(&lexing);
 	}
+	printf("exit\n");
 	free(name_eval);
 }
 

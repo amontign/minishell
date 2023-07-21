@@ -6,7 +6,7 @@
 /*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 09:57:58 by amontign          #+#    #+#             */
-/*   Updated: 2023/07/20 15:34:30 by amontign         ###   ########.fr       */
+/*   Updated: 2023/07/21 14:39:47 by amontign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,12 +48,12 @@ void	exit_env(int new, t_data *env)
 	
 	while (env)
 	{
-		if (ft_strncmp(env->var, "?=", 2))
+		if (ft_strncmp(env->var, "?=", 2) == 0)
 		{
 			free(env->var);
-			tmp = ft_itoa(new);
+			tmp = ft_itoa(WEXITSTATUS(new));
 			env->var = ft_strdup(ft_strjoin("?=", tmp));
-			//printf("exit code : %s\n", env->var);
+			//printf("status : %s\n", tmp);
 			free(tmp);
 			break ;
 		}
@@ -124,7 +124,10 @@ int execute_child(t_cmd_tab *current, int input_fd, t_data *env, t_parsing **lex
 	env_tab = env_to_tab(env);
 	if (!env_tab)
 		return (0);
-	path = ft_strdup(current->path);
+	if (current->path)
+		path = ft_strdup(current->path);
+	else
+		path = NULL;
 	args = str_tab_dup(current->args);
 	//free tout
 	ft_lstclear_data(&env);
@@ -134,7 +137,7 @@ int execute_child(t_cmd_tab *current, int input_fd, t_data *env, t_parsing **lex
 	//endof free
 	execve(path, args, env_tab);
 	//error si on est ici = liberer args et env_tab et path
-	exit(1);
+	exit(EXIT_FAILURE);
 }
 
 int execute_cmds(t_cmd_tab **cmd_struct, t_data *env, t_parsing **lexing)
@@ -142,7 +145,7 @@ int execute_cmds(t_cmd_tab **cmd_struct, t_data *env, t_parsing **lexing)
 	t_cmd_tab	*current;
 	int			pipefd[2];
 	int			input_fd;
-	int 		status;
+	int			status;
 	pid_t		pid;
 
 	current = *cmd_struct;
@@ -183,7 +186,6 @@ int	prompt_execution(t_parsing **lexing, t_data *env)
 	if (!find_place_path(&first, env))
 	{
 		printf("erreur dans le path\n");
-		return (0);
 	}
 	if (!execute_cmds(&first, env, lexing))
 	{

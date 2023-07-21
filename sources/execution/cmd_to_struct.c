@@ -6,7 +6,7 @@
 /*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:41:01 by amontign          #+#    #+#             */
-/*   Updated: 2023/07/19 16:33:11 by amontign         ###   ########.fr       */
+/*   Updated: 2023/07/21 15:32:48 by amontign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ int	custom_path(t_cmd_tab *cmd_struct)
 	int		i;
 	char	*tmp;
 
+	if (!cmd_struct->cmd_name)
+		return (0);
 	i = ft_strlen(cmd_struct->cmd_name) - 1;
 	while (cmd_struct->cmd_name[i] && cmd_struct->cmd_name[i] != '/')
 	{
@@ -41,7 +43,7 @@ int	place_path(char **paths, t_cmd_tab *cmd_struct)
 	while (cmd_struct)
 	{
 		i = -1;
-		while (paths[++i] && !cmd_struct->path)
+		while (paths[++i] && !cmd_struct->path && cmd_struct->cmd_name)
 		{
 			path = ft_strjoin(paths[i], "/");
 			if (!path)
