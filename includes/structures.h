@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structures.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 11:52:17 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/07/19 17:13:46 by amontign         ###   ########.fr       */
+/*   Updated: 2023/07/21 17:00:03 by cbernaze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 # define TOKEN_REDIR 1002
 # define TOKEN_PIPE 1003
 # define ERROR -1
+# define ERROR_SYNTAX -2
 # define ARG_MAX_MINISH 4095
 # define TRUE 10
 # define FALSE 11

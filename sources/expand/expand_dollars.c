@@ -6,7 +6,7 @@
 /*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/03 16:21:58 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/07/11 11:52:57 by cbernaze         ###   ########.fr       */
+/*   Updated: 2023/07/21 15:11:20 by cbernaze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	expand_dollars(t_parsing **expand, t_data *env)
 			nb_dollars = ft_intlen(&tmp->to_substitute);
 			if (tmp->token_type != PIPE && nb_dollars > 0)
 				tmp->cmd = substitute_dollars(&tmp, env, nb_dollars);
-			if (ft_strcmp_minishell(tmp->cmd, "error") == TRUE)
+			if (ft_strcmp(tmp->cmd, "error") == 0)
 				return (ft_printf("minishell: malloc error\n"), ERROR);
 		}
 		tmp = tmp->next;
