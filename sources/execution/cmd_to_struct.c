@@ -6,7 +6,7 @@
 /*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:41:01 by amontign          #+#    #+#             */
-/*   Updated: 2023/07/21 15:32:48 by amontign         ###   ########.fr       */
+/*   Updated: 2023/07/22 11:04:25 by amontign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,12 +114,14 @@ char	*heredoc_complete(char *str)
 	while (diff != 0)
 	{
 		res2 = ft_strjoin(res, current_line);
+		free(current_line);
 		free(res);
 		res = ft_strjoin(res2, "\n");
 		free(res2);
 		current_line = readline(">");
 		diff = ft_strcmp(current_line, str);
 	}
+	free(current_line);
 	return (res);
 }
 

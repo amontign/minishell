@@ -6,7 +6,7 @@
 /*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 15:26:31 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/07/22 10:55:46 by amontign         ###   ########.fr       */
+/*   Updated: 2023/07/22 11:02:02 by amontign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ int	check_empty_cmd(t_parsing **lexing)
 			return (ft_lstclear_minishell(lexing), TRUE);
 		tmp = tmp->next;
 	}
+	free(error_pipe);
 	return (FALSE);
 }
 
