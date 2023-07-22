@@ -6,7 +6,7 @@
 /*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:41:01 by amontign          #+#    #+#             */
-/*   Updated: 2023/07/22 11:04:25 by amontign         ###   ########.fr       */
+/*   Updated: 2023/07/22 11:15:02 by amontign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ int	find_place_path(t_cmd_tab **cmd_struct, t_data *env)
 	return (1);
 }
 
-int	char_redirect_start(char *str)
+int	c_r_s(char *str)
 {
 	int	i;
 
@@ -142,14 +142,14 @@ int	put_redirect(t_cmd_tab *cmd_struct, char *str, int id)
 	{
 		if (str[1] == '>')
 			cmd_struct->outfile_delete = 0;
-		cmd_struct->outfile = str + char_redirect_start(str);
+		cmd_struct->outfile = str + c_r_s(str);
 	}
 	else
 	{
 		if (str[1] == '<')
-			cmd_struct->heredoc = heredoc_complete(str + char_redirect_start(str) + 1);
+			cmd_struct->heredoc = heredoc_complete(str + c_r_s(str) + 1);
 		else
-			cmd_struct->infile = str + char_redirect_start(str);
+			cmd_struct->infile = str + c_r_s(str);
 	}
 	return (1);
 }

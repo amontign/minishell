@@ -6,7 +6,7 @@
 /*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 09:57:58 by amontign          #+#    #+#             */
-/*   Updated: 2023/07/22 10:54:25 by amontign         ###   ########.fr       */
+/*   Updated: 2023/07/22 11:13:27 by amontign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,14 +28,13 @@ char	**env_to_tab(t_data *env)
 	env_tab = malloc(sizeof(char *) * (i + 1));
 	if (!env_tab)
 		return (NULL);
-	env = first;
 	i = 0;
-	while (env)
+	while (first)
 	{
-		env_tab[i] = ft_strdup(env->var);
+		env_tab[i] = ft_strdup(first->var);
 		if (!env_tab[i])
 			return (NULL);
-		env = env->next;
+		first = first->next;
 		i++;
 	}
 	env_tab[i] = NULL;
@@ -46,7 +45,7 @@ void	exit_env(int new, t_data *env)
 {
 	char	*tmp;
 	char	*tmp2;
-	
+
 	while (env)
 	{
 		if (ft_strncmp(env->var, "?=", 2) == 0)
@@ -64,8 +63,10 @@ void	exit_env(int new, t_data *env)
 	}
 }
 
-int handle_infile(t_cmd_tab *current) {
-	int new_fd_in;
+int	handle_infile(t_cmd_tab *current)
+{
+	int	new_fd_in;
+
 	new_fd_in = open(current->infile, O_RDONLY);
 	if (new_fd_in < 0)
 	{
@@ -74,26 +75,32 @@ int handle_infile(t_cmd_tab *current) {
 	}
 	dup2(new_fd_in, 0);
 	close(new_fd_in);
-	return new_fd_in;
+	return (new_fd_in);
 }
 
-int handle_heredoc(t_cmd_tab *current) {
-	int heredoc_fd;
+int	handle_heredoc(t_cmd_tab *current)
+{
+	int	heredoc_fd;
+
 	heredoc_fd = open("heredoc_tmp.txt", O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	write(heredoc_fd, current->heredoc, strlen(current->heredoc) + 1);
 	close(heredoc_fd);
 	heredoc_fd = open("heredoc_tmp.txt", O_RDONLY);
 	dup2(heredoc_fd, 0);
 	close(heredoc_fd);
-	return heredoc_fd;
+	return (heredoc_fd);
 }
 
-int handle_outfile(t_cmd_tab *current) {
-	int new_fd_out;
+int	handle_outfile(t_cmd_tab *current)
+{
+	int	new_fd_out;
+
 	if (current->outfile_delete)
-		new_fd_out = open(current->outfile, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+		new_fd_out = open(current->outfile,
+				O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	else
-		new_fd_out = open(current->outfile, O_WRONLY | O_CREAT | O_APPEND, 0644);
+		new_fd_out = open(current->outfile,
+				O_WRONLY | O_CREAT | O_APPEND, 0644);
 	if (new_fd_out < 0)
 	{
 		//error lors de l'ouverture de l'outfile
@@ -101,14 +108,15 @@ int handle_outfile(t_cmd_tab *current) {
 	}
 	dup2(new_fd_out, 1);
 	close(new_fd_out);
-	return new_fd_out;
+	return (new_fd_out);
 }
 
-int execute_child(t_cmd_tab *current, int input_fd, t_data *env, t_parsing **lexing, t_cmd_tab **cmd_struct, int *pipefd) {
+int	execute_child(t_cmd_tab *current, int input_fd, t_data *env, t_parsing **lexing, t_cmd_tab **cmd_struct, int *pipefd)
+{
 	char		**env_tab;
 	char		*path;
 	char		**args;
-	
+
 	child_process = 1;
 	if (current->infile)
 		handle_infile(current);
@@ -143,7 +151,7 @@ int execute_child(t_cmd_tab *current, int input_fd, t_data *env, t_parsing **lex
 	exit(EXIT_FAILURE);
 }
 
-int execute_cmds(t_cmd_tab **cmd_struct, t_data *env, t_parsing **lexing)
+int	execute_cmds(t_cmd_tab **cmd_struct, t_data *env, t_parsing **lexing)
 {
 	t_cmd_tab	*current;
 	int			pipefd[2];
