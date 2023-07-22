@@ -6,7 +6,7 @@
 /*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 09:57:58 by amontign          #+#    #+#             */
-/*   Updated: 2023/07/21 14:39:47 by amontign         ###   ########.fr       */
+/*   Updated: 2023/07/22 10:54:25 by amontign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ char	**env_to_tab(t_data *env)
 void	exit_env(int new, t_data *env)
 {
 	char	*tmp;
+	char	*tmp2;
 	
 	while (env)
 	{
@@ -52,9 +53,11 @@ void	exit_env(int new, t_data *env)
 		{
 			free(env->var);
 			tmp = ft_itoa(WEXITSTATUS(new));
-			env->var = ft_strdup(ft_strjoin("?=", tmp));
-			//printf("status : %s\n", tmp);
+			tmp2 = ft_strjoin("?=", tmp);
 			free(tmp);
+			env->var = ft_strdup(tmp2);
+			//printf("status : %s\n", tmp);
+			free(tmp2);
 			break ;
 		}
 		env = env->next;
