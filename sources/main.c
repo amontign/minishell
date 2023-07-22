@@ -6,7 +6,7 @@
 /*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 12:00:49 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/07/21 14:25:07 by amontign         ###   ########.fr       */
+/*   Updated: 2023/07/22 10:50:49 by amontign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,15 +51,17 @@ void	minishell_prompt(t_data *env)
 	t_parsing	*lexing;
 	char		*cmd_line;
 	char		*name_eval;
+	char		*prompt_char;
 
 	lexing = NULL;
 	name_eval = readline("Hello evaluator, tell me your name : ");
 	remove_newline(&name_eval);
-	name_eval = ft_strjoin(name_eval, "@minishell> ");
+	prompt_char = ft_strjoin(name_eval, "@minishell> ");
+	free(name_eval);
 	main_signal();
 	while (42)
 	{
-		cmd_line = readline(name_eval);
+		cmd_line = readline(prompt_char);
 		if (!cmd_line)
 			break ;
 		remove_newline(&cmd_line);
@@ -73,7 +75,7 @@ void	minishell_prompt(t_data *env)
 		ft_lstclear_minishell(&lexing);
 	}
 	printf("exit\n");
-	free(name_eval);
+	free(prompt_char);
 }
 
 /*This function is launched if we are not in the
