@@ -6,7 +6,7 @@
 /*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/30 11:55:24 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/07/11 11:33:35 by cbernaze         ###   ########.fr       */
+/*   Updated: 2023/07/23 17:05:30 by cbernaze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +63,8 @@ void	how_many_dollars_2(t_parsing **tmp, int *i, int *size_subt_tab)
 		*i += 1;
 		while ((*tmp)->cmd[*i] != DOUBLE_QUOTE && (*tmp)->cmd[*i] != '\0')
 		{
-			if ((*tmp)->cmd[*i] == '$'
-				&& am_a_lonesome_dollar((*tmp)->cmd, *i) == FALSE)
+			if ((*tmp)->cmd[*i] == '$' && ((*tmp)->cmd[*i + 1] == '?'
+				|| am_a_lonesome_dollar((*tmp)->cmd, *i) == FALSE))
 				*size_subt_tab += 1;
 			*i += 1;
 		}

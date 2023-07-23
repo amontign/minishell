@@ -6,7 +6,7 @@
 /*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/11 11:18:06 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/07/11 11:18:37 by cbernaze         ###   ########.fr       */
+/*   Updated: 2023/07/23 17:05:51 by cbernaze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,8 +99,8 @@ int	pre_expand_dollar_5(t_parsing **tmp, int *i, int choice, int *tab)
 		*i += 1;
 		while ((*tmp)->cmd[*i] != DOUBLE_QUOTE && (*tmp)->cmd[*i] != '\0')
 		{
-			if ((*tmp)->cmd[*i] == '$'
-				&& am_a_lonesome_dollar((*tmp)->cmd, *i) == FALSE)
+			if ((*tmp)->cmd[*i] == '$' && ((*tmp)->cmd[*i + 1] == '?'
+				|| am_a_lonesome_dollar((*tmp)->cmd, *i) == FALSE))
 			{
 				set_back = i_need_a_dollar(tmp, *i, choice, tab);
 				if (set_back == ERROR)

@@ -6,7 +6,7 @@
 /*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 15:34:13 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/07/01 14:17:51 by cbernaze         ###   ########.fr       */
+/*   Updated: 2023/07/23 17:08:13 by cbernaze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ void	builtin_echo(char **echo)
 	}
 	while (echo[i])
 	{
-		ft_printf("%s", echo[i]);
+		printf("%s", echo[i]);
 		if (i != size_echo)
 			printf(" ");
 		i++;

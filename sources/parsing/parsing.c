@@ -6,7 +6,7 @@
 /*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/21 16:39:07 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/07/22 16:17:18 by cbernaze         ###   ########.fr       */
+/*   Updated: 2023/07/23 18:14:46 by cbernaze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ int	closed_quotes(char *cmd_line, int	*i)
 			return (ft_printf("minishell: unexpected EOF while looking for \
 matching `''\nminishell: syntax error: unexpected end of file\n")
 				, ERROR_SYNTAX);
-		// *i += 1;
 	}
 	if (cmd_line[*i] == DOUBLE_QUOTE)
 	{
@@ -53,7 +52,6 @@ matching `''\nminishell: syntax error: unexpected end of file\n")
 			return (ft_printf("minishell: unexpected EOF while looking for \
 matching `\"'\nminishell: syntax error: unexpected end of file\n")
 				, ERROR_SYNTAX);
-		// *i += 1;
 	}
 	return (0);
 }
@@ -66,9 +64,21 @@ int	untreat_redir(char *cmd_line, int *i)
 	if (cmd_line[*i] == '<' && cmd_line[*i + 1] == '<'
 		&& cmd_line[*i + 2] == '<')
 		return (ft_printf("minishell: '<<<' not treated\n"), ERROR_SYNTAX);
-	// if ((cmd_line[*i] == '<' && cmd_line[*i + 1] == '>')
-	// 	|| (cmd_line[*i] == '>' && cmd_line[*i + 1] == '<'))
-	// 	return (ft_printf("minishell: '<<<' not treated\n"), ERROR_SYNTAX);
+	if (cmd_line[*i] == '>' && cmd_line[*i + 1] == '>' && cmd_line[*i + 2] == '|')
+		return (ft_printf("minishell: syntax error near \
+unexpected token `|'\n"), ERROR_SYNTAX);
+	if (cmd_line[*i] == '>' && cmd_line[*i + 1] == '\0')
+		return (ft_printf("minishell: syntax error near \
+unexpected token `newline'\n"), ERROR_SYNTAX);
+	if (cmd_line[*i] == '<' && cmd_line[*i + 1] == '\0')
+		return (ft_printf("minishell: syntax error near \
+unexpected token `newline'\n"), ERROR_SYNTAX);
+	if (cmd_line[*i] == '<' && cmd_line[*i + 1] == '>' && cmd_line[*i + 2] == '\0')
+		return (ft_printf("minishell: syntax error near \
+unexpected token `newline'\n"), ERROR_SYNTAX);
+	if (cmd_line[*i] == '>' && cmd_line[*i + 1] == '<' && cmd_line[*i + 2] == '\0')
+		return (ft_printf("minishell: syntax error near \
+unexpected token `<'\n"), ERROR_SYNTAX);
 	return (0);
 }
 
@@ -87,16 +97,28 @@ int	pipe_at_end(char *cmd_line)
 	return (FALSE);
 }
 
-int	syntax(char *cmd_line)
+int	pipe_at_start(char *cmd_line)
 {
 	int	i;
 
 	i = 0;
 	while (cmd_line[i] && (cmd_line[i] == ' ' || (cmd_line[i] > 6 && cmd_line[i] < 14)))
 		i++;
+	if (cmd_line[i] == '|' && cmd_line[i + 1] == '|')
+		return (ft_printf("minishell: syntax error near \
+unexpected token `||'\n"), ERROR_SYNTAX);
 	if (cmd_line[i] == '|')
 		return (ft_printf("minishell: syntax error near \
 unexpected token `|'\n"), ERROR_SYNTAX);
+	return (0);
+}
+
+int	syntax(char *cmd_line)
+{
+	int	i;
+
+	if (pipe_at_start(cmd_line) == ERROR_SYNTAX)
+		return (ERROR_SYNTAX);
 	i = -1;
 	while (cmd_line[++i])
 	{
