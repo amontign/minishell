@@ -6,7 +6,7 @@
 /*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 09:57:58 by amontign          #+#    #+#             */
-/*   Updated: 2023/07/22 11:13:27 by amontign         ###   ########.fr       */
+/*   Updated: 2023/07/23 13:17:31 by amontign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,6 @@ int	execute_child(t_cmd_tab *current, int input_fd, t_data *env, t_parsing **lex
 	char		*path;
 	char		**args;
 
-	child_process = 1;
 	if (current->infile)
 		handle_infile(current);
 	else if (current->heredoc)
@@ -163,6 +162,7 @@ int	execute_cmds(t_cmd_tab **cmd_struct, t_data *env, t_parsing **lexing)
 	input_fd = 0;
 	while (current)
 	{
+		child_process = 1;
 		pipe(pipefd);
 		pid = fork();
 		if (pid == 0)
@@ -183,6 +183,7 @@ int	execute_cmds(t_cmd_tab **cmd_struct, t_data *env, t_parsing **lexing)
 		}
 		current = current->next;
 	}
+	child_process = 0;
 	unlink("heredoc_tmp.txt");
 	free_cmd_struct(cmd_struct);
 	return (1);

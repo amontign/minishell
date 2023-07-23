@@ -6,7 +6,7 @@
 /*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:41:01 by amontign          #+#    #+#             */
-/*   Updated: 2023/07/22 11:15:02 by amontign         ###   ########.fr       */
+/*   Updated: 2023/07/23 13:16:06 by amontign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ int	c_r_s(char *str)
 	int	i;
 
 	i = 0;
-	while (str[i] == '>' || str[i] == '<' || (str[i] > 8 && str[i] < 14))
+	while (str[i] == '>' || str[i] == '<' || (str[i] > 8 && str[i] < 14) || str[i] == ' ')
 	{
 		i++;
 	}
@@ -147,7 +147,7 @@ int	put_redirect(t_cmd_tab *cmd_struct, char *str, int id)
 	else
 	{
 		if (str[1] == '<')
-			cmd_struct->heredoc = heredoc_complete(str + c_r_s(str) + 1);
+			cmd_struct->heredoc = heredoc_complete(str + c_r_s(str));
 		else
 			cmd_struct->infile = str + c_r_s(str);
 	}

@@ -6,7 +6,7 @@
 /*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 16:37:01 by amontign          #+#    #+#             */
-/*   Updated: 2023/07/20 13:42:18 by amontign         ###   ########.fr       */
+/*   Updated: 2023/07/21 17:29:05 by amontign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,13 @@ void handle_sigint(int sig)
 	(void)sig;
 	if (child_process == 1)
 	{
-		exit(1);
+		printf("\n^C\n");
+		rl_replace_line("", 0);
+		rl_redisplay();
 	}
 	else
 	{
-		printf("\n");
+		printf("%s%s^C\n", rl_prompt, rl_line_buffer);
 		rl_on_new_line();
 		rl_replace_line("", 0);
 		rl_redisplay();
@@ -31,15 +33,17 @@ void handle_sigint(int sig)
 void handle_sigquit(int sig)
 {
 	(void)sig;
-	if (child_process != 1)
+	if (child_process == 1)
 	{
-		rl_on_new_line();
+		printf("^\\Quit (core dumped)\n");
 		rl_replace_line("", 0);
 		rl_redisplay();
 	}
 	else
 	{
-		exit(1);
+		rl_on_new_line();
+		rl_replace_line("", 0);
+		rl_redisplay();
 	}
 }
 
