@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 15:34:13 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/07/01 14:17:51 by cbernaze         ###   ########.fr       */
+/*   Updated: 2023/07/23 17:52:13 by amontign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ char	**newline_terminated(char **echo, int size_echo)
 
 /*Builtin de la commande echo*/
 
-void	builtin_echo(char **echo)
+void	builtin_echo(char **echo, int fd)
 {
 	int	i;
 	int	size_echo;
@@ -66,9 +66,9 @@ void	builtin_echo(char **echo)
 	}
 	while (echo[i])
 	{
-		ft_printf("%s", echo[i]);
+		ft_putstr_fd(echo[i], fd);
 		if (i != size_echo)
-			printf(" ");
+			ft_putchar_fd(' ', fd);
 		i++;
 	}
 }

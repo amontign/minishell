@@ -6,7 +6,7 @@
 /*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:41:01 by amontign          #+#    #+#             */
-/*   Updated: 2023/07/23 13:16:06 by amontign         ###   ########.fr       */
+/*   Updated: 2023/07/23 15:48:46 by amontign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,7 @@ int	custom_path(t_cmd_tab *cmd_struct)
 		return (0);
 	i = ft_strlen(cmd_struct->cmd_name) - 1;
 	while (cmd_struct->cmd_name[i] && cmd_struct->cmd_name[i] != '/')
-	{
 		i--;
-	}
 	if (i == -1)
 		return (0);
 	tmp = ft_strdup(cmd_struct->cmd_name);
@@ -31,7 +29,10 @@ int	custom_path(t_cmd_tab *cmd_struct)
 	cmd_struct->cmd_name = ft_strdup(tmp + i + 1);
 	cmd_struct->path = ft_strdup(tmp);
 	free(tmp);
-	return (1);
+	if (access(cmd_struct->path, F_OK) == 0)
+		return (1);
+	else
+		return (0);
 }
 
 int	place_path(char **paths, t_cmd_tab *cmd_struct)
@@ -93,7 +94,8 @@ int	c_r_s(char *str)
 	int	i;
 
 	i = 0;
-	while (str[i] == '>' || str[i] == '<' || (str[i] > 8 && str[i] < 14) || str[i] == ' ')
+	while (str[i] == '>' || str[i] == '<' || (str[i] > 8 && str[i] < 14)
+		|| str[i] == ' ')
 	{
 		i++;
 	}
@@ -113,6 +115,8 @@ char	*heredoc_complete(char *str)
 	diff = ft_strcmp(current_line, str);
 	while (diff != 0)
 	{
+		if (!current_line)
+			return (printf("warning: end-of-file detected in heredoc\n"), res);
 		res2 = ft_strjoin(res, current_line);
 		free(current_line);
 		free(res);

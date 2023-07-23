@@ -6,7 +6,7 @@
 /*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 11:56:11 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/07/19 17:09:10 by amontign         ###   ########.fr       */
+/*   Updated: 2023/07/23 17:53:36 by amontign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,11 +154,11 @@ void		ft_lstclear_data(t_data **data);
 
 int			ft_strcmp_minishell(char *s1, char *s2);
 char		**newline_terminated(char **echo, int size_echo);
-void		builtin_echo(char **echo);
+void		builtin_echo(char **echo, int fd);
 
 /*cd.c*/
 
-void		builtin_cd(char *dir_name);
+void		builtin_cd(char **dir_name);
 
 /*unset.c*/
 
