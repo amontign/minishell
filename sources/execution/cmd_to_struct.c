@@ -6,7 +6,7 @@
 /*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:41:01 by amontign          #+#    #+#             */
-/*   Updated: 2023/07/23 15:48:46 by amontign         ###   ########.fr       */
+/*   Updated: 2023/07/24 12:25:18 by amontign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ int	place_path(char **paths, t_cmd_tab *cmd_struct)
 				cmd_struct->path = ft_strdup(path2);
 			free(path2);
 		}
-		if (!cmd_struct->path && !custom_path(cmd_struct))
+		if (!cmd_struct->path && !custom_path(cmd_struct) && !in_builtin(cmd_struct->cmd_name))
 			return (0);
 		cmd_struct = cmd_struct->next;
 	}

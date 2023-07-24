@@ -6,7 +6,7 @@
 /*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 09:57:58 by amontign          #+#    #+#             */
-/*   Updated: 2023/07/23 18:06:51 by amontign         ###   ########.fr       */
+/*   Updated: 2023/07/24 11:10:31 by amontign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,7 +131,7 @@ void	execute_child1(t_cmd_tab *current, int input_fd, int *pipefd)
 
 int	in_builtin(char *cmd)
 {
-	if (ft_strcmp(cmd, "echo") == 0 || ft_strcmp(cmd, "cd") == 0)
+	if (ft_strcmp(cmd, "echo") == 0 || ft_strcmp(cmd, "cd") == 0 || ft_strcmp(cmd, "pwd") == 0)
 	{
 		return (1);
 	}
@@ -145,9 +145,9 @@ int	exec_builtin(char **args, int fd)
 	if (ft_strcmp(args[0], "cd") == 0)
 		builtin_cd(args);
 	/*if (ft_strcmp(args[0], "unset") == 0)
-		builtin_unset(args);
+		builtin_unset(args);*/
 	if (ft_strcmp(args[0], "pwd") == 0)
-		builtin_pwd(args);
+		builtin_pwd(args, fd);/*
 	if (ft_strcmp(args[0], "export") == 0)
 		builtin_export(args);
 	if (ft_strcmp(args[0], "env") == 0)

@@ -6,7 +6,7 @@
 /*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 15:34:13 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/07/23 17:52:13 by amontign         ###   ########.fr       */
+/*   Updated: 2023/07/24 12:03:01 by amontign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,11 +55,11 @@ void	builtin_echo(char **echo, int fd)
 	int	size_echo;
 
 	i = 1;
-	size_echo = ft_strlen_plus(echo);
-	echo = newline_terminated(echo, size_echo);
+	size_echo = ft_strlen_plus(echo) - 1;
+	echo = newline_terminated(echo, size_echo + 1);
 	if (ft_strcmp_minishell(echo[1], "-n") == TRUE)
 	{
-		while (i < (size_echo - 1))
+		while (i < (size_echo))
 			i++;
 		remove_newline(echo + i);
 		i = 2;

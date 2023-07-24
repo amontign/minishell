@@ -6,7 +6,7 @@
 /*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 12:00:49 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/07/23 13:26:52 by amontign         ###   ########.fr       */
+/*   Updated: 2023/07/24 11:40:45 by amontign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ void	minishell_prompt(t_data *env)
 	while (42)
 	{
 		cmd_line = readline(prompt_char);
-		if (!cmd_line)
+		if (!cmd_line || builtin_exit(cmd_line, 1))
 			break ;
 		remove_newline(&cmd_line);
 		if (cmd_line[0] != '\0')

@@ -7,6 +7,8 @@ SOURCES =	./sources/main.c										\
 			./sources/lexing/utils_lexing.c							\
 			./sources/lexing/utils_list.c							\
 			./sources/builtins/echo.c								\
+			./sources/builtins/pwd.c								\
+			./sources/builtins/exit.c								\
 			./sources/builtins/cd.c									\
 			./sources/builtins/unset.c								\
 			./sources/expand/expand.c								\
