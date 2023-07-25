@@ -6,7 +6,7 @@
 /*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 09:57:58 by amontign          #+#    #+#             */
-/*   Updated: 2023/07/24 11:10:31 by amontign         ###   ########.fr       */
+/*   Updated: 2023/07/25 12:50:34 by amontign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,27 +131,27 @@ void	execute_child1(t_cmd_tab *current, int input_fd, int *pipefd)
 
 int	in_builtin(char *cmd)
 {
-	if (ft_strcmp(cmd, "echo") == 0 || ft_strcmp(cmd, "cd") == 0 || ft_strcmp(cmd, "pwd") == 0)
+	if (ft_strcmp(cmd, "echo") == 0 || ft_strcmp(cmd, "cd") == 0 || ft_strcmp(cmd, "pwd") == 0 || ft_strcmp(cmd, "env") == 0 || ft_strcmp(cmd, "export") == 0)
 	{
 		return (1);
 	}
 	return (0);
 }
 
-int	exec_builtin(char **args, int fd)
+int	exec_builtin(char **args, int fd, t_data *env)
 {
 	if (ft_strcmp(args[0], "echo") == 0)
 		builtin_echo(args, fd);
 	if (ft_strcmp(args[0], "cd") == 0)
-		builtin_cd(args);
+		builtin_cd(args, env);
 	/*if (ft_strcmp(args[0], "unset") == 0)
 		builtin_unset(args);*/
 	if (ft_strcmp(args[0], "pwd") == 0)
-		builtin_pwd(args, fd);/*
+		builtin_pwd(args, fd);
 	if (ft_strcmp(args[0], "export") == 0)
-		builtin_export(args);
+		builtin_export(args, env, fd);
 	if (ft_strcmp(args[0], "env") == 0)
-		builtin_env(args);
+		builtin_env(args, env, fd);/*
 	if (ft_strcmp(args[0], "exit") == 0)
 		builtin_exit(args);*/
 	return (0);
@@ -188,7 +188,7 @@ void	execute_cmds_exit(t_cmd_tab **cmd_struct)
 	free_cmd_struct(cmd_struct);
 }
 
-void	execute_cmds_init_current(int *pipefd, pid_t *pid, t_cmd_tab *current)
+void	execute_cmds_init_current(int *pipefd, pid_t *pid, t_cmd_tab *current, t_data *env)
 {
 	if (in_builtin(current->args[0]))
 	{
@@ -199,14 +199,14 @@ void	execute_cmds_init_current(int *pipefd, pid_t *pid, t_cmd_tab *current)
 			int saved_stdout = dup(STDOUT_FILENO);
 			dup2(pipefd[1], STDOUT_FILENO);
 
-			exec_builtin(current->args, pipefd[1]);
+			exec_builtin(current->args, pipefd[1], env);
 
 			dup2(saved_stdout, STDOUT_FILENO);
 			close(saved_stdout);
 			close(pipefd[1]);
 		}
 		else
-			exec_builtin(current->args, 1);
+			exec_builtin(current->args, 1, env);
 	}
 	else
 	{
@@ -234,7 +234,7 @@ int	execute_cmds(t_cmd_tab **c_s, t_cmd_tab *cu, t_data *env, t_parsing **l)
 	input_fd = 0;
 	while (cu)
 	{
-		execute_cmds_init_current(pipefd, &pid, cu);
+		execute_cmds_init_current(pipefd, &pid, cu, env);
 		if (pid == 0)
 		{
 			execute_child1(cu, input_fd, pipefd);

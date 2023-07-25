@@ -6,7 +6,7 @@
 /*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 11:56:11 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/07/24 12:26:22 by amontign         ###   ########.fr       */
+/*   Updated: 2023/07/25 12:51:01 by amontign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,7 +158,7 @@ void		builtin_echo(char **echo, int fd);
 
 /*cd.c*/
 
-void		builtin_cd(char **dir_name);
+void		builtin_cd(char **dir_name, t_data *env);
 
 /*unset.c*/
 
@@ -172,6 +172,14 @@ int	builtin_pwd(char **args, int fd);
 /*exit.c*/
 
 int	builtin_exit(char *args, int fd);
+
+/*env.c*/
+
+void	builtin_env(char **args, t_data *env, int fd);
+
+/*export.c*/
+
+void	builtin_export(char **args, t_data *env, int fd);
 
 //////////////////////////////////////////////////////
 //													//
@@ -216,8 +224,9 @@ void		free_cmd_struct(t_cmd_tab **cmd_struct);
 
 /*main_execution.c*/
 
-int	prompt_execution(t_parsing **lexing, t_data *env);
-int	in_builtin(char *cmd);
+int			prompt_execution(t_parsing **lexing, t_data *env);
+int			in_builtin(char *cmd);
+char		**env_to_tab(t_data *env);
 
 /*cmd_struct_utils.c*/
 
@@ -228,6 +237,6 @@ void		cmd_struct_iter(t_cmd_tab *lst, void (*f)(void *));
 
 
 /*main_signals.c*/
-void	main_signal(void);
+void		main_signal(void);
 
 #endif

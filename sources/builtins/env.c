@@ -1,34 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pwd.c                                              :+:      :+:    :+:   */
+/*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/24 10:46:22 by amontign          #+#    #+#             */
-/*   Updated: 2023/07/25 13:13:33 by amontign         ###   ########.fr       */
+/*   Created: 2023/07/25 11:19:50 by amontign          #+#    #+#             */
+/*   Updated: 2023/07/25 13:09:01 by amontign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-int	builtin_pwd(char **args, int fd)
+void	builtin_env(char **args, t_data *env, int fd)
 {
-	char	buf[FILENAME_MAX];
-
-	(void)fd;
-	getcwd(buf, FILENAME_MAX);
-	if (args[1] && args[1][0] == '-')
+	if (args[1])
 	{
-		ft_putstr_fd("minishell: pwd: -", 2);
-		ft_putchar_fd(args[1][1], 2);
-		ft_putstr_fd(": invalid option\n", 2);
-		ft_putstr_fd("pwd: usage: pwd\n", 2);
+		ft_putstr_fd("minishell: env: Bad usage", 2);
+		ft_putstr_fd("env: usage: env\n", 2);
+		return ;
 	}
-	else
+	while (env)
 	{
-		ft_putstr_fd(buf, fd);
+		ft_putstr_fd(env->var, fd);
 		ft_putchar_fd('\n', fd);
+		env = env->next;
 	}
-	return (1);
 }
