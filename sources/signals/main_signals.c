@@ -6,7 +6,7 @@
 /*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 16:37:01 by amontign          #+#    #+#             */
-/*   Updated: 2023/07/23 18:09:03 by amontign         ###   ########.fr       */
+/*   Updated: 2023/07/25 16:22:15 by amontign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	handle_sigquit(int sig)
 	(void)sig;
 	if (child_process == 1)
 	{
-		printf("Quit (core dumped)\n");
+		printf("^\\Quit (core dumped)\n");
 		rl_replace_line("", 0);
 		rl_redisplay();
 	}

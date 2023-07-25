@@ -6,7 +6,7 @@
 /*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:41:01 by amontign          #+#    #+#             */
-/*   Updated: 2023/07/24 12:25:18 by amontign         ###   ########.fr       */
+/*   Updated: 2023/07/25 15:07:50 by amontign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,15 +145,15 @@ int	put_redirect(t_cmd_tab *cmd_struct, char *str, int id)
 	if (str[0] == '>')
 	{
 		if (str[1] == '>')
-			cmd_struct->outfile_delete = 0;
-		cmd_struct->outfile = str + c_r_s(str);
+			first->outfile_delete = 0;
+		first->outfile = str + c_r_s(str);
 	}
 	else
 	{
 		if (str[1] == '<')
-			cmd_struct->heredoc = heredoc_complete(str + c_r_s(str));
+			first->heredoc = heredoc_complete(str + c_r_s(str));
 		else
-			cmd_struct->infile = str + c_r_s(str);
+			first->infile = str + c_r_s(str);
 	}
 	return (1);
 }
@@ -176,11 +176,11 @@ void	put_redirects(t_parsing *lexing, t_cmd_tab **cmd_struct)
 			while (lexing2 && lexing2->token_type != TOKEN_PIPE)
 			{
 				if (lexing2->token_type == TOKEN_CMD)
-					put_r = put_redirect(*cmd_struct, lexing->cmd, id);
+					put_r = put_redirect(*cmd_struct, lexing->cmd, (id - 1));
 				lexing2 = lexing2->previous;
 			}
 			if (put_r == 0)
-				put_redirect(*cmd_struct, lexing->cmd, (id + 1));
+				put_redirect(*cmd_struct, lexing->cmd, id);
 		}
 		lexing = lexing->next;
 	}

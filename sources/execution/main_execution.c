@@ -6,7 +6,7 @@
 /*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 09:57:58 by amontign          #+#    #+#             */
-/*   Updated: 2023/07/25 12:50:34 by amontign         ###   ########.fr       */
+/*   Updated: 2023/07/25 16:50:27 by amontign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,7 +125,10 @@ void	execute_child1(t_cmd_tab *current, int input_fd, int *pipefd)
 	if (current->outfile)
 		handle_outfile(current);
 	else if (current->next)
+	{
 		dup2(pipefd[1], 1);
+		close(pipefd[1]);
+	}
 	close(pipefd[0]);
 }
 
@@ -138,8 +141,10 @@ int	in_builtin(char *cmd)
 	return (0);
 }
 
-int	exec_builtin(char **args, int fd, t_data *env)
+int	exec_builtin(char **args, int fd, t_data *env, t_cmd_tab *current)
 {
+	if (current->outfile)
+		fd = handle_outfile(current);
 	if (ft_strcmp(args[0], "echo") == 0)
 		builtin_echo(args, fd);
 	if (ft_strcmp(args[0], "cd") == 0)
@@ -151,9 +156,12 @@ int	exec_builtin(char **args, int fd, t_data *env)
 	if (ft_strcmp(args[0], "export") == 0)
 		builtin_export(args, env, fd);
 	if (ft_strcmp(args[0], "env") == 0)
-		builtin_env(args, env, fd);/*
-	if (ft_strcmp(args[0], "exit") == 0)
-		builtin_exit(args);*/
+		builtin_env(args, env, fd);
+	if (current->outfile)
+	{
+		dup2(1, fd);
+		close(fd);
+	}
 	return (0);
 }
 
@@ -198,15 +206,14 @@ void	execute_cmds_init_current(int *pipefd, pid_t *pid, t_cmd_tab *current, t_da
 
 			int saved_stdout = dup(STDOUT_FILENO);
 			dup2(pipefd[1], STDOUT_FILENO);
-
-			exec_builtin(current->args, pipefd[1], env);
+			exec_builtin(current->args, pipefd[1], env, current);
 
 			dup2(saved_stdout, STDOUT_FILENO);
 			close(saved_stdout);
 			close(pipefd[1]);
 		}
 		else
-			exec_builtin(current->args, 1, env);
+			exec_builtin(current->args, 1, env, current);
 	}
 	else
 	{
