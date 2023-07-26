@@ -6,7 +6,7 @@
 /*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:41:01 by amontign          #+#    #+#             */
-/*   Updated: 2023/07/25 15:07:50 by amontign         ###   ########.fr       */
+/*   Updated: 2023/07/26 10:30:23 by amontign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,8 +110,7 @@ char	*heredoc_complete(char *str)
 	int		diff;
 
 	current_line = readline(">");
-	res = malloc(sizeof(char));
-	res[0] = '\0';
+	res = ft_strdup("");
 	diff = ft_strcmp(current_line, str);
 	while (diff != 0)
 	{

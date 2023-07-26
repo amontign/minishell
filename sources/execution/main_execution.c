@@ -6,7 +6,7 @@
 /*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 09:57:58 by amontign          #+#    #+#             */
-/*   Updated: 2023/07/25 16:50:27 by amontign         ###   ########.fr       */
+/*   Updated: 2023/07/26 10:37:41 by amontign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ int	handle_heredoc(t_cmd_tab *current)
 	int	heredoc_fd;
 
 	heredoc_fd = open("heredoc_tmp.txt", O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	write(heredoc_fd, current->heredoc, strlen(current->heredoc) + 1);
+	write(heredoc_fd, current->heredoc, strlen(current->heredoc));
 	close(heredoc_fd);
 	heredoc_fd = open("heredoc_tmp.txt", O_RDONLY);
 	dup2(heredoc_fd, 0);
@@ -127,9 +127,9 @@ void	execute_child1(t_cmd_tab *current, int input_fd, int *pipefd)
 	else if (current->next)
 	{
 		dup2(pipefd[1], 1);
-		close(pipefd[1]);
 	}
 	close(pipefd[0]);
+	close(pipefd[1]);
 }
 
 int	in_builtin(char *cmd)
@@ -223,12 +223,23 @@ void	execute_cmds_init_current(int *pipefd, pid_t *pid, t_cmd_tab *current, t_da
 	}
 }
 
-void	execute_cmds_parent(pid_t *pid, int *status, t_data *env, int *input_fd)
+void	execute_cmds_parent(int *input_fd)
 {
-	waitpid(*pid, status, 0);
-	exit_env(*status, env);
 	if (*input_fd != 0)
 		close(*input_fd);
+}
+
+int	count_cmds(t_cmd_tab *cmd)
+{
+	int	i;
+
+	i = 0;
+	while (cmd)
+	{
+		i++;
+		cmd = cmd->next;
+	}
+	return (i);
 }
 
 int	execute_cmds(t_cmd_tab **c_s, t_cmd_tab *cu, t_data *env, t_parsing **l)
@@ -236,27 +247,36 @@ int	execute_cmds(t_cmd_tab **c_s, t_cmd_tab *cu, t_data *env, t_parsing **l)
 	int			pipefd[2];
 	int			input_fd;
 	int			status;
-	pid_t		pid;
+	pid_t		*pids;
+	int			num_cmds;
 
+	num_cmds = 0;
 	input_fd = 0;
+	pids = malloc(sizeof(pid_t) * count_cmds(*c_s));
 	while (cu)
 	{
-		execute_cmds_init_current(pipefd, &pid, cu, env);
-		if (pid == 0)
+		execute_cmds_init_current(pipefd, &pids[num_cmds], cu, env);
+		if (pids[num_cmds] == 0)
 		{
 			execute_child1(cu, input_fd, pipefd);
 			execute_child2(cu, env, l, c_s);
 		}
-		else if (pid < 0)
+		else if (pids[num_cmds] < 0)
 			return (0);
 		else
 		{
-			execute_cmds_parent(&pid, &status, env, &input_fd);
+			execute_cmds_parent(&input_fd);
 			close(pipefd[1]);
 			input_fd = pipefd[0];
 		}
 		cu = cu->next;
+		num_cmds++;
 	}
+	for (int i = 0; i < num_cmds; i++) {
+        waitpid(pids[i], &status, 0);
+    }
+	exit_env(status, env);
+	free(pids);
 	return (execute_cmds_exit(c_s), 1);
 }
 
