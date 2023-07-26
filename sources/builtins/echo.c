@@ -6,7 +6,7 @@
 /*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 15:34:13 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/07/24 12:03:01 by amontign         ###   ########.fr       */
+/*   Updated: 2023/07/26 17:19:36 by amontign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,9 @@ int	ft_strcmp_minishell(char *s1, char *s2)
 
 char	**newline_terminated(char **echo, int size_echo)
 {
-	int	i;
-	int	j;
+	int		i;
+	int		j;
+	char	*tmp;
 
 	i = 0;
 	j = 0;
@@ -43,7 +44,11 @@ char	**newline_terminated(char **echo, int size_echo)
 	while (echo[i][j])
 		j++;
 	if (echo[i][j - 1] != '\n')
+	{
+		tmp = echo[i];
 		echo[i] = ft_strjoin(echo[i], "\n");
+		free(tmp);
+	}
 	return (echo);
 }
 
