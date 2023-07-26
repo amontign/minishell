@@ -6,7 +6,7 @@
 /*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 11:56:11 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/07/25 12:51:01 by amontign         ###   ########.fr       */
+/*   Updated: 2023/07/26 16:00:20 by amontign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,18 @@
 
 # include "structures.h"
 # include "libft.h"
+
+/*parsing.c*/
+
+int			is_dq_spe_char(char c);
+int			is_metachar(char c);
+int			closed_quotes(char *cmd_line, int	*i);
+int			untreat_redir(char *cmd_line, int *i);
+int			pipe_at_end(char *cmd_line);
+int			pipe_at_start(char *cmd_line);
+int			syntax(char *cmd_line);
+int			wrong_after_redir(char *cmd_line, int *i);
+void		final_parsing(t_parsing **lexing);
 
 //////////////////////////////////////////////////////
 //													//
@@ -180,29 +192,6 @@ void	builtin_env(char **args, t_data *env, int fd);
 /*export.c*/
 
 void	builtin_export(char **args, t_data *env, int fd);
-
-//////////////////////////////////////////////////////
-//													//
-//					NON INTERACTIVE					//
-//													//
-//////////////////////////////////////////////////////
-
-/*non_interactive.c*/
-
-int			is_not_command(char *cmd, char **argv);
-void		exec_single_cmd(char **cmd, char **argv, char **envp);
-
-/*find_path.c*/
-
-int			check_for_backslash(char *argv);
-char		*check_path(char *cmd, char *folder);
-char		*check_cmd(char *cmd, char **potential_paths);
-char		*find_path(char *cmd, char	**envp);
-
-/*utils_non_interactive.c*/
-
-void		ft_delete_str(char **line);
-int			ft_strcmd(char *str);
 
 //////////////////////////////////////////////////////
 //													//

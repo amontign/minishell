@@ -23,13 +23,11 @@ SOURCES =	./sources/main.c										\
 			./sources/expand/split_args.c							\
 			./sources/getenv/create_env.c							\
 			./sources/getenv/utils_create_env.c						\
-			./sources/non_interactive_sh/non_interactive.c			\
-			./sources/non_interactive_sh/find_path.c				\
-			./sources/non_interactive_sh/utils_non_interactive.c	\
 			./sources/execution/main_execution.c					\
 			./sources/execution/cmd_struct_utils.c					\
 			./sources/execution/execution_utils.c					\
 			./sources/execution/cmd_to_struct.c						\
+			./sources/parsing/parsing.c								\
 			./sources/signals/main_signals.c						\
 			# ./sources/main_tester.c								\
 

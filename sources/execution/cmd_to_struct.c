@@ -6,7 +6,7 @@
 /*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:41:01 by amontign          #+#    #+#             */
-/*   Updated: 2023/07/26 10:30:23 by amontign         ###   ########.fr       */
+/*   Updated: 2023/07/26 13:46:52 by amontign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,31 +35,31 @@ int	custom_path(t_cmd_tab *cmd_struct)
 		return (0);
 }
 
-int	place_path(char **paths, t_cmd_tab *cmd_struct)
+int	place_path(char **paths, t_cmd_tab *c)
 {
 	int		i;
 	char	*path;
 	char	*path2;
 
-	while (cmd_struct)
+	while (c)
 	{
 		i = -1;
-		while (paths[++i] && !cmd_struct->path && cmd_struct->cmd_name)
+		while (paths[++i] && !c->path && c->cmd_name)
 		{
 			path = ft_strjoin(paths[i], "/");
 			if (!path)
 				return (0);
-			path2 = ft_strjoin(path, cmd_struct->cmd_name);
+			path2 = ft_strjoin(path, c->cmd_name);
 			free(path);
 			if (!path2)
 				return (0);
 			if (access(path2, F_OK) == 0)
-				cmd_struct->path = ft_strdup(path2);
+				c->path = ft_strdup(path2);
 			free(path2);
 		}
-		if (!cmd_struct->path && !custom_path(cmd_struct) && !in_builtin(cmd_struct->cmd_name))
+		if (!c->path && !custom_path(c) && !in_builtin(c->cmd_name))
 			return (0);
-		cmd_struct = cmd_struct->next;
+		c = c->next;
 	}
 	return (1);
 }
