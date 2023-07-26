@@ -6,7 +6,7 @@
 /*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 12:00:49 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/07/20 13:43:35 by amontign         ###   ########.fr       */
+/*   Updated: 2023/07/26 16:11:29 by amontign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,8 @@ returns the formated command line ready for the execution.*/
 
 void	parsing(t_parsing **lexing, t_data *env, char *cmd_line)
 {
-	// if (parsing() == ERROR)
-	// 	return ;
+	if (syntax(cmd_line) == ERROR_SYNTAX)
+	 	return ;
 	*lexing = tokenisation(cmd_line);
 	if (*lexing)
 	{
@@ -51,16 +51,18 @@ void	minishell_prompt(t_data *env)
 	t_parsing	*lexing;
 	char		*cmd_line;
 	char		*name_eval;
+	char		*prompt_char;
 
 	lexing = NULL;
 	name_eval = readline("Hello evaluator, tell me your name : ");
 	remove_newline(&name_eval);
-	name_eval = ft_strjoin(name_eval, "@minishell> ");
+	prompt_char = ft_strjoin(name_eval, "@minishell> ");
+	free(name_eval);
 	main_signal();
 	while (42)
 	{
-		cmd_line = readline(name_eval);
-		if (!cmd_line)
+		cmd_line = readline(prompt_char);
+		if (!cmd_line || builtin_exit(cmd_line, 1))
 			break ;
 		remove_newline(&cmd_line);
 		if (cmd_line[0] != '\0')
@@ -72,49 +74,8 @@ void	minishell_prompt(t_data *env)
 		// end of execution
 		ft_lstclear_minishell(&lexing);
 	}
-	free(name_eval);
-}
-
-/*This function is launched if we are not in the
-interactive mode.*/
-
-char	*ft_strdup_ms(const char *s)
-{
-	char	*dup;
-	int		size_s;
-	int		i;
-
-	i = 0;
-	size_s = ft_strlen(s);
-	dup = (char *)malloc(sizeof(*s) * (size_s + 1));
-	if (!dup)
-		return (NULL);
-	while (i < size_s && s[i] != '\0')
-	{
-		dup[i] = s[i];
-		i++;
-	}
-	dup[i] = '\0';
-	return (dup);
-}
-
-void	non_interactive_sh(char **argv, char **envp)
-{
-	char	**cmd;
-
-	cmd = NULL;
-	if (is_not_command(argv[2], argv) == TRUE)
-		(ft_printf("minishell: -c: option requires an argument"), exit(1));
-	// if (redir_followed_by_cmd() == TRUE)
-	// 	return (0);
-	else
-	{
-		cmd = malloc(2 * sizeof(char*));
-		cmd[0] = ft_strdup_ms(argv[2]);
-		cmd[1] = NULL;
-		exec_single_cmd(cmd, argv, envp);
-	}
-	(free(cmd[0]), free(cmd), exit(0));
+	printf("exit\n");
+	free(prompt_char);
 }
 
 /*The environment is transformed into a chained list,
@@ -128,6 +89,7 @@ int	main(int argc, char **argv, char **envp)
 	struct termios newt;
 
 	(void)argc;
+	(void)argv;
 	verif = malloc(3000);
 	if (!verif)
 		return (ft_printf("not enough memory available\n"), 42);
@@ -137,13 +99,8 @@ int	main(int argc, char **argv, char **envp)
 	newt.c_lflag &= ~ECHOCTL;
 	tcsetattr(STDIN_FILENO, TCSANOW, &newt);
 	env = NULL;
-	if (ft_strcmp_minishell(argv[1], "c") == TRUE)
-		non_interactive_sh(argv, envp);
-	else
-	{
-		ft_getenv(&env, envp);
-		minishell_prompt(env);
-	}
+	ft_getenv(&env, envp);
+	minishell_prompt(env);
 	tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
 	return (ft_lstclear_data(&env), 0);
 }

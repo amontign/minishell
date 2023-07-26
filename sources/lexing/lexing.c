@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexing.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 15:26:31 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/07/11 10:52:35 by cbernaze         ###   ########.fr       */
+/*   Updated: 2023/07/22 11:02:02 by amontign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ int	check_empty_cmd(t_parsing **lexing)
 			return (ft_lstclear_minishell(lexing), TRUE);
 		tmp = tmp->next;
 	}
+	free(error_pipe);
 	return (FALSE);
 }
 

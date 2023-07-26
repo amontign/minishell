@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 15:34:13 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/07/01 14:17:51 by cbernaze         ###   ########.fr       */
+/*   Updated: 2023/07/24 12:03:01 by amontign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,26 +49,26 @@ char	**newline_terminated(char **echo, int size_echo)
 
 /*Builtin de la commande echo*/
 
-void	builtin_echo(char **echo)
+void	builtin_echo(char **echo, int fd)
 {
 	int	i;
 	int	size_echo;
 
 	i = 1;
-	size_echo = ft_strlen_plus(echo);
-	echo = newline_terminated(echo, size_echo);
+	size_echo = ft_strlen_plus(echo) - 1;
+	echo = newline_terminated(echo, size_echo + 1);
 	if (ft_strcmp_minishell(echo[1], "-n") == TRUE)
 	{
-		while (i < (size_echo - 1))
+		while (i < (size_echo))
 			i++;
 		remove_newline(echo + i);
 		i = 2;
 	}
 	while (echo[i])
 	{
-		ft_printf("%s", echo[i]);
+		ft_putstr_fd(echo[i], fd);
 		if (i != size_echo)
-			printf(" ");
+			ft_putchar_fd(' ', fd);
 		i++;
 	}
 }

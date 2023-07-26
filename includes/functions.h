@@ -6,7 +6,7 @@
 /*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 11:56:11 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/07/19 17:09:10 by amontign         ###   ########.fr       */
+/*   Updated: 2023/07/26 16:00:20 by amontign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,18 @@
 
 # include "structures.h"
 # include "libft.h"
+
+/*parsing.c*/
+
+int			is_dq_spe_char(char c);
+int			is_metachar(char c);
+int			closed_quotes(char *cmd_line, int	*i);
+int			untreat_redir(char *cmd_line, int *i);
+int			pipe_at_end(char *cmd_line);
+int			pipe_at_start(char *cmd_line);
+int			syntax(char *cmd_line);
+int			wrong_after_redir(char *cmd_line, int *i);
+void		final_parsing(t_parsing **lexing);
 
 //////////////////////////////////////////////////////
 //													//
@@ -154,39 +166,32 @@ void		ft_lstclear_data(t_data **data);
 
 int			ft_strcmp_minishell(char *s1, char *s2);
 char		**newline_terminated(char **echo, int size_echo);
-void		builtin_echo(char **echo);
+void		builtin_echo(char **echo, int fd);
 
 /*cd.c*/
 
-void		builtin_cd(char *dir_name);
+void		builtin_cd(char **dir_name, t_data *env);
 
 /*unset.c*/
 
 void		remove_env_var(t_data **tmp);
 void		builtin_unset(t_data **data, char **to_unset);
 
-//////////////////////////////////////////////////////
-//													//
-//					NON INTERACTIVE					//
-//													//
-//////////////////////////////////////////////////////
+/*pwd.c*/
 
-/*non_interactive.c*/
+int	builtin_pwd(char **args, int fd);
 
-int			is_not_command(char *cmd, char **argv);
-void		exec_single_cmd(char **cmd, char **argv, char **envp);
+/*exit.c*/
 
-/*find_path.c*/
+int	builtin_exit(char *args, int fd);
 
-int			check_for_backslash(char *argv);
-char		*check_path(char *cmd, char *folder);
-char		*check_cmd(char *cmd, char **potential_paths);
-char		*find_path(char *cmd, char	**envp);
+/*env.c*/
 
-/*utils_non_interactive.c*/
+void	builtin_env(char **args, t_data *env, int fd);
 
-void		ft_delete_str(char **line);
-int			ft_strcmd(char *str);
+/*export.c*/
+
+void	builtin_export(char **args, t_data *env, int fd);
 
 //////////////////////////////////////////////////////
 //													//
@@ -208,7 +213,9 @@ void		free_cmd_struct(t_cmd_tab **cmd_struct);
 
 /*main_execution.c*/
 
-int	prompt_execution(t_parsing **lexing, t_data *env);
+int			prompt_execution(t_parsing **lexing, t_data *env);
+int			in_builtin(char *cmd);
+char		**env_to_tab(t_data *env);
 
 /*cmd_struct_utils.c*/
 
@@ -219,6 +226,6 @@ void		cmd_struct_iter(t_cmd_tab *lst, void (*f)(void *));
 
 
 /*main_signals.c*/
-void	main_signal(void);
+void		main_signal(void);
 
 #endif

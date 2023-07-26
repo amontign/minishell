@@ -6,7 +6,7 @@
 /*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:41:01 by amontign          #+#    #+#             */
-/*   Updated: 2023/07/19 16:33:11 by amontign         ###   ########.fr       */
+/*   Updated: 2023/07/26 13:46:52 by amontign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,11 @@ int	custom_path(t_cmd_tab *cmd_struct)
 	int		i;
 	char	*tmp;
 
+	if (!cmd_struct->cmd_name)
+		return (0);
 	i = ft_strlen(cmd_struct->cmd_name) - 1;
 	while (cmd_struct->cmd_name[i] && cmd_struct->cmd_name[i] != '/')
-	{
 		i--;
-	}
 	if (i == -1)
 		return (0);
 	tmp = ft_strdup(cmd_struct->cmd_name);
@@ -29,34 +29,37 @@ int	custom_path(t_cmd_tab *cmd_struct)
 	cmd_struct->cmd_name = ft_strdup(tmp + i + 1);
 	cmd_struct->path = ft_strdup(tmp);
 	free(tmp);
-	return (1);
+	if (access(cmd_struct->path, F_OK) == 0)
+		return (1);
+	else
+		return (0);
 }
 
-int	place_path(char **paths, t_cmd_tab *cmd_struct)
+int	place_path(char **paths, t_cmd_tab *c)
 {
 	int		i;
 	char	*path;
 	char	*path2;
 
-	while (cmd_struct)
+	while (c)
 	{
 		i = -1;
-		while (paths[++i] && !cmd_struct->path)
+		while (paths[++i] && !c->path && c->cmd_name)
 		{
 			path = ft_strjoin(paths[i], "/");
 			if (!path)
 				return (0);
-			path2 = ft_strjoin(path, cmd_struct->cmd_name);
+			path2 = ft_strjoin(path, c->cmd_name);
 			free(path);
 			if (!path2)
 				return (0);
 			if (access(path2, F_OK) == 0)
-				cmd_struct->path = ft_strdup(path2);
+				c->path = ft_strdup(path2);
 			free(path2);
 		}
-		if (!cmd_struct->path && !custom_path(cmd_struct))
+		if (!c->path && !custom_path(c) && !in_builtin(c->cmd_name))
 			return (0);
-		cmd_struct = cmd_struct->next;
+		c = c->next;
 	}
 	return (1);
 }
@@ -86,12 +89,13 @@ int	find_place_path(t_cmd_tab **cmd_struct, t_data *env)
 	return (1);
 }
 
-int	char_redirect_start(char *str)
+int	c_r_s(char *str)
 {
 	int	i;
 
 	i = 0;
-	while (str[i] == '>' || str[i] == '<' || (str[i] > 8 && str[i] < 14))
+	while (str[i] == '>' || str[i] == '<' || (str[i] > 8 && str[i] < 14)
+		|| str[i] == ' ')
 	{
 		i++;
 	}
@@ -106,18 +110,21 @@ char	*heredoc_complete(char *str)
 	int		diff;
 
 	current_line = readline(">");
-	res = malloc(sizeof(char));
-	res[0] = '\0';
+	res = ft_strdup("");
 	diff = ft_strcmp(current_line, str);
 	while (diff != 0)
 	{
+		if (!current_line)
+			return (printf("warning: end-of-file detected in heredoc\n"), res);
 		res2 = ft_strjoin(res, current_line);
+		free(current_line);
 		free(res);
 		res = ft_strjoin(res2, "\n");
 		free(res2);
 		current_line = readline(">");
 		diff = ft_strcmp(current_line, str);
 	}
+	free(current_line);
 	return (res);
 }
 
@@ -137,15 +144,15 @@ int	put_redirect(t_cmd_tab *cmd_struct, char *str, int id)
 	if (str[0] == '>')
 	{
 		if (str[1] == '>')
-			cmd_struct->outfile_delete = 0;
-		cmd_struct->outfile = str + char_redirect_start(str);
+			first->outfile_delete = 0;
+		first->outfile = str + c_r_s(str);
 	}
 	else
 	{
 		if (str[1] == '<')
-			cmd_struct->heredoc = heredoc_complete(str + char_redirect_start(str) + 1);
+			first->heredoc = heredoc_complete(str + c_r_s(str));
 		else
-			cmd_struct->infile = str + char_redirect_start(str);
+			first->infile = str + c_r_s(str);
 	}
 	return (1);
 }
@@ -168,11 +175,11 @@ void	put_redirects(t_parsing *lexing, t_cmd_tab **cmd_struct)
 			while (lexing2 && lexing2->token_type != TOKEN_PIPE)
 			{
 				if (lexing2->token_type == TOKEN_CMD)
-					put_r = put_redirect(*cmd_struct, lexing->cmd, id);
+					put_r = put_redirect(*cmd_struct, lexing->cmd, (id - 1));
 				lexing2 = lexing2->previous;
 			}
 			if (put_r == 0)
-				put_redirect(*cmd_struct, lexing->cmd, (id + 1));
+				put_redirect(*cmd_struct, lexing->cmd, id);
 		}
 		lexing = lexing->next;
 	}

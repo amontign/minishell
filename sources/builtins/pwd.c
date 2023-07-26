@@ -1,35 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strdup.c                                        :+:      :+:    :+:   */
+/*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/23 15:28:19 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/07/21 15:23:01 by amontign         ###   ########.fr       */
+/*   Created: 2023/07/24 10:46:22 by amontign          #+#    #+#             */
+/*   Updated: 2023/07/25 13:13:33 by amontign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/libft.h"
+#include "../../includes/minishell.h"
 
-char	*ft_strdup(const char *s)
+int	builtin_pwd(char **args, int fd)
 {
-	char	*dup;
-	int		size_s;
-	int		i;
+	char	buf[FILENAME_MAX];
 
-	i = 0;
-	if (!s)
-		return (NULL);
-	size_s = ft_strlen(s);
-	dup = (char *)malloc(sizeof(*s) * (size_s + 1));
-	if (!dup)
-		return (NULL);
-	while (s[i] != '\0')
+	(void)fd;
+	getcwd(buf, FILENAME_MAX);
+	if (args[1] && args[1][0] == '-')
 	{
-		dup[i] = s[i];
-		i++;
+		ft_putstr_fd("minishell: pwd: -", 2);
+		ft_putchar_fd(args[1][1], 2);
+		ft_putstr_fd(": invalid option\n", 2);
+		ft_putstr_fd("pwd: usage: pwd\n", 2);
 	}
-	dup[i] = '\0';
-	return (dup);
+	else
+	{
+		ft_putstr_fd(buf, fd);
+		ft_putchar_fd('\n', fd);
+	}
+	return (1);
 }

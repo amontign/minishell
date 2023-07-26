@@ -6,7 +6,7 @@
 /*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 09:57:58 by amontign          #+#    #+#             */
-/*   Updated: 2023/07/20 15:34:30 by amontign         ###   ########.fr       */
+/*   Updated: 2023/07/26 16:19:18 by amontign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,41 +28,52 @@ char	**env_to_tab(t_data *env)
 	env_tab = malloc(sizeof(char *) * (i + 1));
 	if (!env_tab)
 		return (NULL);
-	env = first;
 	i = 0;
-	while (env)
+	while (first)
 	{
-		env_tab[i] = ft_strdup(env->var);
+		env_tab[i] = ft_strdup(first->var);
 		if (!env_tab[i])
 			return (NULL);
-		env = env->next;
+		first = first->next;
 		i++;
 	}
 	env_tab[i] = NULL;
 	return (env_tab);
 }
 
-void	exit_env(int new, t_data *env)
+void	exit_env(pid_t *pids, int num_cmds, int new, t_data *env)
 {
 	char	*tmp;
-	
+	char	*tmp2;
+	int		i;
+
+	i = 0;
+	while (i < num_cmds)
+	{
+		waitpid(pids[i], &new, 0);
+		i++;
+	}
+	free(pids);
 	while (env)
 	{
-		if (ft_strncmp(env->var, "?=", 2))
+		if (ft_strncmp(env->var, "?=", 2) == 0)
 		{
 			free(env->var);
-			tmp = ft_itoa(new);
-			env->var = ft_strdup(ft_strjoin("?=", tmp));
-			//printf("exit code : %s\n", env->var);
+			tmp = ft_itoa(WEXITSTATUS(new));
+			tmp2 = ft_strjoin("?=", tmp);
 			free(tmp);
+			env->var = ft_strdup(tmp2);
+			free(tmp2);
 			break ;
 		}
 		env = env->next;
 	}
 }
 
-int handle_infile(t_cmd_tab *current) {
-	int new_fd_in;
+int	handle_infile(t_cmd_tab *current)
+{
+	int	new_fd_in;
+
 	new_fd_in = open(current->infile, O_RDONLY);
 	if (new_fd_in < 0)
 	{
@@ -71,26 +82,32 @@ int handle_infile(t_cmd_tab *current) {
 	}
 	dup2(new_fd_in, 0);
 	close(new_fd_in);
-	return new_fd_in;
+	return (new_fd_in);
 }
 
-int handle_heredoc(t_cmd_tab *current) {
-	int heredoc_fd;
+int	handle_heredoc(t_cmd_tab *current)
+{
+	int	heredoc_fd;
+
 	heredoc_fd = open("heredoc_tmp.txt", O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	write(heredoc_fd, current->heredoc, strlen(current->heredoc) + 1);
+	write(heredoc_fd, current->heredoc, strlen(current->heredoc));
 	close(heredoc_fd);
 	heredoc_fd = open("heredoc_tmp.txt", O_RDONLY);
 	dup2(heredoc_fd, 0);
 	close(heredoc_fd);
-	return heredoc_fd;
+	return (heredoc_fd);
 }
 
-int handle_outfile(t_cmd_tab *current) {
-	int new_fd_out;
+int	handle_outfile(t_cmd_tab *current)
+{
+	int	new_fd_out;
+
 	if (current->outfile_delete)
-		new_fd_out = open(current->outfile, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+		new_fd_out = open(current->outfile,
+				O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	else
-		new_fd_out = open(current->outfile, O_WRONLY | O_CREAT | O_APPEND, 0644);
+		new_fd_out = open(current->outfile,
+				O_WRONLY | O_CREAT | O_APPEND, 0644);
 	if (new_fd_out < 0)
 	{
 		//error lors de l'ouverture de l'outfile
@@ -98,15 +115,11 @@ int handle_outfile(t_cmd_tab *current) {
 	}
 	dup2(new_fd_out, 1);
 	close(new_fd_out);
-	return new_fd_out;
+	return (new_fd_out);
 }
 
-int execute_child(t_cmd_tab *current, int input_fd, t_data *env, t_parsing **lexing, t_cmd_tab **cmd_struct, int *pipefd) {
-	char		**env_tab;
-	char		*path;
-	char		**args;
-	
-	child_process = 1;
+void	execute_child1(t_cmd_tab *current, int input_fd, int *pipefd)
+{
 	if (current->infile)
 		handle_infile(current);
 	else if (current->heredoc)
@@ -119,59 +132,157 @@ int execute_child(t_cmd_tab *current, int input_fd, t_data *env, t_parsing **lex
 	if (current->outfile)
 		handle_outfile(current);
 	else if (current->next)
+	{
 		dup2(pipefd[1], 1);
+	}
 	close(pipefd[0]);
+	close(pipefd[1]);
+}
+
+int	in_builtin(char *cmd)
+{
+	if (ft_strcmp(cmd, "echo") == 0 || ft_strcmp(cmd, "cd") == 0 || ft_strcmp(cmd, "pwd") == 0 || ft_strcmp(cmd, "env") == 0 || ft_strcmp(cmd, "export") == 0)
+	{
+		return (1);
+	}
+	return (0);
+}
+
+int	exec_builtin(char **args, int fd, t_data *env, t_cmd_tab *current)
+{
+	if (current->outfile)
+		fd = handle_outfile(current);
+	if (ft_strcmp(args[0], "echo") == 0)
+		builtin_echo(args, fd);
+	if (ft_strcmp(args[0], "cd") == 0)
+		builtin_cd(args, env);
+	/*if (ft_strcmp(args[0], "unset") == 0)
+		builtin_unset(args);*/
+	if (ft_strcmp(args[0], "pwd") == 0)
+		builtin_pwd(args, fd);
+	if (ft_strcmp(args[0], "export") == 0)
+		builtin_export(args, env, fd);
+	if (ft_strcmp(args[0], "env") == 0)
+		builtin_env(args, env, fd);
+	if (current->outfile)
+	{
+		dup2(1, fd);
+		close(fd);
+	}
+	return (0);
+}
+
+int	execute_child2(t_cmd_tab *cu, t_data *env, t_parsing **l, t_cmd_tab **c)
+{
+	char		**env_tab;
+	char		*path;
+	char		**args;
+
 	env_tab = env_to_tab(env);
 	if (!env_tab)
 		return (0);
-	path = ft_strdup(current->path);
-	args = str_tab_dup(current->args);
+	if (cu->path)
+		path = ft_strdup(cu->path);
+	else
+		path = NULL;
+	args = str_tab_dup(cu->args);
 	//free tout
 	ft_lstclear_data(&env);
-	free_cmd_struct(cmd_struct);
-	ft_lstclear_minishell(lexing);
-	(void)lexing;
+	free_cmd_struct(c);
+	ft_lstclear_minishell(l);
 	//endof free
 	execve(path, args, env_tab);
 	//error si on est ici = liberer args et env_tab et path
-	exit(1);
+	exit(EXIT_FAILURE);
 }
 
-int execute_cmds(t_cmd_tab **cmd_struct, t_data *env, t_parsing **lexing)
+void	execute_cmds_exit(t_cmd_tab **cmd_struct)
 {
-	t_cmd_tab	*current;
-	int			pipefd[2];
-	int			input_fd;
-	int 		status;
-	pid_t		pid;
-
-	current = *cmd_struct;
-	input_fd = 0;
-	while (current)
-	{
-		pipe(pipefd);
-		pid = fork();
-		if (pid == 0)
-			execute_child(current, input_fd, env, lexing, cmd_struct, pipefd);
-		else if (pid < 0)
-		{
-			//error when fork
-			return (0);
-		}
-		else
-		{
-			waitpid(pid, &status, 0);
-			exit_env(status, env);
-			if (input_fd != 0)
-				close(input_fd);
-			close(pipefd[1]);
-			input_fd = pipefd[0];
-		}
-		current = current->next;
-	}
+	child_process = 0;
 	unlink("heredoc_tmp.txt");
 	free_cmd_struct(cmd_struct);
-	return (1);
+}
+
+void	e_c_i_c(int *pipefd, pid_t *pid, t_cmd_tab *current, t_data *env)
+{
+	int	saved_stdout;
+
+	if (in_builtin(current->args[0]))
+	{
+		if (current->next)
+		{
+			pipe(pipefd);
+			saved_stdout = dup(STDOUT_FILENO);
+			dup2(pipefd[1], STDOUT_FILENO);
+			exec_builtin(current->args, pipefd[1], env, current);
+			dup2(saved_stdout, STDOUT_FILENO);
+			close(saved_stdout);
+			close(pipefd[1]);
+		}
+		else
+			exec_builtin(current->args, 1, env, current);
+	}
+	else
+	{
+		pipe(pipefd);
+		child_process = 1;
+		*pid = fork();
+	}
+}
+
+void	execute_cmds_parent(int *input_fd)
+{
+	if (*input_fd != 0)
+		close(*input_fd);
+}
+
+int	count_cmds(t_cmd_tab *cmd)
+{
+	int	i;
+
+	i = 0;
+	while (cmd)
+	{
+		i++;
+		cmd = cmd->next;
+	}
+	return (i);
+}
+
+void	init_exec(t_norm_exec *normy)
+{
+	normy->num_cmds = 0;
+	normy->input_fd = 0;
+	normy->status = 0; //supprimer quand le retour des builtin sera gere
+}
+
+int	execute_cmds(t_cmd_tab **c_s, t_cmd_tab *cu, t_data *env, t_parsing **l)
+{
+	t_norm_exec	normy;
+
+	init_exec(&normy);
+	normy.pids = ft_calloc(sizeof(pid_t), count_cmds(*c_s));
+	while (cu)
+	{
+		e_c_i_c(normy.pipefd, &normy.pids[normy.num_cmds], cu, env);
+		if (normy.pids[normy.num_cmds] == 0 && !in_builtin(cu->cmd_name))
+		{
+			execute_child1(cu, normy.input_fd, normy.pipefd);
+			execute_child2(cu, env, l, c_s);
+		}
+		else if (normy.pids[normy.num_cmds] < 0)
+			return (0);
+		else
+		{
+			execute_cmds_parent(&normy.input_fd);
+			close(normy.pipefd[1]);
+			normy.input_fd = normy.pipefd[0];
+		}
+		cu = cu->next;
+		normy.num_cmds++;
+	}
+	exit_env(normy.pids, normy.num_cmds, normy.status, env);
+	return (execute_cmds_exit(c_s), 1);
 }
 
 int	prompt_execution(t_parsing **lexing, t_data *env)
@@ -183,9 +294,8 @@ int	prompt_execution(t_parsing **lexing, t_data *env)
 	if (!find_place_path(&first, env))
 	{
 		printf("erreur dans le path\n");
-		return (0);
 	}
-	if (!execute_cmds(&first, env, lexing))
+	if (!execute_cmds(&first, first, env, lexing))
 	{
 		printf("erreur dans l'execution\n");
 		return (0);

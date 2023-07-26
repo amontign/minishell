@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_dollars.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/03 16:21:58 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/07/11 11:52:57 by cbernaze         ###   ########.fr       */
+/*   Updated: 2023/07/26 16:06:19 by amontign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	expand_dollars(t_parsing **expand, t_data *env)
 			nb_dollars = ft_intlen(&tmp->to_substitute);
 			if (tmp->token_type != PIPE && nb_dollars > 0)
 				tmp->cmd = substitute_dollars(&tmp, env, nb_dollars);
-			if (ft_strcmp_minishell(tmp->cmd, "error") == TRUE)
+			if (ft_strcmp(tmp->cmd, "error") == 0)
 				return (ft_printf("minishell: malloc error\n"), ERROR);
 		}
 		tmp = tmp->next;
@@ -58,11 +58,11 @@ char	*substitute_dollars(t_parsing **tmp, t_data *env, int nb_dol)
 		diff_size += data.size_value[tab];
 		tab++;
 	}
-	ft_printf("%d\n", diff_size);
+	// ft_printf("%d\n", diff_size);
 	tab = -1;
 	while (++tab < nb_dol)
 		diff_size -= (*tmp)->dollar_size[tab];
-	ft_printf("%d\n", diff_size);
+	// ft_printf("%d\n", diff_size);
 	new = malloc((ft_strlen((*tmp)->cmd) + diff_size + 1) * sizeof(char)); // malloc bon
 	if (!new)
 		return (free_data(&data), free((*tmp)->cmd), "error");
@@ -149,6 +149,6 @@ int	fill_data_dol_2(t_exp_dol *data, t_parsing *tmp, int *j, int tab)
 		(*data).size_value[tab] = ft_strlen((*data).value_var[tab]);
 	else
 		(*data).size_value[tab] = 0;
-	ft_printf("VAR = %s, VALUE = %s, SIZE = %d\n", (*data).var_env[tab], (*data).value_var[tab], (*data).size_value[tab]);
+	// ft_printf("VAR = %s, VALUE = %s, SIZE = %d\n", (*data).var_env[tab], (*data).value_var[tab], (*data).size_value[tab]);
 	return (0);
 }

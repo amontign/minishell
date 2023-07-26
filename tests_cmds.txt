@@ -89,3 +89,19 @@ tester que des espaces
 >coucou'le pablo'"couocukhjwkodj"'sdw'wede
 
 echo $? | echo $test | echo $PWD > outfile coucou | cat file | echo "$SHELL" '"$SHELL"' "'$SHELL'"
+
+echo "$?"
+
+echo "     $?"
+
+echo "$?          "
+
+echo "                 $?             "
+
+./ls
+
+chmod 000 /dev/stdout
+
+cat | cat | <file | ls
+
+cat | <file >outfile | ls

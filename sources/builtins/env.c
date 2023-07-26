@@ -1,35 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils_non_interactive.c                            :+:      :+:    :+:   */
+/*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/09 22:44:09 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/07/10 11:09:33 by cbernaze         ###   ########.fr       */
+/*   Created: 2023/07/25 11:19:50 by amontign          #+#    #+#             */
+/*   Updated: 2023/07/25 13:09:01 by amontign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void	ft_delete_str(char **line)
+void	builtin_env(char **args, t_data *env, int fd)
 {
-	int	i;
-
-	i = 0;
-	while (line[i])
+	if (args[1])
 	{
-		free(line[i]);
-		i++;
+		ft_putstr_fd("minishell: env: Bad usage", 2);
+		ft_putstr_fd("env: usage: env\n", 2);
+		return ;
 	}
-}
-
-int	ft_strcmd(char *str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i] && str[i] != 32)
-		i++;
-	return (i);
+	while (env)
+	{
+		ft_putstr_fd(env->var, fd);
+		ft_putchar_fd('\n', fd);
+		env = env->next;
+	}
 }

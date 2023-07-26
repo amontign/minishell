@@ -6,7 +6,7 @@
 /*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 11:52:17 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/07/19 17:13:46 by amontign         ###   ########.fr       */
+/*   Updated: 2023/07/26 15:42:46 by amontign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 # define TOKEN_REDIR 1002
 # define TOKEN_PIPE 1003
 # define ERROR -1
+# define ERROR_SYNTAX -2
 # define ARG_MAX_MINISH 4095
 # define TRUE 10
 # define FALSE 11
@@ -124,6 +125,15 @@ typedef struct s_cmd_tab
 	struct s_cmd_tab	*prev;
 	struct s_cmd_tab	*next;
 }						t_cmd_tab;
+
+typedef struct s_norm_exec
+{
+	int		num_cmds;
+	int		input_fd;
+	int		status;
+	int		pipefd[2];
+	pid_t	*pids;
+}				t_norm_exec;
 
 //////////////////////////////////////////////////////
 //													//
