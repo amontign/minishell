@@ -101,3 +101,7 @@ echo "                 $?             "
 ./ls
 
 chmod 000 /dev/stdout
+
+cat | cat | <file | ls
+
+cat | <file >outfile | ls

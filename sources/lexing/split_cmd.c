@@ -6,7 +6,7 @@
 /*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 19:35:56 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/07/08 17:58:00 by cbernaze         ###   ########.fr       */
+/*   Updated: 2023/07/25 16:29:37 by cbernaze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,6 +133,9 @@ int	split_cmd(t_parsing **lexing, char *cmd_line)
 	{
 		size_cmd = 0;
 		token_type = 0;
+		while ((cmd_line[i] == ' ' || (cmd_line[i] > 6 && cmd_line[i] < 14))
+			&& cmd_line[i])
+			i++;
 		token = trim_cmd(cmd_line + i, &i, &size_cmd);
 		if (!token)
 			return (ft_lstclear_minishell(lexing), ERROR);
@@ -140,10 +143,8 @@ int	split_cmd(t_parsing **lexing, char *cmd_line)
 		new_node = ft_lstnew_minishell(token, size_cmd, token_type);
 		if (!new_node)
 			break ;
-		ft_lstadd_back_minishell(lexing, new_node);
-		free (token);
+		(ft_lstadd_back_minishell(lexing, new_node), free (token));
 	}
-	set_index(lexing);
-	commands_assemble(lexing);
+	(set_index(lexing), commands_assemble(lexing));
 	return (0);
 }

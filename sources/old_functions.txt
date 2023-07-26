@@ -6,7 +6,7 @@
 #    By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/19 17:03:56 by cbernaze          #+#    #+#              #
-#    Updated: 2023/07/11 10:56:30 by cbernaze         ###   ########.fr        #
+#    Updated: 2023/07/26 13:50:24 by cbernaze         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -367,3 +367,31 @@ void	swap_nodes(t_parsing **lexing)
 	set_index(lexing);
 	ft_lstclear_minishell(&node_to_move);
 }
+
+// int	untreat_redir(char *cmd_line, int *i)
+// {
+// 	if (cmd_line[*i] == '>' && cmd_line[*i + 1] == '>'
+// 		&& cmd_line[*i + 2] == '>')
+// 		return (ft_printf("minishell: syntax error unexpected token near \
+// '>>'\n"), ERROR_SYNTAX);
+// 	if (cmd_line[*i] == '<' && cmd_line[*i + 1] == '<'
+// 		&& cmd_line[*i + 2] == '<')
+// 		return (ft_printf("minishell: syntax error unexpected token near \
+// '<<'\n"), ERROR_SYNTAX);
+// 	if (cmd_line[*i] == '>' && cmd_line[*i + 1] == '>' && cmd_line[*i + 2] == '|')
+// 		return (ft_printf("minishell: syntax error near \
+// unexpected token `|'\n"), ERROR_SYNTAX);
+// 	if (cmd_line[*i] == '>' && cmd_line[*i + 1] == '\0')
+// 		return (ft_printf("minishell: syntax error near \
+// unexpected token `newline'\n"), ERROR_SYNTAX);
+// 	if (cmd_line[*i] == '<' && cmd_line[*i + 1] == '\0')
+// 		return (ft_printf("minishell: syntax error near \
+// unexpected token `newline'\n"), ERROR_SYNTAX);
+// 	if (cmd_line[*i] == '<' && cmd_line[*i + 1] == '>' && cmd_line[*i + 2] == '\0')
+// 		return (ft_printf("minishell: syntax error near \
+// unexpected token `newline'\n"), ERROR_SYNTAX);
+// 	if (cmd_line[*i] == '>' && cmd_line[*i + 1] == '<' && cmd_line[*i + 2] == '\0')
+// 		return (ft_printf("minishell: syntax error near \
+// unexpected token `<'\n"), ERROR_SYNTAX);
+// 	return (0);
+// }

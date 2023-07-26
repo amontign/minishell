@@ -6,7 +6,7 @@
 /*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 11:56:11 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/07/21 16:54:23 by cbernaze         ###   ########.fr       */
+/*   Updated: 2023/07/26 13:17:40 by cbernaze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,15 @@
 
 /*parsing.c*/
 
+int			is_dq_spe_char(char c);
+int			is_metachar(char c);
+int			closed_quotes(char *cmd_line, int	*i);
+int			untreat_redir(char *cmd_line, int *i);
+int			pipe_at_end(char *cmd_line);
+int			pipe_at_start(char *cmd_line);
 int			syntax(char *cmd_line);
+int			wrong_after_redir(char *cmd_line, int *i);
+void		final_parsing(t_parsing **lexing);
 
 //////////////////////////////////////////////////////
 //													//

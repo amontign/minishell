@@ -6,7 +6,7 @@
 /*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 15:26:31 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/07/11 10:52:35 by cbernaze         ###   ########.fr       */
+/*   Updated: 2023/07/25 16:15:50 by cbernaze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int	check_empty_cmd(t_parsing **lexing)
 	while (tmp)
 	{
 		i = 0;
-		while ((tmp->cmd[i] == ' ' || tmp->cmd[i] == '\t') && tmp->cmd[i])
+		while ((tmp->cmd[i] == ' ' || (tmp->cmd[i] > 6 && tmp->cmd[i] < 14)) && tmp->cmd[i])
 			i++;
 		if (tmp->previous && tmp->cmd[i] == '\0'
 			&& tmp->previous->token_type == TOKEN_PIPE)
