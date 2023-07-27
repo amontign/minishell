@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 15:34:13 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/07/27 10:59:12 by amontign         ###   ########.fr       */
+/*   Updated: 2023/07/27 15:24:37 by cbernaze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,8 @@ int	builtin_echo(char **echo, int fd)
 	i = 1;
 	size_echo = ft_strlen_plus(echo) - 1;
 	echo = newline_terminated(echo, size_echo + 1);
+	if (!echo[1])
+		ft_putchar_fd('\n', fd);
 	if (ft_strcmp_minishell(echo[1], "-n") == TRUE)
 	{
 		while (i < (size_echo))

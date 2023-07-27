@@ -6,7 +6,7 @@
 /*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/21 16:39:07 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/07/26 13:55:21 by cbernaze         ###   ########.fr       */
+/*   Updated: 2023/07/27 17:10:06 by cbernaze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,9 +72,9 @@ int	pipe_at_end(char *cmd_line)
 	while (cmd_line[i])
 		i++;
 	i -= 1;
-	while (cmd_line[i] == ' ' || (cmd_line[i] > 6 && cmd_line[i] < 14))
+	while (i > 0 && cmd_line[i] && (cmd_line[i] == ' ' || (cmd_line[i] > 6 && cmd_line[i] < 14)))
 		i--;
-	if (cmd_line[i] == '|')
+	if (i > 0 && cmd_line[i] == '|')
 		return (TRUE);
 	return (FALSE);
 }
@@ -107,8 +107,8 @@ int	syntax(char *cmd_line)
 
 	if (pipe_at_start(cmd_line) == ERROR_SYNTAX)
 		return (ERROR_SYNTAX);
-	i = -1;
-	while (cmd_line[++i])
+	i = 0;
+	while (cmd_line[i])
 	{
 		if (closed_quotes(cmd_line, &i) == ERROR_SYNTAX)
 			return (ERROR_SYNTAX);
@@ -122,6 +122,7 @@ int	syntax(char *cmd_line)
 			if (wrong_after_redir(cmd_line, &i) == ERROR_SYNTAX)
 				return (ERROR_SYNTAX);
 		}
+		i++;
 	}
 	if (pipe_at_end(cmd_line) == TRUE)
 		return (ft_printf("minishell: syntax error near \

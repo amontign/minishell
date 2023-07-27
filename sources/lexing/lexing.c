@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexing.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 15:26:31 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/07/22 11:02:02 by amontign         ###   ########.fr       */
+/*   Updated: 2023/07/27 15:58:40 by cbernaze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ t_parsing	*tokenisation(char	*cmd_line)
 	lexing = NULL;
 	if (split_cmd(&lexing, cmd_line) == ERROR)
 		return (NULL);
-	if (check_empty_cmd(&lexing) == TRUE)
-		return (NULL);
+	// if (check_empty_cmd(&lexing) == TRUE)
+		// return (NULL);
 	return (lexing);
 }
