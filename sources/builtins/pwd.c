@@ -6,7 +6,7 @@
 /*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 10:46:22 by amontign          #+#    #+#             */
-/*   Updated: 2023/07/25 13:13:33 by amontign         ###   ########.fr       */
+/*   Updated: 2023/07/27 11:42:48 by amontign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,12 @@ int	builtin_pwd(char **args, int fd)
 		ft_putchar_fd(args[1][1], 2);
 		ft_putstr_fd(": invalid option\n", 2);
 		ft_putstr_fd("pwd: usage: pwd\n", 2);
+		return (2);
 	}
 	else
 	{
 		ft_putstr_fd(buf, fd);
 		ft_putchar_fd('\n', fd);
 	}
-	return (1);
+	return (0);
 }

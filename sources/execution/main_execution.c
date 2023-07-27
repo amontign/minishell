@@ -6,7 +6,7 @@
 /*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 09:57:58 by amontign          #+#    #+#             */
-/*   Updated: 2023/07/26 16:19:18 by amontign         ###   ########.fr       */
+/*   Updated: 2023/07/27 14:59:08 by amontign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,25 +41,31 @@ char	**env_to_tab(t_data *env)
 	return (env_tab);
 }
 
-void	exit_env(pid_t *pids, int num_cmds, int new, t_data *env)
+char	*last_command(t_cmd_tab **cmd_struct)
 {
-	char	*tmp;
-	char	*tmp2;
-	int		i;
-
-	i = 0;
-	while (i < num_cmds)
+	t_cmd_tab	*current;
+	
+	current = *cmd_struct;
+	while (current && current->next)
 	{
-		waitpid(pids[i], &new, 0);
-		i++;
+		current = current->next;
 	}
-	free(pids);
+	if (current)
+		return (current->cmd_name);
+	return (NULL);
+}
+
+void	change_status(t_data *env, int status)
+{
+	char		*tmp;
+	char		*tmp2;
+
 	while (env)
 	{
 		if (ft_strncmp(env->var, "?=", 2) == 0)
 		{
 			free(env->var);
-			tmp = ft_itoa(WEXITSTATUS(new));
+			tmp = ft_itoa(status);
 			tmp2 = ft_strjoin("?=", tmp);
 			free(tmp);
 			env->var = ft_strdup(tmp2);
@@ -67,6 +73,20 @@ void	exit_env(pid_t *pids, int num_cmds, int new, t_data *env)
 			break ;
 		}
 		env = env->next;
+	}
+}
+
+void	exit_env(t_norm_exec *normy, t_data *env, t_cmd_tab **cmd_struct)
+{
+	int			i;
+
+	i = -1;
+	while (++i < normy->num_cmds)
+		waitpid(normy->pids[i], &(normy->status), 0);
+	free(normy->pids);
+	if (!in_builtin(last_command(cmd_struct)))
+	{
+		change_status(env, WEXITSTATUS(normy->status));
 	}
 }
 
@@ -141,7 +161,7 @@ void	execute_child1(t_cmd_tab *current, int input_fd, int *pipefd)
 
 int	in_builtin(char *cmd)
 {
-	if (ft_strcmp(cmd, "echo") == 0 || ft_strcmp(cmd, "cd") == 0 || ft_strcmp(cmd, "pwd") == 0 || ft_strcmp(cmd, "env") == 0 || ft_strcmp(cmd, "export") == 0)
+	if (ft_strcmp(cmd, "echo") == 0 || ft_strcmp(cmd, "cd") == 0 || ft_strcmp(cmd, "pwd") == 0 || ft_strcmp(cmd, "env") == 0 || ft_strcmp(cmd, "export") == 0 || ft_strcmp(cmd, "unset") == 0)
 	{
 		return (1);
 	}
@@ -150,25 +170,28 @@ int	in_builtin(char *cmd)
 
 int	exec_builtin(char **args, int fd, t_data *env, t_cmd_tab *current)
 {
+	int	status;
+
 	if (current->outfile)
 		fd = handle_outfile(current);
 	if (ft_strcmp(args[0], "echo") == 0)
-		builtin_echo(args, fd);
+		status = builtin_echo(args, fd);
 	if (ft_strcmp(args[0], "cd") == 0)
-		builtin_cd(args, env);
-	/*if (ft_strcmp(args[0], "unset") == 0)
-		builtin_unset(args);*/
+		status = builtin_cd(args, env);
+	if (ft_strcmp(args[0], "unset") == 0)
+		status = builtin_unset(env, args, current);
 	if (ft_strcmp(args[0], "pwd") == 0)
-		builtin_pwd(args, fd);
+		status = builtin_pwd(args, fd);
 	if (ft_strcmp(args[0], "export") == 0)
-		builtin_export(args, env, fd);
+		status = builtin_export(args, env, fd, current);
 	if (ft_strcmp(args[0], "env") == 0)
-		builtin_env(args, env, fd);
+		status = builtin_env(args, env, fd);
 	if (current->outfile)
 	{
 		dup2(1, fd);
 		close(fd);
 	}
+	change_status(env, status);
 	return (0);
 }
 
@@ -186,13 +209,13 @@ int	execute_child2(t_cmd_tab *cu, t_data *env, t_parsing **l, t_cmd_tab **c)
 	else
 		path = NULL;
 	args = str_tab_dup(cu->args);
-	//free tout
 	ft_lstclear_data(&env);
 	free_cmd_struct(c);
 	ft_lstclear_minishell(l);
-	//endof free
 	execve(path, args, env_tab);
-	//error si on est ici = liberer args et env_tab et path
+	free_char_tab(args);
+	free_char_tab(env_tab);
+	free(path);
 	exit(EXIT_FAILURE);
 }
 
@@ -275,13 +298,13 @@ int	execute_cmds(t_cmd_tab **c_s, t_cmd_tab *cu, t_data *env, t_parsing **l)
 		else
 		{
 			execute_cmds_parent(&normy.input_fd);
-			close(normy.pipefd[1]);
+			normy.input_fd = (!in_builtin(cu->cmd_name) && close(normy.pipefd[1]));
 			normy.input_fd = normy.pipefd[0];
 		}
 		cu = cu->next;
 		normy.num_cmds++;
 	}
-	exit_env(normy.pids, normy.num_cmds, normy.status, env);
+	exit_env(&normy, env, c_s);
 	return (execute_cmds_exit(c_s), 1);
 }
 

@@ -6,7 +6,7 @@
 /*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 11:56:11 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/07/26 16:00:20 by amontign         ###   ########.fr       */
+/*   Updated: 2023/07/27 14:53:31 by amontign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,32 +166,32 @@ void		ft_lstclear_data(t_data **data);
 
 int			ft_strcmp_minishell(char *s1, char *s2);
 char		**newline_terminated(char **echo, int size_echo);
-void		builtin_echo(char **echo, int fd);
+int			builtin_echo(char **echo, int fd);
 
 /*cd.c*/
 
-void		builtin_cd(char **dir_name, t_data *env);
+int			builtin_cd(char **dir_name, t_data *env);
 
 /*unset.c*/
 
-void		remove_env_var(t_data **tmp);
-void		builtin_unset(t_data **data, char **to_unset);
+void		remove_env_var(t_data *tmp);
+int			builtin_unset(t_data *data, char **to_unset, t_cmd_tab *current);
 
 /*pwd.c*/
 
-int	builtin_pwd(char **args, int fd);
+int			builtin_pwd(char **args, int fd);
 
 /*exit.c*/
 
-int	builtin_exit(char *args, int fd);
+int			builtin_exit(char *args, int fd);
 
 /*env.c*/
 
-void	builtin_env(char **args, t_data *env, int fd);
+int			builtin_env(char **args, t_data *env, int fd);
 
 /*export.c*/
 
-void	builtin_export(char **args, t_data *env, int fd);
+int			builtin_export(char **args, t_data *env, int fd, t_cmd_tab *current);
 
 //////////////////////////////////////////////////////
 //													//
