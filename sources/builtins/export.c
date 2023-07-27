@@ -6,7 +6,7 @@
 /*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 11:35:58 by amontign          #+#    #+#             */
-/*   Updated: 2023/07/27 12:31:22 by amontign         ###   ########.fr       */
+/*   Updated: 2023/07/27 14:07:26 by amontign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,14 +129,23 @@ int	export_in_env(char *arg, t_data *env, int fd)
 	return (0);
 }
 
-int	builtin_export(char **args, t_data *env, int fd)
+int	command_only(t_cmd_tab *current)
+{
+	if (current->next || current->prev)
+	{
+		return (0);
+	}
+	return (1);
+}
+
+int	builtin_export(char **args, t_data *env, int fd, t_cmd_tab *current)
 {
 	int	i;
 
 	i = 1;
 	if (!args[1])
 		export_no_args(env, fd);
-	else
+	else if (command_only(current))
 	{
 		if (args[1][0] == '-' && args[1][1])
 		{

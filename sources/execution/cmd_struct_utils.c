@@ -6,7 +6,7 @@
 /*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 11:05:22 by amontign          #+#    #+#             */
-/*   Updated: 2023/07/21 15:22:27 by amontign         ###   ########.fr       */
+/*   Updated: 2023/07/27 14:06:56 by amontign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ t_cmd_tab	*cmd_struct_new(char **args, void *content2, int id)
 	new->outfile = NULL;
 	new->errfile = NULL;
 	new->next = NULL;
+	new->prev = NULL;
 	return (new);
 }
 

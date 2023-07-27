@@ -6,7 +6,7 @@
 /*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 09:57:58 by amontign          #+#    #+#             */
-/*   Updated: 2023/07/27 11:33:11 by amontign         ###   ########.fr       */
+/*   Updated: 2023/07/27 14:59:08 by amontign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,7 +161,7 @@ void	execute_child1(t_cmd_tab *current, int input_fd, int *pipefd)
 
 int	in_builtin(char *cmd)
 {
-	if (ft_strcmp(cmd, "echo") == 0 || ft_strcmp(cmd, "cd") == 0 || ft_strcmp(cmd, "pwd") == 0 || ft_strcmp(cmd, "env") == 0 || ft_strcmp(cmd, "export") == 0)
+	if (ft_strcmp(cmd, "echo") == 0 || ft_strcmp(cmd, "cd") == 0 || ft_strcmp(cmd, "pwd") == 0 || ft_strcmp(cmd, "env") == 0 || ft_strcmp(cmd, "export") == 0 || ft_strcmp(cmd, "unset") == 0)
 	{
 		return (1);
 	}
@@ -178,12 +178,12 @@ int	exec_builtin(char **args, int fd, t_data *env, t_cmd_tab *current)
 		status = builtin_echo(args, fd);
 	if (ft_strcmp(args[0], "cd") == 0)
 		status = builtin_cd(args, env);
-	/*if (ft_strcmp(args[0], "unset") == 0)
-		status = builtin_unset(args);*/
+	if (ft_strcmp(args[0], "unset") == 0)
+		status = builtin_unset(env, args, current);
 	if (ft_strcmp(args[0], "pwd") == 0)
 		status = builtin_pwd(args, fd);
 	if (ft_strcmp(args[0], "export") == 0)
-		status = builtin_export(args, env, fd);
+		status = builtin_export(args, env, fd, current);
 	if (ft_strcmp(args[0], "env") == 0)
 		status = builtin_env(args, env, fd);
 	if (current->outfile)

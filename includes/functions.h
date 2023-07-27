@@ -6,7 +6,7 @@
 /*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 11:56:11 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/07/27 11:02:27 by amontign         ###   ########.fr       */
+/*   Updated: 2023/07/27 14:53:31 by amontign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,8 +174,8 @@ int			builtin_cd(char **dir_name, t_data *env);
 
 /*unset.c*/
 
-void		remove_env_var(t_data **tmp);
-int			builtin_unset(t_data **data, char **to_unset);
+void		remove_env_var(t_data *tmp);
+int			builtin_unset(t_data *data, char **to_unset, t_cmd_tab *current);
 
 /*pwd.c*/
 
@@ -191,7 +191,7 @@ int			builtin_env(char **args, t_data *env, int fd);
 
 /*export.c*/
 
-int			builtin_export(char **args, t_data *env, int fd);
+int			builtin_export(char **args, t_data *env, int fd, t_cmd_tab *current);
 
 //////////////////////////////////////////////////////
 //													//
