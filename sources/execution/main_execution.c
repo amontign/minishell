@@ -6,7 +6,7 @@
 /*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 09:57:58 by amontign          #+#    #+#             */
-/*   Updated: 2023/07/27 11:02:35 by amontign         ###   ########.fr       */
+/*   Updated: 2023/07/27 11:33:11 by amontign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -209,13 +209,13 @@ int	execute_child2(t_cmd_tab *cu, t_data *env, t_parsing **l, t_cmd_tab **c)
 	else
 		path = NULL;
 	args = str_tab_dup(cu->args);
-	//free tout
 	ft_lstclear_data(&env);
 	free_cmd_struct(c);
 	ft_lstclear_minishell(l);
-	//endof free
 	execve(path, args, env_tab);
-	//error si on est ici = liberer args et env_tab et path
+	free_char_tab(args);
+	free_char_tab(env_tab);
+	free(path);
 	exit(EXIT_FAILURE);
 }
 

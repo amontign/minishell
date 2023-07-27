@@ -6,7 +6,7 @@
 /*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 11:35:58 by amontign          #+#    #+#             */
-/*   Updated: 2023/07/27 10:58:35 by amontign         ###   ########.fr       */
+/*   Updated: 2023/07/27 12:31:22 by amontign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,16 +54,20 @@ void	export_no_args(t_data *env, int fd)
 	while (env_tab[i])
 	{
 		j = 0;
-		while (env_tab[i][j] != '=')
+		while (env_tab[i][j] != '=' && env_tab[i][j])
 			j++;
 		tmp = malloc(sizeof(char) * (j + 2));
 		ft_strlcpy(tmp, env_tab[i], (j + 2));
 		ft_putstr_fd("declare -x ", fd);
 		ft_putstr_fd(tmp, fd);
 		free(tmp);
-		ft_putchar_fd('"', fd);
-		ft_putstr_fd(env_tab[i] + j + 1, fd);
-		ft_putstr_fd("\"\n", fd);
+		if (env_tab[i][j])
+		{
+			ft_putchar_fd('"', fd);
+			ft_putstr_fd(env_tab[i] + j + 1, fd);
+			ft_putchar_fd('"', fd);
+		}
+		ft_putchar_fd('\n', fd);
 		i++;
 	}
 	free_char_tab(env_tab);
@@ -92,35 +96,37 @@ int	arg_is_valid(char *arg, int fd)
 		}
 		i++;
 	}
-	if (arg[i] != '=')
-		return (0);
 	return (i);
 }
 
-void	export_in_env(char *arg, t_data *env, int fd)
+int	export_in_env(char *arg, t_data *env, int fd)
 {
 	int		i;
 	t_data	*new;
 
 	i = arg_is_valid(arg, fd);
 	if (!i)
-		return ;
-	while (env)
+		return (1);
+	while (env) // si pas d'egal, ajouter quand meme sauf si la valeur existe deja
 	{
-		if (ft_strncmp(env->var, arg, i + 1) == 0)
+		if (ft_strncmp(env->var, arg, i) == 0 && (env->var[i] == '\0' || env->var[i] == '='))
 		{
-			free(env->var);
-			env->var = ft_strdup(arg);
-			return ;
+			if (arg[i] == '=')
+			{
+				free(env->var);
+				env->var = ft_strdup(arg);
+			}
+			return (0);
 		}
 		if (!env->next)
 		{
 			new = ft_lstnew_data(arg);
 			env->next = new;
-			return ;
+			return (0);
 		}
 		env = env->next;
 	}
+	return (0);
 }
 
 int	builtin_export(char **args, t_data *env, int fd)
@@ -138,7 +144,7 @@ int	builtin_export(char **args, t_data *env, int fd)
 			ft_putchar_fd(args[1][1], 2);
 			ft_putstr_fd(": invalid option\n", 2);
 			ft_putstr_fd("export: usage: export [name[=value] ...]\n", 2);
-			return ;
+			return (2);
 		}
 		while (args[i])
 		{
