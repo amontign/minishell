@@ -6,7 +6,7 @@
 /*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 12:00:49 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/07/27 17:28:13 by amontign         ###   ########.fr       */
+/*   Updated: 2023/07/27 17:30:07 by amontign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,8 @@ void	parsing(t_parsing **lexing, t_data *env, char *cmd_line)
 	if (*lexing)
 	{
 		expand(lexing, env);
-		if (*lexing)
-			print_cmd(*lexing);
+		//if (*lexing)
+		//	print_cmd(*lexing);
 	}
 }
 
@@ -79,7 +79,7 @@ void	minishell_prompt(t_data *env)
 		parsing(&lexing, env, cmd_line);
 		free(cmd_line);
 		// execution
-		// prompt_execution(&lexing, env);
+		prompt_execution(&lexing, env);
 		// end of execution
 		ft_lstclear_minishell(&lexing);
 	}
