@@ -6,7 +6,7 @@
 /*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 12:00:49 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/07/26 16:49:52 by amontign         ###   ########.fr       */
+/*   Updated: 2023/07/27 17:21:09 by amontign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,8 @@ void	parsing(t_parsing **lexing, t_data *env, char *cmd_line)
 	if (*lexing)
 	{
 		expand(lexing, env);
-		//if (*lexing)
-		//	print_cmd(*lexing);
+		if (*lexing)
+			print_cmd(*lexing);
 	}
 }
 
