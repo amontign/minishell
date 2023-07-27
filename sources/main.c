@@ -6,7 +6,7 @@
 /*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 12:00:49 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/07/27 17:21:09 by amontign         ###   ########.fr       */
+/*   Updated: 2023/07/27 17:28:13 by amontign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,18 @@ returns the formated command line ready for the execution.*/
 
 void	parsing(t_parsing **lexing, t_data *env, char *cmd_line)
 {
+	int	i;
+
+	i = 0;
+	while (cmd_line[i] && (cmd_line[i] == ' '
+			|| (cmd_line[i] > 6 && cmd_line[i] < 14)))
+		i++;
+	if (cmd_line[i] == '\0')
+		return ;
 	if (syntax(cmd_line) == ERROR_SYNTAX)
 	 	return ;
 	*lexing = tokenisation(cmd_line);
+	final_parsing(lexing);
 	if (*lexing)
 	{
 		expand(lexing, env);
@@ -70,7 +79,7 @@ void	minishell_prompt(t_data *env)
 		parsing(&lexing, env, cmd_line);
 		free(cmd_line);
 		// execution
-		prompt_execution(&lexing, env);
+		// prompt_execution(&lexing, env);
 		// end of execution
 		ft_lstclear_minishell(&lexing);
 	}
