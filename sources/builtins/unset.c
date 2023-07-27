@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 11:14:23 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/07/11 14:25:49 by cbernaze         ###   ########.fr       */
+/*   Updated: 2023/07/27 11:00:21 by amontign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	remove_env_var(t_data **tmp)
 	free((*tmp));
 }
 
-void	builtin_unset(t_data **data, char **to_unset)
+int	builtin_unset(t_data **data, char **to_unset)
 {
 	t_data	*tmp;
 	int		size_str;
@@ -30,7 +30,7 @@ void	builtin_unset(t_data **data, char **to_unset)
 	tmp = *data;
 	i = 0;
 	if (!to_unset)
-		return ;
+		return (1);
 	while (tmp && to_unset[i])
 	{
 		size_str = ft_strlen(to_unset[i]);
@@ -43,6 +43,7 @@ void	builtin_unset(t_data **data, char **to_unset)
 		else
 			tmp = tmp->next;
 	}
+	return (0);
 }
 
 // int	main(int argc, char **argv, char **envp)

@@ -6,7 +6,7 @@
 /*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 11:35:58 by amontign          #+#    #+#             */
-/*   Updated: 2023/07/25 14:44:48 by amontign         ###   ########.fr       */
+/*   Updated: 2023/07/27 10:58:35 by amontign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,7 @@ void	export_in_env(char *arg, t_data *env, int fd)
 	}
 }
 
-void	builtin_export(char **args, t_data *env, int fd)
+int	builtin_export(char **args, t_data *env, int fd)
 {
 	int	i;
 
@@ -146,4 +146,5 @@ void	builtin_export(char **args, t_data *env, int fd)
 			i++;
 		}
 	}
+	return (0);
 }

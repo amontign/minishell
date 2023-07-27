@@ -6,13 +6,13 @@
 /*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/25 16:52:25 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/07/25 11:21:03 by amontign         ###   ########.fr       */
+/*   Updated: 2023/07/27 10:58:57 by amontign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void	builtin_cd(char **dir_name, t_data *env)
+int	builtin_cd(char **dir_name, t_data *env)
 {
 	//char	buf[FILENAME_MAX];
 
@@ -32,8 +32,9 @@ void	builtin_cd(char **dir_name, t_data *env)
 	else if (chdir(dir_name[1]) == -1)
 	{
 		ft_printf("minishell: cd : %s: %s\n", dir_name[1], strerror(errno));
-		return ;
+		return (1);
 	}
+	return (0);
 }
 
 // int	main(int argc, char **argv, char **envp)
