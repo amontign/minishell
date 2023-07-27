@@ -6,7 +6,7 @@
 /*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:41:01 by amontign          #+#    #+#             */
-/*   Updated: 2023/07/26 13:46:52 by amontign         ###   ########.fr       */
+/*   Updated: 2023/07/27 17:41:13 by amontign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ int	place_path(char **paths, t_cmd_tab *c)
 				c->path = ft_strdup(path2);
 			free(path2);
 		}
-		if (!c->path && !custom_path(c) && !in_builtin(c->cmd_name))
+		if (!custom_path(c) && !c->path && !in_builtin(c->cmd_name))
 			return (0);
 		c = c->next;
 	}
@@ -185,12 +185,58 @@ void	put_redirects(t_parsing *lexing, t_cmd_tab **cmd_struct)
 	}
 }
 
+void	add_true_cmd(t_parsing **lexing)
+{
+	t_parsing	*tmp;
+	t_parsing	*iter;
+	int			cmd_find;
+
+	iter = *lexing;
+	while (iter)
+	{
+		if (iter->token_type == TOKEN_REDIR)
+		{
+			cmd_find = 0;
+			tmp = iter;
+			while (tmp->previous)
+			{
+				tmp = tmp->previous;
+				if (tmp->token_type == TOKEN_CMD)
+					cmd_find = 1;
+				else if (tmp->token_type == TOKEN_PIPE)
+					break ;
+			}
+			tmp = iter;
+			while (tmp->next)
+			{
+				tmp = tmp->next;
+				if (tmp->token_type == TOKEN_CMD)
+					cmd_find = 1;
+				else if (tmp->token_type == TOKEN_PIPE)
+					break ;
+			}
+			if (!cmd_find)
+			{
+				t_parsing *new_cmd = ft_lstnew_minishell(ft_strdup("true"), 4, TOKEN_CMD);
+				new_cmd->next = iter->next;
+				new_cmd->previous = iter;
+				new_cmd->cmd_split = ft_split(new_cmd->cmd, ' ');
+				if (iter->next)
+					iter->next->previous = new_cmd;
+				iter->next = new_cmd;
+			}
+		}
+		iter = iter->next;
+	}
+}
+
 void	lexing_to_cmd_tab(t_parsing *lexing, t_cmd_tab **cmd_struct)
 {
 	int			id;
 	t_parsing	*lexing_start;
 
 	id = 0;
+	add_true_cmd(&lexing);
 	lexing_start = lexing;
 	while (lexing)
 	{

@@ -105,3 +105,23 @@ chmod 000 /dev/stdout
 cat | cat | <file | ls
 
 cat | <file >outfile | ls
+
+ls >yes >/dev/stdout -la (dans ce cas en partiuclier la redirecitnio se fait dans yes)
+
+export LS=ls SPACE=" " LA=-la
+
+$LS$SPACE$LA
+
+mkdir teste
+
+cd teste
+
+rm -rf ../
+
+cd .. (doit renvoyer une erreur)
+
+pwd (renvoie aussi une erreur)
+
+(faire les memes tests avec le previous directory)
+
+pour exit num (exemple exit 42), exit doit renvoyer le modulo de num par rapport a 256, exemple exit 42 -> 42%256

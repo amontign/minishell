@@ -6,7 +6,7 @@
 /*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/21 16:39:07 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/07/27 17:10:06 by cbernaze         ###   ########.fr       */
+/*   Updated: 2023/07/27 17:58:57 by cbernaze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,7 +151,7 @@ unexpected token `newline'\n"), ERROR_SYNTAX);
 		|| ((cmd_line[*i] == '>' && cmd_line[*i + 1] == '>')))
 		return (ft_printf("minishell: syntax error near \
 unexpected token `%c%c'\n", cmd_line[*i], cmd_line[*i + 1]), ERROR_SYNTAX);
-	if (cmd_line[*i] == '<' || cmd_line[*i] == '>')
+	if (cmd_line[*i] == '<' || cmd_line[*i] == '>' || cmd_line[*i] == '|')
 		return (ft_printf("minishell: syntax error near \
 unexpected token `%c'\n", cmd_line[*i]), ERROR_SYNTAX);
 	return (0);
