@@ -6,7 +6,7 @@
 /*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 09:57:58 by amontign          #+#    #+#             */
-/*   Updated: 2023/07/28 09:49:21 by amontign         ###   ########.fr       */
+/*   Updated: 2023/07/28 16:46:08 by amontign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,12 +168,30 @@ int	in_builtin(char *cmd)
 	return (0);
 }
 
+int	handle_outfile_builtin(t_cmd_tab *current)
+{
+	int	new_fd_out;
+
+	if (current->outfile_delete)
+		new_fd_out = open(current->outfile,
+				O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	else
+		new_fd_out = open(current->outfile,
+				O_WRONLY | O_CREAT | O_APPEND, 0644);
+	if (new_fd_out < 0)
+	{
+		//error lors de l'ouverture de l'outfile
+		exit(1);
+	}
+	return (new_fd_out);
+}
+
 int	exec_builtin(char **args, int fd, t_data *env, t_cmd_tab *current)
 {
 	int	status;
 
 	if (current->outfile)
-		fd = handle_outfile(current);
+		fd = handle_outfile_builtin(current);
 	if (ft_strcmp(args[0], "echo") == 0)
 		status = builtin_echo(args, fd);
 	if (ft_strcmp(args[0], "cd") == 0)
@@ -187,10 +205,7 @@ int	exec_builtin(char **args, int fd, t_data *env, t_cmd_tab *current)
 	if (ft_strcmp(args[0], "env") == 0)
 		status = builtin_env(args, env, fd);
 	if (current->outfile)
-	{
-		dup2(1, fd);
 		close(fd);
-	}
 	change_status(env, status);
 	return (0);
 }
@@ -233,7 +248,9 @@ void	e_c_i_c(int *pipefd, pid_t *pid, t_cmd_tab *current, t_data *env)
 
 	if (in_builtin(current->args[0]))
 	{
-		if (current->next)
+		if (!current->next)
+			exec_builtin(current->args, 1, env, current);
+		else
 		{
 			pipe(pipefd);
 			saved_stdout = dup(STDOUT_FILENO);
@@ -243,8 +260,6 @@ void	e_c_i_c(int *pipefd, pid_t *pid, t_cmd_tab *current, t_data *env)
 			close(saved_stdout);
 			close(pipefd[1]);
 		}
-		else
-			exec_builtin(current->args, 1, env, current);
 	}
 	else
 	{
