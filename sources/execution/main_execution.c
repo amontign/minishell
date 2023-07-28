@@ -6,7 +6,7 @@
 /*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 09:57:58 by amontign          #+#    #+#             */
-/*   Updated: 2023/07/27 15:29:25 by amontign         ###   ########.fr       */
+/*   Updated: 2023/07/28 09:49:21 by amontign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -212,6 +212,7 @@ int	execute_child2(t_cmd_tab *cu, t_data *env, t_parsing **l, t_cmd_tab **c)
 	ft_lstclear_data(&env);
 	free_cmd_struct(c);
 	ft_lstclear_minishell(l);
+	//printf("%s\n", path);
 	execve(path, args, env_tab);
 	free_char_tab(args);
 	free_char_tab(env_tab);
@@ -287,22 +288,25 @@ int	execute_cmds(t_cmd_tab **c_s, t_cmd_tab *cu, t_data *env, t_parsing **l)
 	normy.pids = ft_calloc(sizeof(pid_t), count_cmds(*c_s));
 	while (cu)
 	{
-		e_c_i_c(normy.pipefd, &normy.pids[normy.num_cmds], cu, env);
-		if (normy.pids[normy.num_cmds] == 0 && !in_builtin(cu->cmd_name))
+		if (cu->exec)
 		{
-			execute_child1(cu, normy.input_fd, normy.pipefd);
-			execute_child2(cu, env, l, c_s);
-		}
-		else if (normy.pids[normy.num_cmds] < 0)
-			return (0);
-		else
-		{
-			execute_cmds_parent(&normy.input_fd);
-			normy.input_fd = (!in_builtin(cu->cmd_name) && close(normy.pipefd[1]));
-			normy.input_fd = normy.pipefd[0];
+			e_c_i_c(normy.pipefd, &normy.pids[normy.num_cmds], cu, env);
+			if (normy.pids[normy.num_cmds] == 0 && !in_builtin(cu->cmd_name))
+			{
+				execute_child1(cu, normy.input_fd, normy.pipefd);
+				execute_child2(cu, env, l, c_s);
+			}
+			else if (normy.pids[normy.num_cmds] < 0)
+				return (0);
+			else
+			{
+				execute_cmds_parent(&normy.input_fd);
+				normy.input_fd = (!in_builtin(cu->cmd_name) && close(normy.pipefd[1]));
+				normy.input_fd = normy.pipefd[0];
+			}
+			normy.num_cmds++;
 		}
 		cu = cu->next;
-		normy.num_cmds++;
 	}
 	exit_env(&normy, env, c_s);
 	return (execute_cmds_exit(c_s), 1);
@@ -316,13 +320,12 @@ int	prompt_execution(t_parsing **lexing, t_data *env)
 	lexing_to_cmd_tab(*lexing, &first);
 	if (!find_place_path(&first, env))
 	{
-		printf("erreur dans le path\n");
+		//printf("erreur dans le path\n");
 	}
 	if (!execute_cmds(&first, first, env, lexing))
 	{
 		printf("erreur dans l'execution\n");
 		return (0);
 	}
-	//cmd_struct_iter(first, print_node_content);
 	return (1);
 }

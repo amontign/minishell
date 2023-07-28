@@ -6,7 +6,7 @@
 /*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 11:52:17 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/07/26 15:42:46 by amontign         ###   ########.fr       */
+/*   Updated: 2023/07/28 09:23:38 by amontign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,6 +122,7 @@ typedef struct s_cmd_tab
 	int					outfile_delete; // 1 = normal | 0 = ne pas supprimer
 	char				*heredoc;
 	char				*errfile; // null = default
+	int					exec; // 1 = default = executer | 0 = ne pas executer
 	struct s_cmd_tab	*prev;
 	struct s_cmd_tab	*next;
 }						t_cmd_tab;

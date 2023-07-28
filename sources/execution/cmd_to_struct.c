@@ -6,11 +6,28 @@
 /*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:41:01 by amontign          #+#    #+#             */
-/*   Updated: 2023/07/27 17:41:13 by amontign         ###   ########.fr       */
+/*   Updated: 2023/07/28 09:43:21 by amontign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+
+int is_directory(char *path)
+{
+	struct stat s;
+
+	if (stat(path,&s) == 0)
+	{
+		if (s.st_mode & S_IFDIR)
+		{
+			ft_putstr_fd("minishell: ", 2);
+			ft_putstr_fd(path, 2);
+			ft_putstr_fd(": Is a directory\n", 2);
+			return (1);
+		}
+	}
+	return (0);
+}
 
 int	custom_path(t_cmd_tab *cmd_struct)
 {
@@ -20,19 +37,34 @@ int	custom_path(t_cmd_tab *cmd_struct)
 	if (!cmd_struct->cmd_name)
 		return (0);
 	i = ft_strlen(cmd_struct->cmd_name) - 1;
-	while (cmd_struct->cmd_name[i] && cmd_struct->cmd_name[i] != '/')
+	while (i >= 0 && cmd_struct->cmd_name[i] && cmd_struct->cmd_name[i] != '/')
 		i--;
 	if (i == -1)
 		return (0);
 	tmp = ft_strdup(cmd_struct->cmd_name);
 	free(cmd_struct->cmd_name);
 	cmd_struct->cmd_name = ft_strdup(tmp + i + 1);
+	if (cmd_struct->path)
+		free(cmd_struct->path);
 	cmd_struct->path = ft_strdup(tmp);
 	free(tmp);
-	if (access(cmd_struct->path, F_OK) == 0)
+	if (is_directory(cmd_struct->path))
+		return (1);
+	else if (access(cmd_struct->path, X_OK) == 0)
 		return (1);
 	else
+	{
+		ft_putstr_fd("minishell: ", 2);
+		ft_putstr_fd(cmd_struct->path, 2);
+		ft_putstr_fd(": Permission denied\n", 2);
 		return (0);
+	}
+}
+
+void	path_error(char *str)
+{
+	ft_putstr_fd(str, 2);
+	ft_putstr_fd(": command not found\n", 2);
 }
 
 int	place_path(char **paths, t_cmd_tab *c)
@@ -58,7 +90,10 @@ int	place_path(char **paths, t_cmd_tab *c)
 			free(path2);
 		}
 		if (!custom_path(c) && !c->path && !in_builtin(c->cmd_name))
-			return (0);
+		{
+			c->exec = 0;
+			path_error(c->cmd_name);
+		}
 		c = c->next;
 	}
 	return (1);
