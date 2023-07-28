@@ -6,7 +6,7 @@
 /*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 12:00:49 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/07/27 17:51:40 by cbernaze         ###   ########.fr       */
+/*   Updated: 2023/07/28 15:30:27 by cbernaze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,18 +59,18 @@ void	minishell_prompt(t_data *env)
 {
 	t_parsing	*lexing;
 	char		*cmd_line;
-	char		*name_eval;
-	char		*prompt_char;
+	// char		*name_eval;
+	// char		*prompt_char;
 
 	lexing = NULL;
-	name_eval = readline("Hello evaluator, tell me your name : ");
-	remove_newline(&name_eval);
-	prompt_char = ft_strjoin(name_eval, "@minishell> ");
-	free(name_eval);
+	// name_eval = readline("Hello evaluator, tell me your name : ");
+	// remove_newline(&name_eval);
+	// prompt_char = ft_strjoin(name_eval, "@minishell> ");
+	// free(name_eval);
 	main_signal();
 	while (42)
 	{
-		cmd_line = readline(prompt_char);
+		cmd_line = readline("minishell> ");
 		if (!cmd_line || builtin_exit(cmd_line, 1))
 			break ;
 		remove_newline(&cmd_line);
@@ -84,7 +84,7 @@ void	minishell_prompt(t_data *env)
 		ft_lstclear_minishell(&lexing);
 	}
 	printf("exit\n");
-	free(prompt_char);
+	// free(prompt_char);
 }
 
 /*The environment is transformed into a chained list,

@@ -6,7 +6,7 @@
 /*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 15:34:13 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/07/27 15:24:37 by cbernaze         ###   ########.fr       */
+/*   Updated: 2023/07/28 16:40:54 by cbernaze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,28 @@ int	ft_strcmp_minishell(char *s1, char *s2)
 			return (FALSE);
 		i++;
 	}
+	return (TRUE);
+}
+
+int	ft_strcmp_echo(char *s1)
+{
+	int	i;
+
+	if (!s1)
+		return (FALSE);
+	i = 0;
+	if (s1[i] == '-' && s1[i + 1] == 'n')
+	{
+		i = 2;
+		while (s1[i])
+		{
+			if (s1[i] != 'n')
+				return (FALSE);
+			i++;
+		}
+	}
+	else
+		return (FALSE);
 	return (TRUE);
 }
 
@@ -61,16 +83,19 @@ int	builtin_echo(char **echo, int fd)
 
 	i = 1;
 	size_echo = ft_strlen_plus(echo) - 1;
-	echo = newline_terminated(echo, size_echo + 1);
 	if (!echo[1])
 		ft_putchar_fd('\n', fd);
-	if (ft_strcmp_minishell(echo[1], "-n") == TRUE)
+	if (ft_strcmp_echo(echo[1]) == TRUE)
 	{
 		while (i < (size_echo))
 			i++;
-		remove_newline(echo + i);
+		// remove_newline(echo + i);
 		i = 2;
 	}
+	else
+		echo = newline_terminated(echo, size_echo + 1);
+	while (echo[i] && ft_strcmp_echo(echo[i]) == TRUE)
+		i++;
 	while (echo[i])
 	{
 		ft_putstr_fd(echo[i], fd);
