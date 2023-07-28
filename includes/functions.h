@@ -6,7 +6,7 @@
 /*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 11:56:11 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/07/27 16:37:08 by cbernaze         ###   ########.fr       */
+/*   Updated: 2023/07/28 20:25:47 by cbernaze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ int			i_need_a_dollar(t_parsing **tmp, int dol_pos, int choice, int *tab);
 
 int			expand_dollars(t_parsing **expand, t_data *env);
 char		*substitute_dollars(t_parsing **tmp, t_data *env, int nb_dol);
-void		substitute_dollars_2(char **new, t_exp_dol data, t_parsing **tmp);
+void		subst_dollars_2(char **new, t_exp_dol data, t_parsing **tmp, int tab);
 int			f_dt_dol(t_exp_dol *data, t_data *env, t_parsing *tmp, int nb_dol);
 int			fill_data_dol_2(t_exp_dol *data, t_parsing *tmp, int *j, int tab);
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_dollars.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/03 16:21:58 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/07/26 16:06:19 by amontign         ###   ########.fr       */
+/*   Updated: 2023/07/28 20:25:43 by cbernaze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,28 +58,25 @@ char	*substitute_dollars(t_parsing **tmp, t_data *env, int nb_dol)
 		diff_size += data.size_value[tab];
 		tab++;
 	}
-	// ft_printf("%d\n", diff_size);
 	tab = -1;
 	while (++tab < nb_dol)
 		diff_size -= (*tmp)->dollar_size[tab];
-	// ft_printf("%d\n", diff_size);
 	new = malloc((ft_strlen((*tmp)->cmd) + diff_size + 1) * sizeof(char)); // malloc bon
 	if (!new)
 		return (free_data(&data), free((*tmp)->cmd), "error");
-	substitute_dollars_2(&new, data, tmp);
+	tab = 0;
+	subst_dollars_2(&new, data, tmp, tab);
 	return (free_data(&data), free((*tmp)->cmd), new);
 }
 
-void	substitute_dollars_2(char **new, t_exp_dol data, t_parsing **tmp)
+void	subst_dollars_2(char **new, t_exp_dol data, t_parsing **tmp, int tab)
 {
-	int	tab;
 	int	i;
 	int	j;
 	int	k;
 
 	i = -1;
 	j = -1;
-	tab = 0;
 	while (++i < ft_strlen((*tmp)->cmd))
 	{
 		k = -1;
@@ -90,10 +87,11 @@ void	substitute_dollars_2(char **new, t_exp_dol data, t_parsing **tmp)
 				while (data.value_var[tab][++k])
 					new[0][++j] = data.value_var[tab][k];
 			}
-			i += (*tmp)->dollar_size[tab];
+			i += (*tmp)->dollar_size[tab] - 1;
 			tab++;
 		}
-		new[0][++j] = (*tmp)->cmd[i];
+		else
+			new[0][++j] = (*tmp)->cmd[i];
 	}
 	if (new[0][j] != '\0')
 		new[0][++j] = '\0';

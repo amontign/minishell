@@ -6,7 +6,7 @@
 /*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 15:34:13 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/07/28 16:40:54 by cbernaze         ###   ########.fr       */
+/*   Updated: 2023/07/28 18:38:15 by cbernaze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,12 +86,7 @@ int	builtin_echo(char **echo, int fd)
 	if (!echo[1])
 		ft_putchar_fd('\n', fd);
 	if (ft_strcmp_echo(echo[1]) == TRUE)
-	{
-		while (i < (size_echo))
-			i++;
-		// remove_newline(echo + i);
 		i = 2;
-	}
 	else
 		echo = newline_terminated(echo, size_echo + 1);
 	while (echo[i] && ft_strcmp_echo(echo[i]) == TRUE)
