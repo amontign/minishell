@@ -6,7 +6,7 @@
 /*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 09:57:58 by amontign          #+#    #+#             */
-/*   Updated: 2023/07/27 15:29:25 by amontign         ###   ########.fr       */
+/*   Updated: 2023/07/28 08:45:54 by amontign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -316,13 +316,12 @@ int	prompt_execution(t_parsing **lexing, t_data *env)
 	lexing_to_cmd_tab(*lexing, &first);
 	if (!find_place_path(&first, env))
 	{
-		printf("erreur dans le path\n");
+		//printf("erreur dans le path\n");
 	}
 	if (!execute_cmds(&first, first, env, lexing))
 	{
 		printf("erreur dans l'execution\n");
 		return (0);
 	}
-	//cmd_struct_iter(first, print_node_content);
 	return (1);
 }
