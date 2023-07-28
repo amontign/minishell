@@ -6,7 +6,7 @@
 /*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:41:01 by amontign          #+#    #+#             */
-/*   Updated: 2023/07/28 09:43:21 by amontign         ###   ########.fr       */
+/*   Updated: 2023/07/28 16:55:53 by amontign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,9 +54,16 @@ int	custom_path(t_cmd_tab *cmd_struct)
 		return (1);
 	else
 	{
+		if (access(cmd_struct->path, F_OK) == 0)
+		{
+			ft_putstr_fd("minishell: ", 2);
+			ft_putstr_fd(cmd_struct->path, 2);
+			ft_putstr_fd(": Permission denied\n", 2);
+			return (0);
+		}
 		ft_putstr_fd("minishell: ", 2);
 		ft_putstr_fd(cmd_struct->path, 2);
-		ft_putstr_fd(": Permission denied\n", 2);
+		ft_putstr_fd(": No such file or directory\n", 2);
 		return (0);
 	}
 }
