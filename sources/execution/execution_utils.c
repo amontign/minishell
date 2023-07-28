@@ -6,7 +6,7 @@
 /*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 14:59:25 by amontign          #+#    #+#             */
-/*   Updated: 2023/07/19 15:45:15 by amontign         ###   ########.fr       */
+/*   Updated: 2023/07/28 10:15:22 by amontign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,18 +68,20 @@ char	**str_tab_dup(char **str_tab)
 
 void	free_cmd_struct(t_cmd_tab **cmd_struct)
 {
-	t_cmd_tab	*tmp;
+	t_cmd_tab *current = *cmd_struct;
+	t_cmd_tab *next_node;
 
-	while (*cmd_struct != NULL)
+	while (current != NULL)
 	{
-		tmp = (*cmd_struct)->next;
-		if ((*cmd_struct)->heredoc)
+		next_node = current->next;
+		if (current->heredoc)
 		{
-			free((*cmd_struct)->heredoc);
+			free(current->heredoc);
 		}
-		free((*cmd_struct)->cmd_name);
-		free((*cmd_struct)->path);
-		free(*cmd_struct);
-		*cmd_struct = tmp;
+		free(current->cmd_name);
+		free(current->path);
+		free(current);
+		current = next_node;
 	}
+	*cmd_struct = NULL;
 }
