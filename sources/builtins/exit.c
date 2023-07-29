@@ -6,27 +6,75 @@
 /*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 11:38:26 by amontign          #+#    #+#             */
-/*   Updated: 2023/07/25 13:09:27 by amontign         ###   ########.fr       */
+/*   Updated: 2023/07/29 12:09:52 by amontign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-int	builtin_exit(char *arg, int fd)
+int	command_only_e(t_cmd_tab *current)
+{
+	if (current->next || current->prev)
+	{
+		return (0);
+	}
+	return (1);
+}
+
+int	is_nbr(char *str)
 {
 	int	i;
 
 	i = 0;
-	(void)fd;
-	while ((arg[i] > 8 && arg[i] < 14) || arg[i] == ' ')
+	while (str[i] && (str[i] == ' ' || (str[i] > 8 && str[i] < 14)))
+		i++;
+	if (str[i] && (str[i] == '+' || str[i] == '-'))
+		i++;
+	if (!str[i])
+		return (0);
+	while (str[i])
 	{
+		if (str[i] < 48 || str[i] > 57)
+			return (0);
 		i++;
 	}
-	if (ft_strncmp(arg + i, "exit", 4) == 0)
+	return(1);
+}
+
+int	builtin_exit(char **args, t_norm_exec *normy, t_cmd_tab *current)
+{
+	int	ret;
+	int	quit;
+
+	ret = 0;
+	quit = 0;
+	if (!args[1])
 	{
-		if ((arg[i + 4] > 8 && arg[i + 4] < 14) || arg[i + 4] == ' '
-			|| arg[i + 4] == 0)
-			return (1);
+		ret = normy->status;
+		quit = 1;
 	}
-	return (0);
+	else if (!is_nbr(args[1]))
+	{
+		ft_putstr_fd("minishell: exit: ", 2);
+		ft_putstr_fd(args[1], 2);
+		ft_putstr_fd(": numeric argument required\n", 2);
+		quit = 1;
+		ret = 2;
+	}
+	else if (args[2])
+	{
+		ft_putstr_fd("exit\n", 1);
+		ft_putstr_fd("minishell: exit: too many arguments\n", 2);
+		ret = 1;
+	}
+	else
+	{
+		normy->exit = ft_atoi(args[1]) % 256;
+		return (0);
+	}
+	if (!command_only_e(current))
+		return (ret);
+	else if (quit)
+		normy->exit = ret;
+	return (ret);
 }

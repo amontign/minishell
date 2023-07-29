@@ -6,7 +6,7 @@
 /*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 11:56:11 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/07/28 20:25:47 by cbernaze         ###   ########.fr       */
+/*   Updated: 2023/07/29 16:39:32 by cbernaze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,7 +183,7 @@ int			builtin_pwd(char **args, int fd);
 
 /*exit.c*/
 
-int			builtin_exit(char *args, int fd);
+int			builtin_exit(char **args, t_norm_exec *normy, t_cmd_tab *current);
 
 /*env.c*/
 
