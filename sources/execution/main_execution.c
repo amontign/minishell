@@ -6,7 +6,7 @@
 /*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 09:57:58 by amontign          #+#    #+#             */
-/*   Updated: 2023/07/28 16:46:08 by amontign         ###   ########.fr       */
+/*   Updated: 2023/07/29 12:04:40 by amontign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,7 +161,7 @@ void	execute_child1(t_cmd_tab *current, int input_fd, int *pipefd)
 
 int	in_builtin(char *cmd)
 {
-	if (ft_strcmp(cmd, "echo") == 0 || ft_strcmp(cmd, "cd") == 0 || ft_strcmp(cmd, "pwd") == 0 || ft_strcmp(cmd, "env") == 0 || ft_strcmp(cmd, "export") == 0 || ft_strcmp(cmd, "unset") == 0)
+	if (ft_strcmp(cmd, "echo") == 0 || ft_strcmp(cmd, "cd") == 0 || ft_strcmp(cmd, "pwd") == 0 || ft_strcmp(cmd, "env") == 0 || ft_strcmp(cmd, "export") == 0 || ft_strcmp(cmd, "unset") == 0 || ft_strcmp(cmd, "exit") == 0)
 	{
 		return (1);
 	}
@@ -186,10 +186,14 @@ int	handle_outfile_builtin(t_cmd_tab *current)
 	return (new_fd_out);
 }
 
-int	exec_builtin(char **args, int fd, t_data *env, t_cmd_tab *current)
+int	exec_builtin(char **args, t_norm_exec *normy, t_data *env, t_cmd_tab *current)
 {
 	int	status;
+	int	fd;
 
+	fd = normy->pipefd[1];
+	if (normy->output)
+		fd = 1;
 	if (current->outfile)
 		fd = handle_outfile_builtin(current);
 	if (ft_strcmp(args[0], "echo") == 0)
@@ -204,8 +208,11 @@ int	exec_builtin(char **args, int fd, t_data *env, t_cmd_tab *current)
 		status = builtin_export(args, env, fd, current);
 	if (ft_strcmp(args[0], "env") == 0)
 		status = builtin_env(args, env, fd);
+	if (ft_strcmp(args[0], "exit") == 0)
+		status = builtin_exit(args, normy, current);
 	if (current->outfile)
 		close(fd);
+	normy->output = 0;
 	change_status(env, status);
 	return (0);
 }
@@ -235,35 +242,41 @@ int	execute_child2(t_cmd_tab *cu, t_data *env, t_parsing **l, t_cmd_tab **c)
 	exit(EXIT_FAILURE);
 }
 
-void	execute_cmds_exit(t_cmd_tab **cmd_struct)
+int	execute_cmds_exit(t_cmd_tab **cmd_struct, t_norm_exec *normy)
 {
 	child_process = 0;
 	unlink("heredoc_tmp.txt");
 	free_cmd_struct(cmd_struct);
+	if (normy->exit != 257)
+		return (normy->exit % 256);
+	return (257);
 }
 
-void	e_c_i_c(int *pipefd, pid_t *pid, t_cmd_tab *current, t_data *env)
+void	e_c_i_c(t_norm_exec *normy, pid_t *pid, t_cmd_tab *current, t_data *env)
 {
 	int	saved_stdout;
 
 	if (in_builtin(current->args[0]))
 	{
 		if (!current->next)
-			exec_builtin(current->args, 1, env, current);
+		{
+			normy->output = 1;
+			exec_builtin(current->args, normy, env, current);
+		}
 		else
 		{
-			pipe(pipefd);
+			pipe(normy->pipefd);
 			saved_stdout = dup(STDOUT_FILENO);
-			dup2(pipefd[1], STDOUT_FILENO);
-			exec_builtin(current->args, pipefd[1], env, current);
+			dup2(normy->pipefd[1], STDOUT_FILENO);
+			exec_builtin(current->args, normy, env, current);
 			dup2(saved_stdout, STDOUT_FILENO);
 			close(saved_stdout);
-			close(pipefd[1]);
+			close(normy->pipefd[1]);
 		}
 	}
 	else
 	{
-		pipe(pipefd);
+		pipe(normy->pipefd);
 		child_process = 1;
 		*pid = fork();
 	}
@@ -293,6 +306,8 @@ void	init_exec(t_norm_exec *normy)
 	normy->num_cmds = 0;
 	normy->input_fd = 0;
 	normy->status = 0; //supprimer quand le retour des builtin sera gere
+	normy->exit = 257;
+	normy->output = 0;
 }
 
 int	execute_cmds(t_cmd_tab **c_s, t_cmd_tab *cu, t_data *env, t_parsing **l)
@@ -305,7 +320,7 @@ int	execute_cmds(t_cmd_tab **c_s, t_cmd_tab *cu, t_data *env, t_parsing **l)
 	{
 		if (cu->exec)
 		{
-			e_c_i_c(normy.pipefd, &normy.pids[normy.num_cmds], cu, env);
+			e_c_i_c(&normy, &normy.pids[normy.num_cmds], cu, env);
 			if (normy.pids[normy.num_cmds] == 0 && !in_builtin(cu->cmd_name))
 			{
 				execute_child1(cu, normy.input_fd, normy.pipefd);
@@ -324,7 +339,7 @@ int	execute_cmds(t_cmd_tab **c_s, t_cmd_tab *cu, t_data *env, t_parsing **l)
 		cu = cu->next;
 	}
 	exit_env(&normy, env, c_s);
-	return (execute_cmds_exit(c_s), 1);
+	return (execute_cmds_exit(c_s, &normy));
 }
 
 int	prompt_execution(t_parsing **lexing, t_data *env)
@@ -337,10 +352,5 @@ int	prompt_execution(t_parsing **lexing, t_data *env)
 	{
 		//printf("erreur dans le path\n");
 	}
-	if (!execute_cmds(&first, first, env, lexing))
-	{
-		printf("erreur dans l'execution\n");
-		return (0);
-	}
-	return (1);
+	return (execute_cmds(&first, first, env, lexing));
 }
