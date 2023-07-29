@@ -6,7 +6,7 @@
 /*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/11 11:18:06 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/07/28 19:13:56 by cbernaze         ###   ########.fr       */
+/*   Updated: 2023/07/29 18:21:12 by cbernaze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,16 @@ int	pre_expand_dollar_3(t_parsing **tmp, int *i, int choice, int *tab)
 	pre_expand_dollar_4(tmp, i, choice);
 	if (pre_expand_dollar_5(tmp, i, choice, tab) == ERROR)
 		return (ERROR);
-	if ((*tmp)->cmd[*i] == '$' && ft_isalnum_env((*tmp)->cmd[*i + 1]) == TRUE)
+	if (choice == 1 && (*tmp)->cmd[*i] == '$' && (*tmp)->cmd[*i + 1] != ' '
+		&& (*tmp)->cmd[*i + 1] != '\0')
+	{
+		set_back = i_need_a_dollar(tmp, *i, choice, tab);
+		if (set_back == ERROR)
+			return (ERROR);
+		*i -= set_back;
+	}
+	else if (choice == 2 && (*tmp)->cmd[*i] == '$' && ((*tmp)->cmd[*i + 1] == '?'
+		|| ft_isalnum_env((*tmp)->cmd[*i + 1]) == TRUE))
 	{
 		set_back = i_need_a_dollar(tmp, *i, choice, tab);
 		if (set_back == ERROR)

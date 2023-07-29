@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structures.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 11:52:17 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/07/29 10:14:32 by amontign         ###   ########.fr       */
+/*   Updated: 2023/07/29 18:55:25 by cbernaze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,9 @@ typedef struct s_exp_dol
 	char		**var_env;
 	char		**value_var;
 	int			*size_value;
+	int			i;
+	int			j;
+	int			k;
 	t_data		*env;
 }			t_exp_dol;
 

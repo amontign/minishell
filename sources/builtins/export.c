@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 11:35:58 by amontign          #+#    #+#             */
-/*   Updated: 2023/07/27 14:07:26 by amontign         ###   ########.fr       */
+/*   Updated: 2023/07/29 18:08:32 by cbernaze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,18 @@ void	export_no_args(t_data *env, int fd)
 	free_char_tab(env_tab);
 }
 
+int	arg_zero_is_nb(int fd, char *arg)
+{
+	if ((arg[0] > 47 && arg[0] < 58))
+	{
+		ft_putstr_fd("minishell: export: `", fd);
+		ft_putstr_fd(arg, fd);
+		ft_putstr_fd("': not a valid identifier\n", fd);
+		return (0);
+	}
+	return (1);
+}
+
 int	arg_is_valid(char *arg, int fd)
 {
 	int	i;
@@ -94,6 +106,8 @@ int	arg_is_valid(char *arg, int fd)
 			ft_putstr_fd("': not a valid identifier\n", fd);
 			return (0);
 		}
+		if (i == 0 && arg_zero_is_nb(fd, arg) == 0)
+			return (0);
 		i++;
 	}
 	return (i);

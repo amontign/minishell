@@ -1,27 +1,4 @@
-89
-94
-98
-99
-102
-103
-104
-114
-118
-122
-124
-126
-128
-129
-150 : leak
-162
-164
-169
-191/194
-192
-197
-200
-202 : marche pas + leak
-203
+120 leak
 206 : marche pas + leak
 209 : marche pas + leak
 210 : marche pas + leak
@@ -35,5 +12,8 @@
 285
 296
 
+
+lorsque plusieurs redirections de sortie sont faites tous les fichiers
+doivent etre crees (exemple echo >test1 >test2)
 
 test de 0 a 299 effectues

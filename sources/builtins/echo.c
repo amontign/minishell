@@ -6,7 +6,7 @@
 /*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 15:34:13 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/07/28 18:38:15 by cbernaze         ###   ########.fr       */
+/*   Updated: 2023/07/29 17:58:12 by cbernaze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,13 @@ char	**newline_terminated(char **echo, int size_echo)
 		i++;
 	while (echo[i][j])
 		j++;
-	if (echo[i][j - 1] != '\n')
+	if (echo[i][0] == '\0')
+	{
+		tmp = echo[i];
+		echo[i] = ft_strjoin(echo[i], "\n");
+		free(tmp);
+	}
+	else if (echo[i][j - 1] != '\n')
 	{
 		tmp = echo[i];
 		echo[i] = ft_strjoin(echo[i], "\n");
