@@ -1,15 +1,4 @@
-alban_maj.txt
-file
-includes
-libft
-Makefile
-minishell
-minishell.pdf
-minishell.supp
-old_includes
-outfile
-README.md
-sources
-test
-tests_cmds.txt
-yoou
+[?2004hHello evaluator, tell me your name : alban
+[?2004l[?2004halban@minishell> youhouyo
+[?2004l[?2004halban@minishell> [?2004l
+exit

@@ -6,7 +6,7 @@
 /*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 12:00:49 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/07/27 17:30:07 by amontign         ###   ########.fr       */
+/*   Updated: 2023/07/29 10:41:48 by amontign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,14 +55,16 @@ void	parsing(t_parsing **lexing, t_data *env, char *cmd_line)
 /*This function makes a prompt on the terminal, reads the command line
 then launches the parsing and the execution.*/
 
-void	minishell_prompt(t_data *env)
+int	minishell_prompt(t_data *env)
 {
 	t_parsing	*lexing;
 	char		*cmd_line;
 	char		*name_eval;
 	char		*prompt_char;
+	int			ret;
 
 	lexing = NULL;
+	ret = 0;
 	name_eval = readline("Hello evaluator, tell me your name : ");
 	remove_newline(&name_eval);
 	prompt_char = ft_strjoin(name_eval, "@minishell> ");
@@ -71,20 +73,21 @@ void	minishell_prompt(t_data *env)
 	while (42)
 	{
 		cmd_line = readline(prompt_char);
-		if (!cmd_line || builtin_exit(cmd_line, 1))
+		if (!cmd_line)
 			break ;
 		remove_newline(&cmd_line);
 		if (cmd_line[0] != '\0')
 			add_history(cmd_line);
 		parsing(&lexing, env, cmd_line);
 		free(cmd_line);
-		// execution
-		prompt_execution(&lexing, env);
-		// end of execution
+		ret = prompt_execution(&lexing, env);
+		if (ret != 257)
+			break ;
 		ft_lstclear_minishell(&lexing);
 	}
 	printf("exit\n");
 	free(prompt_char);
+	return (ret);
 }
 
 /*The environment is transformed into a chained list,
@@ -94,8 +97,9 @@ int	main(int argc, char **argv, char **envp)
 {
 	t_data	*env;
 	void	*verif;
-	struct termios oldt;
-	struct termios newt;
+	struct	termios oldt;
+	struct	termios newt;
+	int		ret;
 
 	(void)argc;
 	(void)argv;
@@ -109,7 +113,8 @@ int	main(int argc, char **argv, char **envp)
 	tcsetattr(STDIN_FILENO, TCSANOW, &newt);
 	env = NULL;
 	ft_getenv(&env, envp);
-	minishell_prompt(env);
+	ret = minishell_prompt(env);
 	tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
-	return (ft_lstclear_data(&env), 0);
+	ft_lstclear_data(&env);
+	return (ret);
 }

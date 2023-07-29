@@ -6,7 +6,7 @@
 /*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 11:52:17 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/07/28 09:23:38 by amontign         ###   ########.fr       */
+/*   Updated: 2023/07/29 10:14:32 by amontign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,6 +133,8 @@ typedef struct s_norm_exec
 	int		input_fd;
 	int		status;
 	int		pipefd[2];
+	int		exit;
+	int		output;
 	pid_t	*pids;
 }				t_norm_exec;
 
