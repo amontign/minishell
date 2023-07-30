@@ -6,7 +6,7 @@
 /*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 11:14:23 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/07/30 14:57:44 by cbernaze         ###   ########.fr       */
+/*   Updated: 2023/07/30 15:11:19 by cbernaze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,10 @@ int	builtin_unset(t_data **data, char **to_unset, t_cmd_tab *current)
 		{
 			remove_env_var(tmp);
 			i++;
+			if (next && !next->previous)
+			{
+				*data = next;
+			}
 			tmp = *data;
 		}
 		tmp = next;

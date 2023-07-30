@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_dollars.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/03 16:21:58 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/07/30 12:07:01 by cbernaze         ###   ########.fr       */
+/*   Updated: 2023/07/30 15:07:53 by amontign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ char	*substitute_dollars(t_parsing **tmp, t_data *env, int nb_dol)
 		diff_size -= (*tmp)->dollar_size[tab];
 	data.size_new = ft_strlen((*tmp)->cmd) + diff_size + 1;
 	new = malloc(data.size_new * sizeof(char)); // malloc bon
+	new[0] = '\0';
 	if (!new)
 		return (free_data(&data), free((*tmp)->cmd), "error");
 	tab = 0;

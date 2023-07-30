@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   functions.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 11:56:11 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/07/30 12:30:06 by cbernaze         ###   ########.fr       */
+/*   Updated: 2023/07/30 14:59:26 by amontign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -214,7 +214,7 @@ void		free_cmd_struct(t_cmd_tab **cmd_struct);
 
 /*main_execution.c*/
 
-int			prompt_execution(t_parsing **lexing, t_data *env);
+int			prompt_execution(t_parsing **lexing, t_data **env);
 int			in_builtin(char *cmd);
 char		**env_to_tab(t_data *env);
 

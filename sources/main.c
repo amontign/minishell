@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 12:00:49 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/07/30 13:07:48 by cbernaze         ###   ########.fr       */
+/*   Updated: 2023/07/30 14:58:44 by amontign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ void	parsing(t_parsing **lexing, t_data *env, char *cmd_line)
 /*This function makes a prompt on the terminal, reads the command line
 then launches the parsing and the execution.*/
 
-int	minishell_prompt(t_data *env)
+int	minishell_prompt(t_data **env)
 {
 	t_parsing	*lexing;
 	char		*cmd_line;
@@ -78,7 +78,7 @@ int	minishell_prompt(t_data *env)
 		remove_newline(&cmd_line);
 		if (cmd_line[0] != '\0')
 			add_history(cmd_line);
-		parsing(&lexing, env, cmd_line);
+		parsing(&lexing, *env, cmd_line);
 		free(cmd_line);
 		ret = prompt_execution(&lexing, env);
 		if (ret != 257)
@@ -113,7 +113,7 @@ int	main(int argc, char **argv, char **envp)
 	tcsetattr(STDIN_FILENO, TCSANOW, &newt);
 	env = NULL;
 	ft_getenv(&env, envp);
-	ret = minishell_prompt(env);
+	ret = minishell_prompt(&env);
 	tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
 	ft_lstclear_data(&env);
 	return (ret);

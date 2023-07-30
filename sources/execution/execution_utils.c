@@ -6,7 +6,7 @@
 /*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 14:59:25 by amontign          #+#    #+#             */
-/*   Updated: 2023/07/28 10:15:22 by amontign         ###   ########.fr       */
+/*   Updated: 2023/07/30 13:42:53 by amontign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ void	free_char_tab(char **tab)
 	int	i;
 
 	i = 0;
+	if (!tab)
+		return ;
 	while (tab[i])
 	{
 		free(tab[i]);

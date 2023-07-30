@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_to_struct.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:41:01 by amontign          #+#    #+#             */
-/*   Updated: 2023/07/28 17:06:42 by cbernaze         ###   ########.fr       */
+/*   Updated: 2023/07/30 13:41:23 by amontign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ int	place_path(char **paths, t_cmd_tab *c)
 	while (c)
 	{
 		i = -1;
-		while (paths[++i] && !c->path && c->cmd_name)
+		while (paths && paths[++i] && !c->path && c->cmd_name)
 		{
 			path = ft_strjoin(paths[i], "/");
 			if (!path)
@@ -117,12 +117,12 @@ int	find_place_path(t_cmd_tab **cmd_struct, t_data *env)
 		if (ft_strnstr(env->var, "PATH", 4) != 0)
 		{
 			paths = ft_split((env->var + 5), ':');
+			if (!paths)
+				return (0);
 			break ;
 		}
 		env = env->next;
 	}
-	if (!paths)
-		return (0);
 	if (!place_path(paths, *cmd_struct))
 	{
 		free_char_tab(paths);
