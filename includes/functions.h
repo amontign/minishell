@@ -6,7 +6,7 @@
 /*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 11:56:11 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/07/30 12:15:23 by amontign         ###   ########.fr       */
+/*   Updated: 2023/07/30 14:32:35 by amontign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,7 +175,7 @@ int			builtin_cd(char **dir_name, t_data *env);
 
 /*unset.c*/
 
-void		remove_env_var(t_data **head, t_data *tmp);
+void		remove_env_var(t_data *tmp);
 int			builtin_unset(t_data **data, char **to_unset, t_cmd_tab *current);
 
 /*pwd.c*/
