@@ -1,8 +1,4 @@
-206 : marche pas + leak
-209 : marche pas + leak
-210 : marche pas + leak
-216
-220
+296 leaks
 
 
 lorsque plusieurs redirections de sortie sont faites tous les fichiers
