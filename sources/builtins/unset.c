@@ -6,16 +6,35 @@
 /*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 11:14:23 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/07/27 14:54:10 by amontign         ###   ########.fr       */
+/*   Updated: 2023/07/30 11:59:32 by amontign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void	remove_env_var(t_data *tmp)
+void	remove_env_var(t_data **head, t_data *tmp)
 {
-	tmp->previous->next = tmp->next;
-	tmp->next->previous = tmp->previous;
+	if (tmp->next)
+	{
+		if (tmp->previous)
+		{
+			tmp->previous->next = tmp->next;
+			tmp->next->previous = tmp->previous;
+		}
+		else
+		{
+			*head = tmp->next;
+			tmp->next->previous = NULL;
+		}
+	}
+	else if (tmp->previous)
+	{
+		tmp->previous->next = NULL;
+	}
+	else
+	{
+		*head = NULL;
+	}
 	free(tmp->var);
 	free(tmp);
 }
@@ -29,29 +48,29 @@ int	command_only2(t_cmd_tab *current)
 	return (1);
 }
 
-int	builtin_unset(t_data *data, char **to_unset, t_cmd_tab *current)
+int	builtin_unset(t_data **data, char **to_unset, t_cmd_tab *current)
 {
 	t_data	*tmp;
+	t_data	*next;
 	int		size_str;
 	int		i;
 
-	tmp = data;
-	i = 0;
+	tmp = *data;
+	i = 1;
 	if (!command_only2(current))
 		return (0);
 	if (!to_unset)
 		return (1);
 	while (tmp && to_unset[i])
 	{
+		next = tmp->next;
 		size_str = ft_strlen(to_unset[i]);
 		if (ft_strncmp(tmp->var, to_unset[i], (size_t)size_str) == 0)
 		{
-			remove_env_var(tmp);
+			remove_env_var(data, tmp);
 			i++;
-			tmp = data;
 		}
-		else
-			tmp = tmp->next;
+		tmp = next;
 	}
 	return (0);
 }

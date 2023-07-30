@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 11:35:58 by amontign          #+#    #+#             */
-/*   Updated: 2023/07/29 18:08:32 by cbernaze         ###   ########.fr       */
+/*   Updated: 2023/07/30 09:35:09 by amontign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ int	arg_is_valid(char *arg, int fd)
 	int	i;
 
 	i = 0;
-	if (arg[0] == '=')
+	if (arg[0] == '=' || !arg[0])
 	{
 		ft_putstr_fd("minishell: export: `", fd);
 		ft_putstr_fd(arg, fd);

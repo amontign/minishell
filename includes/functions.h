@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   functions.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 11:56:11 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/07/29 16:39:32 by cbernaze         ###   ########.fr       */
+/*   Updated: 2023/07/30 11:59:57 by amontign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,8 +174,8 @@ int			builtin_cd(char **dir_name, t_data *env);
 
 /*unset.c*/
 
-void		remove_env_var(t_data *tmp);
-int			builtin_unset(t_data *data, char **to_unset, t_cmd_tab *current);
+void		remove_env_var(t_data **head, t_data *tmp);
+int			builtin_unset(t_data **data, char **to_unset, t_cmd_tab *current);
 
 /*pwd.c*/
 

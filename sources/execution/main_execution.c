@@ -6,7 +6,7 @@
 /*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 09:57:58 by amontign          #+#    #+#             */
-/*   Updated: 2023/07/29 12:04:40 by amontign         ###   ########.fr       */
+/*   Updated: 2023/07/30 12:00:20 by amontign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -201,7 +201,7 @@ int	exec_builtin(char **args, t_norm_exec *normy, t_data *env, t_cmd_tab *curren
 	if (ft_strcmp(args[0], "cd") == 0)
 		status = builtin_cd(args, env);
 	if (ft_strcmp(args[0], "unset") == 0)
-		status = builtin_unset(env, args, current);
+		status = builtin_unset(&env, args, current);
 	if (ft_strcmp(args[0], "pwd") == 0)
 		status = builtin_pwd(args, fd);
 	if (ft_strcmp(args[0], "export") == 0)
