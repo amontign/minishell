@@ -6,7 +6,7 @@
 /*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/30 11:55:24 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/07/30 11:17:06 by cbernaze         ###   ########.fr       */
+/*   Updated: 2023/07/30 18:32:35 by cbernaze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,22 @@
 /*This function tells if a dollar is alone, meaning it doesn' have a letter
 or number or _ next to it.*/
 
-int	am_a_lonesome_dollar(char *cmd, int dollar_pos)
+int	am_a_lonesome_dollar(char *cmd, int dollar_pos, int choice)
 {
-	if (ft_isalnum_env(cmd[dollar_pos + 1]) == FALSE)
+	if (choice == 1 && ft_isalnum_env(cmd[dollar_pos + 1]) == FALSE)
 		return (TRUE);
+	if (dollar_pos >= 2)
+	{
+		if (cmd[dollar_pos - 1] == '<' && cmd[dollar_pos - 2] == '<')
+			return (TRUE);
+	}
+	if (dollar_pos >= 3)
+	{
+		if (((cmd[dollar_pos - 1] == SINGLE_QUOTE
+			|| cmd[dollar_pos - 1] == DOUBLE_QUOTE) && cmd[dollar_pos - 2] == '<'
+			&& cmd[dollar_pos - 3] == '<'))
+			return (TRUE);
+	}
 	return (FALSE);
 }
 
@@ -64,7 +76,7 @@ void	how_many_dollars_2(t_parsing **tmp, int *i, int *size_subt_tab)
 		while ((*tmp)->cmd[*i] != DOUBLE_QUOTE && (*tmp)->cmd[*i] != '\0')
 		{
 			if ((*tmp)->cmd[*i] == '$'
-				&& am_a_lonesome_dollar((*tmp)->cmd, *i) == FALSE)
+				&& am_a_lonesome_dollar((*tmp)->cmd, *i, 1) == FALSE)
 				*size_subt_tab += 1;
 			*i += 1;
 		}

@@ -6,7 +6,7 @@
 /*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/21 16:39:07 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/07/27 17:58:57 by cbernaze         ###   ########.fr       */
+/*   Updated: 2023/07/30 18:47:04 by cbernaze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,8 @@ matching `''\nminishell: syntax error: unexpected end of file\n")
 		*i += 1;
 		while (cmd_line[*i] != DOUBLE_QUOTE && cmd_line[*i])
 		{
-			if (is_dq_spe_char(cmd_line[*i]) == TRUE)
-				return (ERROR_SYNTAX);
+			// if (is_dq_spe_char(cmd_line[*i]) == TRUE)
+			// 	return (ERROR_SYNTAX);
 			*i += 1;
 		}
 		if (cmd_line[*i] == '\0')
@@ -112,8 +112,8 @@ int	syntax(char *cmd_line)
 	{
 		if (closed_quotes(cmd_line, &i) == ERROR_SYNTAX)
 			return (ERROR_SYNTAX);
-		if (is_metachar(cmd_line[i]) == TRUE)
-			return (ERROR_SYNTAX);
+		// if (is_metachar(cmd_line[i]) == TRUE)
+		// 	return (ERROR_SYNTAX);
 		if (cmd_line[i] == '|' && cmd_line[i + 1] == '|')
 			return (ft_printf("minishell: '||' not treated\n")
 				, ERROR_SYNTAX);
@@ -121,6 +121,8 @@ int	syntax(char *cmd_line)
 		{
 			if (wrong_after_redir(cmd_line, &i) == ERROR_SYNTAX)
 				return (ERROR_SYNTAX);
+			else
+				i--;
 		}
 		i++;
 	}

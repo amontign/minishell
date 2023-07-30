@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   functions.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 11:56:11 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/07/30 14:59:26 by amontign         ###   ########.fr       */
+/*   Updated: 2023/07/30 18:02:03 by cbernaze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ int			pre_expand_dollar_5(t_parsing **tmp, int *i, int choice, int *tab);
 
 /*utils_pre_expand_dollars.c*/
 
-int			am_a_lonesome_dollar(char *cmd, int dollar_pos);
+int			am_a_lonesome_dollar(char *cmd, int dollar_pos, int choice);
 int			how_many_dollars(t_parsing **tmp);
 void		how_many_dollars_2(t_parsing **tmp, int *i, int *size_subt_tab);
 char		*remove_dollar(char *str, int dol_pos);

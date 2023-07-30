@@ -6,7 +6,7 @@
 /*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 19:36:57 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/07/01 12:25:59 by cbernaze         ###   ########.fr       */
+/*   Updated: 2023/07/30 18:44:51 by cbernaze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,12 +51,14 @@ void	is_redir(char *cmd_line, char c, char c_plus_one, int *i)
 			*i += 1;
 			while (cmd_line[*i] != SINGLE_QUOTE)
 				*i += 1;
+			*i += 1;
 		}
 		if (cmd_line[*i] == DOUBLE_QUOTE)
 		{
 			*i += 1;
 			while (cmd_line[*i] != DOUBLE_QUOTE)
 				*i += 1;
+			*i += 1;
 		}
 		is_redir_2(cmd_line, i);
 	}
