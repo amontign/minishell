@@ -6,7 +6,7 @@
 /*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 11:52:17 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/07/29 18:55:25 by cbernaze         ###   ########.fr       */
+/*   Updated: 2023/07/30 08:37:49 by cbernaze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,7 @@ typedef struct s_exp_dol
 	int			i;
 	int			j;
 	int			k;
+	int			size_new;
 	t_data		*env;
 }			t_exp_dol;
 

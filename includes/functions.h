@@ -6,7 +6,7 @@
 /*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 11:56:11 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/07/29 16:39:32 by cbernaze         ###   ########.fr       */
+/*   Updated: 2023/07/30 09:34:05 by cbernaze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,6 +113,7 @@ int			malloc_data_strs(t_exp_dol *data, int nb_dol);
 void		free_data(t_exp_dol	*data);
 void		go_through_quotes(char *str, int *i);
 char		*getenv_minish(t_data *data, char *var);
+int 		ft_isalnum_dol(int c, int pos);
 
 /*split_args.c*/
 

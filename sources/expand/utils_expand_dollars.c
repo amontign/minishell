@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_expand_dollars.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 09:54:46 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/07/26 16:07:51 by amontign         ###   ########.fr       */
+/*   Updated: 2023/07/30 09:34:33 by cbernaze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,4 +96,18 @@ char	*getenv_minish(t_data *data, char *var)
 		tmp = tmp->next;
 	}
 	return (free(var), NULL);
+}
+
+int ft_isalnum_dol(int c, int pos)
+{
+	if (pos == 1 && ft_isdigit(c) == 1)
+		return (FALSE);
+	if ((c > 47 && c < 58)
+		|| (c > 64 && c < 91)
+		|| (c > 96 && c < 123)
+		|| c == 95
+		|| c == 10)
+		return (TRUE);
+	else
+		return (FALSE);
 }
