@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 11:14:23 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/07/30 13:35:12 by cbernaze         ###   ########.fr       */
+/*   Updated: 2023/07/30 15:02:33 by amontign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,10 @@ int	builtin_unset(t_data **data, char **to_unset, t_cmd_tab *current)
 		{
 			remove_env_var(tmp);
 			i++;
+			if (next && !next->previous)
+			{
+				*data = next;
+			}
 			tmp = *data;
 		}
 		tmp = next;
