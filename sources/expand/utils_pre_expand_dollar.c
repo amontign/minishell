@@ -6,7 +6,7 @@
 /*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/30 11:55:24 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/07/11 11:33:35 by cbernaze         ###   ########.fr       */
+/*   Updated: 2023/07/30 11:17:06 by cbernaze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,16 +119,14 @@ int	i_need_a_dollar(t_parsing **tmp, int dol_pos, int choice, int *tab)
 	}
 	else if (choice == 2)
 	{
-		i = 1;
+		i = 0;
 		(*tmp)->to_substitute[*tab] = dol_pos;
 		(*tmp)->dollar_size[*tab] = 1;
-		if ((*tmp)->cmd[dol_pos + 1] == '?')
+		if ((*tmp)->cmd[dol_pos + 1] == '?'
+			|| ft_isdigit((*tmp)->cmd[dol_pos + 1]))
 			(*tmp)->dollar_size[*tab] += 1;
-		while (ft_isalnum_env((*tmp)->cmd[dol_pos + i]) == TRUE)
-		{
+		while (ft_isalnum_dol((*tmp)->cmd[++dol_pos], ++i) == TRUE)
 			(*tmp)->dollar_size[*tab] += 1;
-			i++;
-		}
 		*tab += 1;
 	}
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/03 16:21:58 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/07/29 19:32:02 by cbernaze         ###   ########.fr       */
+/*   Updated: 2023/07/30 12:07:01 by cbernaze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,8 @@ char	*substitute_dollars(t_parsing **tmp, t_data *env, int nb_dol)
 	tab = -1;
 	while (++tab < nb_dol)
 		diff_size -= (*tmp)->dollar_size[tab];
-	new = malloc((ft_strlen((*tmp)->cmd) + diff_size + 1) * sizeof(char)); // malloc bon
+	data.size_new = ft_strlen((*tmp)->cmd) + diff_size + 1;
+	new = malloc(data.size_new * sizeof(char)); // malloc bon
 	if (!new)
 		return (free_data(&data), free((*tmp)->cmd), "error");
 	tab = 0;
@@ -81,16 +82,17 @@ void	subst_dollars_2(char **new, t_exp_dol data, t_parsing **tmp, int tab)
 				while (data.value_var[tab][++data.k])
 					new[0][++data.j] = data.value_var[tab][data.k];
 			}
-			else if (data.size_value[tab] == 0)
-				new[0][++data.j] = '\0';
 			data.i += (*tmp)->dollar_size[tab] - 1;
 			tab++;
 		}
 		else
 			new[0][++data.j] = (*tmp)->cmd[data.i];
 	}
-	if (new[0][data.j] != '\0')
-		new[0][++data.j] = '\0';
+	if (data.j != -1)
+	{
+		if (new[0][data.j] != '\0')
+			new[0][++data.j] = '\0';
+	}
 }
 
 /*These two functions fill the data structure needed for the substitution
@@ -147,5 +149,6 @@ int	fill_data_dol_2(t_exp_dol *data, t_parsing *tmp, int *j, int tab)
 	data->i = -1;
 	data->j = -1;
 	data->k = -1;
+	data->size_new = 0;
 	return (0);
 }
