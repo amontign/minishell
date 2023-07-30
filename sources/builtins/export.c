@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 11:35:58 by amontign          #+#    #+#             */
-/*   Updated: 2023/07/30 09:35:09 by amontign         ###   ########.fr       */
+/*   Updated: 2023/07/30 12:52:37 by cbernaze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,6 +136,7 @@ int	export_in_env(char *arg, t_data *env, int fd)
 		{
 			new = ft_lstnew_data(arg);
 			env->next = new;
+			new->previous = env;
 			return (0);
 		}
 		env = env->next;

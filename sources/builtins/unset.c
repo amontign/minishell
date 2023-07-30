@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 11:14:23 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/07/30 11:59:32 by amontign         ###   ########.fr       */
+/*   Updated: 2023/07/30 13:35:12 by cbernaze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void	remove_env_var(t_data **head, t_data *tmp)
+void	remove_env_var(t_data *tmp)
 {
 	if (tmp->next)
 	{
@@ -22,21 +22,17 @@ void	remove_env_var(t_data **head, t_data *tmp)
 			tmp->next->previous = tmp->previous;
 		}
 		else
-		{
-			*head = tmp->next;
 			tmp->next->previous = NULL;
-		}
-	}
-	else if (tmp->previous)
-	{
-		tmp->previous->next = NULL;
+		free(tmp->var);
+		free(tmp);
 	}
 	else
 	{
-		*head = NULL;
+		if (tmp->previous)
+			tmp->previous->next = NULL;
+		free(tmp->var);
+		free(tmp);
 	}
-	free(tmp->var);
-	free(tmp);
 }
 
 int	command_only2(t_cmd_tab *current)
@@ -67,8 +63,9 @@ int	builtin_unset(t_data **data, char **to_unset, t_cmd_tab *current)
 		size_str = ft_strlen(to_unset[i]);
 		if (ft_strncmp(tmp->var, to_unset[i], (size_t)size_str) == 0)
 		{
-			remove_env_var(data, tmp);
+			remove_env_var(tmp);
 			i++;
+			tmp = *data;
 		}
 		tmp = next;
 	}

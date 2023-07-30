@@ -6,7 +6,7 @@
 /*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 11:56:11 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/07/30 12:16:57 by cbernaze         ###   ########.fr       */
+/*   Updated: 2023/07/30 12:30:06 by cbernaze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,7 +175,7 @@ int			builtin_cd(char **dir_name, t_data *env);
 
 /*unset.c*/
 
-void		remove_env_var(t_data **head, t_data *tmp);
+void		remove_env_var(t_data *tmp);
 int			builtin_unset(t_data **data, char **to_unset, t_cmd_tab *current);
 
 /*pwd.c*/
