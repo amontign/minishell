@@ -6,7 +6,7 @@
 /*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 16:37:01 by amontign          #+#    #+#             */
-/*   Updated: 2023/07/25 16:22:15 by amontign         ###   ########.fr       */
+/*   Updated: 2023/07/30 16:35:05 by amontign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,9 @@
 
 void	handle_sigint(int sig)
 {
+	int		i;
+	char	*spaces;
+
 	(void)sig;
 	if (child_process == 1)
 	{
@@ -23,7 +26,13 @@ void	handle_sigint(int sig)
 	}
 	else
 	{
-		printf("%s%s^C\n", rl_prompt, rl_line_buffer);
+		spaces = malloc(sizeof(char) * (100 + 1));
+		i = -1;
+		while (++i < 100)
+			spaces[i] = ' ';
+		spaces[i] = '\0';
+		printf("%s%s^C%s\n", rl_prompt, rl_line_buffer, spaces);
+		free(spaces);
 		rl_on_new_line();
 		rl_replace_line("", 0);
 		rl_redisplay();
