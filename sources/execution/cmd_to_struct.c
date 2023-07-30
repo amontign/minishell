@@ -6,7 +6,7 @@
 /*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:41:01 by amontign          #+#    #+#             */
-/*   Updated: 2023/07/30 13:41:23 by amontign         ###   ########.fr       */
+/*   Updated: 2023/07/30 17:03:16 by amontign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -186,9 +186,14 @@ int	put_redirect(t_cmd_tab *cmd_struct, char *str, int id)
 	}
 	if (str[0] == '>')
 	{
-		if (str[1] == '>')
-			first->outfile_delete = 0;
 		first->outfile = str + c_r_s(str);
+		if (str[1] == '>')
+		{
+			first->outfile_delete = 0;
+			close(open(first->outfile, O_WRONLY | O_CREAT | O_APPEND, 0644));
+		}
+		else
+			close(open(first->outfile, O_WRONLY | O_CREAT | O_TRUNC, 0644));
 	}
 	else
 	{
