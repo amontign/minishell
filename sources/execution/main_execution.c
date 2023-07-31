@@ -6,7 +6,7 @@
 /*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 09:57:58 by amontign          #+#    #+#             */
-/*   Updated: 2023/07/31 14:08:24 by amontign         ###   ########.fr       */
+/*   Updated: 2023/07/31 15:05:24 by amontign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,10 +80,6 @@ void	exit_env(t_norm_exec *normy, t_data *env, t_cmd_tab **cmd_struct)
 {
 	int			i;
 
-	char *tab[1] = {
-		"true",
-		NULL
-	};
 	i = -1;
 	while (++i < normy->num_cmds)
 		waitpid(normy->pids[i], &(normy->status), 0);
