@@ -3,14 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 12:00:49 by cbernaze          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2023/07/31 09:03:56 by amontign         ###   ########.fr       */
-=======
-/*   Updated: 2023/07/30 16:53:16 by cbernaze         ###   ########.fr       */
->>>>>>> main
+/*   Updated: 2023/07/31 11:01:57 by amontign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,9 +81,9 @@ int	minishell_prompt(t_data **env)
 		parsing(&lexing, *env, cmd_line);
 		free(cmd_line);
 		ret = prompt_execution(&lexing, env);
+		ft_lstclear_minishell(&lexing);
 		if (ret != 257)
 			break ;
-		ft_lstclear_minishell(&lexing);
 	}
 	printf("exit\n");
 	// free(prompt_char);

@@ -6,11 +6,57 @@
 /*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 11:38:26 by amontign          #+#    #+#             */
-/*   Updated: 2023/07/29 12:09:52 by amontign         ###   ########.fr       */
+/*   Updated: 2023/07/31 11:23:30 by amontign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+
+void	display_demon()
+{
+	ft_putendl_fd("      ,',            ,,,,,;;;;;;;;;;;;;;;;;;;;;,,,,,             ,',", 1);
+	ft_putendl_fd("     ;  ',        ,;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;,         ,  ',", 1);
+	ft_putendl_fd("     ;    ;     ,;;;;;; ;;; ;;  ;;;;;;;;;  ;;  ;;; ;;;;,       ;    ;", 1);
+	ft_putendl_fd("     ;     `, ,;;;;;;    ;    ;  ;;;;;;;  ;     ;    ;;;;,   ,'     ;", 1);
+	ft_putendl_fd("     ,       ',;;  ;           ;   ;;;   ;             ;  ;,'       ,", 1);
+	ft_putendl_fd("      ',       ; ,,,,,,,,,,     ;   ;   ;       ,,,,,,,,,,'.       ,", 1);
+	ft_putendl_fd("         ,    ,'          ',    ;       ;    ,''           ',    ,'", 1);
+	ft_putendl_fd("         ;;.,'                   ;     ;    '                '..'", 1);
+	ft_putendl_fd("        ;;;;                '    ;     ;   '                  ;;", 1);
+	ft_putendl_fd("       ;;;;  ;               ',  ;  ;  ;  '                ;  ;;;", 1);
+	ft_putendl_fd(" :,    ;;;;   ;;               ',;  ;  ;,'               ;;   ;;;", 1);
+	ft_putendl_fd(" ,`,   ;;;;     ;;;               ; ; ;                ;;;    ;;;;    ';", 1);
+	ft_putendl_fd(":  `,  ,;;;      ;;;;;;;;;;;;;;;,,  ;   ,,;;;;;;;;;;;;;;;     ;;;,  .' ;", 1);
+	ft_putendl_fd(";  ; `,;;;;                                                   ;;;; .'   ;", 1);
+	ft_putendl_fd(":  ;`, : ;;,,,,     ;\"\"/\\\"\";.                .;\"\"/\\\"\";,  ,'''';; ;' ,'; ;", 1);
+	ft_putendl_fd(":  ;  `; ;;    ',,'  \\ \\/ /  ',  ;     ;   ,'  \\ \\/ /  ',     ;; ;,'  ; ;", 1);
+	ft_putendl_fd(":  `,  ; ;;      '.,,;,,,;,.'    ;     ;    '.,,;,,,;,.'      ;; ;   ,  ;", 1);
+	ft_putendl_fd("`,  ; @; ;;                ,'    ;     ;    ',                ;; ;@ ;   ,", 1);
+	ft_putendl_fd("  `,'. ; ;               ,'      ;     ;      ',               ; ;  ; ,' ", 1);
+	ft_putendl_fd("   `, ',          ,''''''       ;       ;       '''''',          ;,' ;", 1);
+	ft_putendl_fd("     `, :       ,'             ;         ;             '',       ;  ;", 1);
+	ft_putendl_fd("      '',    ,''              ;     ;     ;               ',     ;''", 1);
+	ft_putendl_fd("        ',  '                (,     ;      )                ',  ,'", 1);
+	ft_putendl_fd("         ',                    '''''''''''''                   ,'", 1);
+	ft_putendl_fd("           '.             ;;;;;;;;;;;;;;;;;;;;;;              ,", 1);
+	ft_putendl_fd("             ,          ,;;;;;;;;;;;;;;;;;;;;;;;;,          ,'", 1);
+	ft_putendl_fd("              ,        ;;;;;;;;;;;;;;;;;;;;;;;;;;;;        ,", 1);
+	ft_putendl_fd("               ,      ;;;;/\\/ |  |\\/  \\/|  | \\/\\;;;;      ,", 1);
+	ft_putendl_fd("               ',     ;;;/     \\/        \\/     \\;;;    ,'", 1);
+	ft_putendl_fd("                ',    ;;;\\  /\\              /\\  /;;;   ,'", 1);
+	ft_putendl_fd("                  ',  ;;;;\\|  |/\\ /\\  /\\ /\\|  |/;;;; ,',", 1);
+	ft_putendl_fd("                 ,' ',;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;'   ',", 1);
+	ft_putendl_fd("               ,'     ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;      ',", 1);
+	ft_putendl_fd("             ,'        ;;;;;;;;;;;;;;;;;;;;;;;;;;;;         ',", 1);
+	ft_putendl_fd("   ,',',',','           ;;;;;;;;;;;;;;;;;;;;;;;;;;            ',',',',','", 1);
+	ft_putendl_fd("                         ;;;;;;;;;;;;;;;;;;;;;;;;", 1);
+	ft_putendl_fd("                         ;;;;;;;;;;;;;;;;;;;;;;;;", 1);
+	ft_putendl_fd("                          ;;;;;;;;;;;;;;;;;;;;;;;", 1);
+	ft_putendl_fd("                           ;;;;;;         ;;;;;;", 1);
+	ft_putendl_fd("                           ;;;;;           ;;;;;", 1);
+	ft_putendl_fd("                            ;;;             ;;;", 1);
+	ft_putendl_fd("                             ;;             ;;", 1);
+}
 
 int	command_only_e(t_cmd_tab *current)
 {
@@ -69,8 +115,10 @@ int	builtin_exit(char **args, t_norm_exec *normy, t_cmd_tab *current)
 	}
 	else
 	{
-		normy->exit = ft_atoi(args[1]) % 256;
-		return (0);
+		if (args[1][0] == '6' && args[1][1] == '6' && args[1][2] == '6' && !args[1][3])
+			display_demon();
+		if (command_only_e(current))
+			normy->exit = ft_atoi(args[1]) % 256;
 	}
 	if (!command_only_e(current))
 		return (ret);

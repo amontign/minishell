@@ -3,14 +3,28 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 11:19:50 by amontign          #+#    #+#             */
-/*   Updated: 2023/07/30 15:54:14 by cbernaze         ###   ########.fr       */
+/*   Updated: 2023/07/31 12:23:54 by amontign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+
+int	equal_in_str(char *str)
+{
+	int i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == '=')
+			return (1);
+		i++;
+	}
+	return (0);
+}
 
 int	builtin_env(char **args, t_data *env, int fd)
 {
@@ -22,8 +36,11 @@ int	builtin_env(char **args, t_data *env, int fd)
 	}
 	while (env)
 	{
-		ft_putstr_fd(env->var, fd);
-		ft_putchar_fd('\n', fd);
+		if (equal_in_str(env->var))
+		{
+			ft_putstr_fd(env->var, fd);
+			ft_putchar_fd('\n', fd);
+		}
 		env = env->next;
 	}
 	return (0);
