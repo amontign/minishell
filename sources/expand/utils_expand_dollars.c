@@ -6,7 +6,7 @@
 /*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 09:54:46 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/07/30 09:34:33 by cbernaze         ###   ########.fr       */
+/*   Updated: 2023/07/31 11:42:25 by cbernaze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ void	free_data(t_exp_dol	*data)
 	free((*data).size_value);
 	while (i < ft_strlen_plus((*data).value_var))
 	{
-		// ft_printf("#%s\n", (*data).value_var[i]);
 		free((*data).value_var[i]);
 		i++;
 	}

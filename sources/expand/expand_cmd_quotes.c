@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_cmd_quotes.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 18:09:15 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/07/30 10:22:48 by amontign         ###   ########.fr       */
+/*   Updated: 2023/07/31 15:06:23 by cbernaze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	expand_cmd_quotes(t_parsing **expand)
 			while (dt.tmp->cmd_split[dt.j])
 			{
 				expand_cmd_quotes_2(&dt.tmp, &dt, dt.tmp->cmd_split[dt.j]);
-				dt.tmp->cmd_split[dt.j] = remove_cmd_quotes(dt);
+				dt.tmp->cmd_split[dt.j] = remove_cmd_quotes(&dt);
 				dt.j++;
 			}
 		}

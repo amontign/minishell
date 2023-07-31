@@ -6,7 +6,7 @@
 /*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 11:56:11 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/07/30 18:02:03 by cbernaze         ###   ########.fr       */
+/*   Updated: 2023/07/31 12:27:12 by cbernaze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ void		remove_newline(char **name_eval);
 /*expand.c*/
 
 int			ft_isalnum_env(int c);
-char		*remove_cmd_quotes(t_data_qt dt);
+char		*remove_cmd_quotes(t_data_qt *dt);
 void		how_many_cmd_quotes_3(char *arg, int *i, int *quotes);
 void		expand(t_parsing **expand, t_data *env);
 

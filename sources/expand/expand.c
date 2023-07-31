@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 13:33:09 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/07/30 10:52:13 by amontign         ###   ########.fr       */
+/*   Updated: 2023/07/31 15:03:55 by cbernaze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void	how_many_cmd_quotes_3(char *arg, int *i, int *quotes)
 /*This function is used in expand_cmd_quotes.c to
 remove the quotes that can be removed.*/
 
-char	*remove_cmd_quotes(t_data_qt dt)
+char	*remove_cmd_quotes(t_data_qt *dt)
 {
 	char	*new;
 	int		size_str;
@@ -61,25 +61,25 @@ char	*remove_cmd_quotes(t_data_qt dt)
 	int		i;
 	int		j;
 
-	size_str = ft_strlen(dt.tmp->cmd_split[dt.j]);
+	size_str = ft_strlen((*dt).tmp->cmd_split[(*dt).j]);
 	new = malloc((size_str + 1) * sizeof(char)); //malloc fantastique
 	if (!new)
 		return (ft_printf("minishell: malloc error\n"),
-			free(dt.tmp->cmd_split[dt.j]), NULL);
+			free((*dt).tmp->cmd_split[(*dt).j]), NULL);
 	i = -1;
 	j = 0;
 	tab = 0;
-	while (++i < size_str && dt.tmp->cmd_split[dt.j][i])
+	while (++i < size_str && (*dt).tmp->cmd_split[(*dt).j][i])
 	{
-		while (dt.tmp->rmv_qt[dt.j][tab] >= 0 && i == dt.tmp->rmv_qt[dt.j][tab])
+		while ((*dt).tmp->rmv_qt[dt->j][tab] >= 0 && i == (*dt).tmp->rmv_qt[(*dt).j][tab])
 		{
 			i++;
 			tab++;
 		}
-		new[j] = dt.tmp->cmd_split[dt.j][i];
+		new[j] = (*dt).tmp->cmd_split[(*dt).j][i];
 		j++;
 	}
-	return (new[j] = '\0', free(dt.tmp->cmd_split[dt.j]), new);
+	return (new[j] = '\0', free((*dt).tmp->cmd_split[(*dt).j]), new);
 }
 
 /*This function organizes the different expands done before
