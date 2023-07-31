@@ -6,7 +6,7 @@
 /*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 09:57:58 by amontign          #+#    #+#             */
-/*   Updated: 2023/07/30 15:00:22 by amontign         ###   ########.fr       */
+/*   Updated: 2023/07/31 15:05:24 by amontign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,10 @@ void	exit_env(t_norm_exec *normy, t_data *env, t_cmd_tab **cmd_struct)
 	free(normy->pids);
 	if (!in_builtin(last_command(cmd_struct)))
 	{
-		change_status(env, WEXITSTATUS(normy->status));
+		if (WIFEXITED(normy->status))
+			change_status(env, WEXITSTATUS(normy->status));
+		if (WIFSIGNALED(normy->status))
+			change_status(env, WTERMSIG(normy->status) + 128);
 	}
 }
 
@@ -109,7 +112,7 @@ int	handle_heredoc(t_cmd_tab *current)
 {
 	int	heredoc_fd;
 
-	heredoc_fd = open("heredoc_tmp.txt", O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	heredoc_fd = open("heredoc_tmp.txt", O_WRONLY | O_CREAT | O_TRUNC, 0666);
 	write(heredoc_fd, current->heredoc, strlen(current->heredoc));
 	close(heredoc_fd);
 	heredoc_fd = open("heredoc_tmp.txt", O_RDONLY);
@@ -124,10 +127,10 @@ int	handle_outfile(t_cmd_tab *current)
 
 	if (current->outfile_delete)
 		new_fd_out = open(current->outfile,
-				O_WRONLY | O_CREAT | O_TRUNC, 0644);
+				O_WRONLY | O_CREAT | O_TRUNC, 0666);
 	else
 		new_fd_out = open(current->outfile,
-				O_WRONLY | O_CREAT | O_APPEND, 0644);
+				O_WRONLY | O_CREAT | O_APPEND, 0666);
 	if (new_fd_out < 0)
 	{
 		//error lors de l'ouverture de l'outfile

@@ -6,7 +6,7 @@
 /*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 12:00:49 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/07/31 12:10:41 by cbernaze         ###   ########.fr       */
+/*   Updated: 2023/07/31 15:12:45 by cbernaze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,8 @@ void	parsing(t_parsing **lexing, t_data *env, char *cmd_line)
 	if (*lexing)
 	{
 		expand(lexing, env);
-		if (*lexing)
-			print_cmd(*lexing);
+		//if (*lexing)
+		//	print_cmd(*lexing);
 	}
 }
 
@@ -81,9 +81,9 @@ int	minishell_prompt(t_data **env)
 		parsing(&lexing, *env, cmd_line);
 		free(cmd_line);
 		ret = prompt_execution(&lexing, env);
+		ft_lstclear_minishell(&lexing);
 		if (ret != 257)
 			break ;
-		ft_lstclear_minishell(&lexing);
 	}
 	printf("exit\n");
 	// free(prompt_char);

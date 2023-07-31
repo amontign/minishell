@@ -6,17 +6,38 @@
 /*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/25 16:52:25 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/07/27 10:58:57 by amontign         ###   ########.fr       */
+/*   Updated: 2023/07/31 12:20:16 by amontign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
+void	change_pwd_env(char *old, char *new, t_data *env)
+{
+	while (env)
+		{
+			if (ft_strncmp(env->var, "PWD=", 4) == 0)
+			{
+				free(env->var);
+				env->var = ft_strjoin("PWD=", new);
+			}
+			else if (ft_strncmp(env->var, "OLDPWD=", 7) == 0)
+			{
+				free(env->var);
+				env->var = ft_strjoin("OLDPWD=", old);
+			}
+			env = env->next;
+		}
+}
+
 int	builtin_cd(char **dir_name, t_data *env)
 {
-	//char	buf[FILENAME_MAX];
+	char	old_path[FILENAME_MAX];
+	char	new_path[FILENAME_MAX];
+	t_data	*env2;
 
-/*Si il y a un pipe avant ou apres une command cd, cd ne s'execute pas.*/
+	env2 = env;
+	getcwd(old_path, FILENAME_MAX);
 	if (!dir_name[1])
 	{
 		while (env)
@@ -28,12 +49,16 @@ int	builtin_cd(char **dir_name, t_data *env)
 			}
 			env = env->next;
 		}
+		if (!env)
+			ft_printf("minishell: cd : HOME not set\n");
 	}
 	else if (chdir(dir_name[1]) == -1)
 	{
 		ft_printf("minishell: cd : %s: %s\n", dir_name[1], strerror(errno));
 		return (1);
 	}
+	getcwd(new_path, FILENAME_MAX);
+	change_pwd_env(old_path, new_path, env2);
 	return (0);
 }
 
