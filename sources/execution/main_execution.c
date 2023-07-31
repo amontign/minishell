@@ -6,7 +6,7 @@
 /*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 09:57:58 by amontign          #+#    #+#             */
-/*   Updated: 2023/07/30 15:00:22 by amontign         ###   ########.fr       */
+/*   Updated: 2023/07/31 09:10:16 by amontign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,10 @@ void	exit_env(t_norm_exec *normy, t_data *env, t_cmd_tab **cmd_struct)
 	free(normy->pids);
 	if (!in_builtin(last_command(cmd_struct)))
 	{
-		change_status(env, WEXITSTATUS(normy->status));
+		if (WIFEXITED(normy->status))
+			change_status(env, WEXITSTATUS(normy->status));
+		if (WIFSIGNALED(normy->status))
+			change_status(env, WTERMSIG(normy->status) + 128);
 	}
 }
 
