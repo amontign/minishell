@@ -1,11 +1,11 @@
-206 : marche pas + leak
-209 : marche pas + leak
-210 : marche pas + leak
-216
-220
+296 leaks
+382
 
+tests exit 473 a 518 leaks
 
-lorsque plusieurs redirections de sortie sont faites tous les fichiers
-doivent etre crees (exemple echo >test1 >test2)
+521 erreur
+534
+535
+536
 
 test de 0 a 299 effectues

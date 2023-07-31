@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_list.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 12:02:45 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/07/27 16:32:39 by amontign         ###   ########.fr       */
+/*   Updated: 2023/07/30 15:18:31 by cbernaze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void	ft_lstclear_minishell(t_parsing **lexing)
 	{
 		tmp = (*lexing)->next;
 		free_quotes(*lexing);
-		if (ft_strcmp_minishell((*lexing)->cmd, "error") == FALSE)
+		if (ft_strcmp_minishell((*lexing)->cmd, "error") != ERROR)
 			free((*lexing)->cmd);
 		if ((*lexing)->cmd_split)
 		{
