@@ -6,30 +6,32 @@
 /*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:41:01 by amontign          #+#    #+#             */
-/*   Updated: 2023/08/01 14:09:02 by cbernaze         ###   ########.fr       */
+/*   Updated: 2023/08/01 15:31:57 by cbernaze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-int is_directory(char *path)
+int is_directory(t_cmd_tab *cmd_struct, t_data *env)
 {
 	struct stat s;
 
-	if (stat(path,&s) == 0)
+	if (stat(cmd_struct->path,&s) == 0)
 	{
 		if (s.st_mode & S_IFDIR)
 		{
 			ft_putstr_fd("minishell: ", 2);
-			ft_putstr_fd(path, 2);
+			ft_putstr_fd(cmd_struct->path, 2);
 			ft_putstr_fd(": Is a directory\n", 2);
+			cmd_struct->exec = 0;
+			change_status(env, 126);
 			return (1);
 		}
 	}
 	return (0);
 }
 
-int	custom_path(t_cmd_tab *cmd_struct)
+int	custom_path(t_cmd_tab *cmd_struct, t_data *env)
 {
 	int		i;
 	char	*tmp;
@@ -48,7 +50,7 @@ int	custom_path(t_cmd_tab *cmd_struct)
 		free(cmd_struct->path);
 	cmd_struct->path = ft_strdup(tmp);
 	free(tmp);
-	if (is_directory(cmd_struct->path))
+	if (is_directory(cmd_struct, env))
 		return (1);
 	else if (access(cmd_struct->path, X_OK) == 0)
 		return (1);
@@ -59,11 +61,15 @@ int	custom_path(t_cmd_tab *cmd_struct)
 			ft_putstr_fd("minishell: ", 2);
 			ft_putstr_fd(cmd_struct->path, 2);
 			ft_putstr_fd(": Permission denied\n", 2);
+			cmd_struct->exec = 0;
+			change_status(env, 1);
 			return (0);
 		}
 		ft_putstr_fd("minishell: ", 2);
 		ft_putstr_fd(cmd_struct->path, 2);
 		ft_putstr_fd(": No such file or directory\n", 2);
+		change_status(env, 127);
+		cmd_struct->exec = 0;
 		return (0);
 	}
 }
@@ -98,7 +104,7 @@ int	place_path(char **paths, t_cmd_tab *c, t_data *env)
 				c->path = ft_strdup(path2);
 			free(path2);
 		}
-		if (!custom_path(c) && !c->path && !in_builtin(c->cmd_name))
+		if (!custom_path(c, env) && !c->path && !in_builtin(c->cmd_name))
 		{
 			c->exec = 0;
 			path_error(c->cmd_name, env);
