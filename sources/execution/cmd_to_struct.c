@@ -6,7 +6,7 @@
 /*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:41:01 by amontign          #+#    #+#             */
-/*   Updated: 2023/07/30 17:03:16 by amontign         ###   ########.fr       */
+/*   Updated: 2023/08/01 13:27:06 by amontign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,14 +68,15 @@ int	custom_path(t_cmd_tab *cmd_struct)
 	}
 }
 
-void	path_error(char *str)
+void	path_error(char *str, t_data *env)
 {
 	ft_putstr_fd("minishell: ", 2);
 	ft_putstr_fd(str, 2);
 	ft_putstr_fd(": command not found\n", 2);
+	change_status(env, 127);
 }
 
-int	place_path(char **paths, t_cmd_tab *c)
+int	place_path(char **paths, t_cmd_tab *c, t_data *env)
 {
 	int		i;
 	char	*path;
@@ -100,7 +101,7 @@ int	place_path(char **paths, t_cmd_tab *c)
 		if (!custom_path(c) && !c->path && !in_builtin(c->cmd_name))
 		{
 			c->exec = 0;
-			path_error(c->cmd_name);
+			path_error(c->cmd_name, env);
 		}
 		c = c->next;
 	}
@@ -123,7 +124,7 @@ int	find_place_path(t_cmd_tab **cmd_struct, t_data *env)
 		}
 		env = env->next;
 	}
-	if (!place_path(paths, *cmd_struct))
+	if (!place_path(paths, *cmd_struct, env))
 	{
 		free_char_tab(paths);
 		return (0);
@@ -265,7 +266,7 @@ void	add_true_cmd(t_parsing **lexing)
 			}
 			if (!cmd_find)
 			{
-				t_parsing *new_cmd = ft_lstnew_minishell(ft_strdup("true"), 4, TOKEN_CMD);
+				t_parsing *new_cmd = ft_lstnew_minishell("true", 4, TOKEN_CMD);
 				new_cmd->next = iter->next;
 				new_cmd->previous = iter;
 				new_cmd->cmd_split = ft_split(new_cmd->cmd, ' ');
