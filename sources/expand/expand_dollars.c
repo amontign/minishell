@@ -6,7 +6,7 @@
 /*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/03 16:21:58 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/07/30 15:07:53 by amontign         ###   ########.fr       */
+/*   Updated: 2023/07/31 16:46:46 by amontign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,15 @@ void	subst_dollars_2(char **new, t_exp_dol data, t_parsing **tmp, int tab)
 			if (data.size_value[tab] > 0)
 			{
 				while (data.value_var[tab][++data.k])
-					new[0][++data.j] = data.value_var[tab][data.k];
+				{
+					if (data.value_var[tab][data.k] == '"' || data.value_var[tab][data.k] == '\'')
+					{
+						new[0][++data.j] = '\a';
+						new[0][++data.j] = data.value_var[tab][data.k];
+					}
+					else
+						new[0][++data.j] = data.value_var[tab][data.k];
+				}
 			}
 			data.i += (*tmp)->dollar_size[tab] - 1;
 			tab++;
@@ -143,7 +151,14 @@ int	fill_data_dol_2(t_exp_dol *data, t_parsing *tmp, int *j, int tab)
 	(*data).var_env[tab][i] = '\0';
 	(*data).value_var[tab] = getenv_minish((*data).env, (*data).var_env[tab]);
 	if ((*data).value_var[tab])
+	{
 		(*data).size_value[tab] = ft_strlen((*data).value_var[tab]);
+		/*   ajout de la place pour les \   */
+		for (i = 0; (*data).value_var[tab][i]; i++) {
+			if ((*data).value_var[tab][i] == '"' || (*data).value_var[tab][i] == '\'')
+				(*data).size_value[tab] += 1;
+		}/**/
+	}
 	else
 		(*data).size_value[tab] = 0;
 	// ft_printf("VAR = %s, VALUE = %s, SIZE = %d\n", (*data).var_env[tab], (*data).value_var[tab], (*data).size_value[tab]);

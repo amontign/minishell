@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   split_args.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 10:07:22 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/07/08 18:20:22 by cbernaze         ###   ########.fr       */
+/*   Updated: 2023/08/01 07:58:43 by amontign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,13 +46,13 @@ int	len_arg(char *str)
 	size_str = ft_strlen(str);
 	while (len < size_str && str[len] != ' ' && str[len] != '\t')
 	{
-		if (str[len] == SINGLE_QUOTE)
+		if (str[len] == SINGLE_QUOTE && (len == 0 || str[len - 1] != '\a'))
 		{
 			len += 1;
 			while (str[len] != SINGLE_QUOTE && str[len])
 				len += 1;
 		}
-		if (str[len] == DOUBLE_QUOTE)
+		if (str[len] == DOUBLE_QUOTE && (len == 0 || str[len - 1] != '\a'))
 		{
 			len += 1;
 			while (str[len] != DOUBLE_QUOTE && str[len])
