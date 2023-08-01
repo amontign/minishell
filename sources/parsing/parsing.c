@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/21 16:39:07 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/07/30 18:47:04 by cbernaze         ###   ########.fr       */
+/*   Updated: 2023/07/31 17:47:41 by amontign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ int	pipe_at_end(char *cmd_line)
 	while (cmd_line[i])
 		i++;
 	i -= 1;
-	while (i > 0 && cmd_line[i] && (cmd_line[i] == ' ' || (cmd_line[i] > 6 && cmd_line[i] < 14)))
+	while (i > 0 && cmd_line[i] && (cmd_line[i] == ' ' || (cmd_line[i] > 8 && cmd_line[i] < 14)))
 		i--;
 	if (i > 0 && cmd_line[i] == '|')
 		return (TRUE);
@@ -87,7 +87,7 @@ int	pipe_at_start(char *cmd_line)
 
 	i = 0;
 	while (cmd_line[i] && (cmd_line[i] == ' '
-			|| (cmd_line[i] > 6 && cmd_line[i] < 14)))
+			|| (cmd_line[i] > 8 && cmd_line[i] < 14)))
 		i++;
 	if (cmd_line[i] == '|' && cmd_line[i + 1] == '|')
 		return (ft_printf("minishell: syntax error near \
@@ -144,7 +144,7 @@ unexpected token `%c'\n", cmd_line[*i + 1]), ERROR_SYNTAX);
 	if (cmd_line[*i] && (cmd_line[*i] == '<' || cmd_line[*i] == '>'))
 		*i += 1;
 	while (cmd_line[*i] && (cmd_line[*i] == ' '
-			|| (cmd_line[*i] > 6 && cmd_line[*i] < 14)))
+			|| (cmd_line[*i] > 8 && cmd_line[*i] < 14)))
 		*i += 1;
 	if (cmd_line[*i] == '\0')
 		return (ft_printf("minishell: syntax error near \

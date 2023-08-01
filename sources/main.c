@@ -6,7 +6,7 @@
 /*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 12:00:49 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/07/31 15:12:45 by cbernaze         ###   ########.fr       */
+/*   Updated: 2023/08/01 10:08:53 by cbernaze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	parsing(t_parsing **lexing, t_data *env, char *cmd_line)
 
 	i = 0;
 	while (cmd_line[i] && (cmd_line[i] == ' '
-			|| (cmd_line[i] > 6 && cmd_line[i] < 14)))
+			|| (cmd_line[i] > 8 && cmd_line[i] < 14)))
 		i++;
 	if (cmd_line[i] == '\0')
 		return ;

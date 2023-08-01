@@ -6,7 +6,7 @@
 /*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 18:09:15 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/07/31 15:06:23 by cbernaze         ###   ########.fr       */
+/*   Updated: 2023/08/01 10:09:29 by cbernaze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	expand_cmd_quotes_2(t_parsing **tmp, t_data_qt *dt, char *arg)
 	size = ft_strlen(arg);
 	while ((*dt).i < size && arg[(*dt).i])
 	{
-		if (arg[(*dt).i] == SINGLE_QUOTE)
+		if (arg[(*dt).i] == SINGLE_QUOTE && ((*dt).i == 0 || arg[(*dt).i - 1] != '\a'))
 		{
 			(*tmp)->rmv_qt[(*dt).j][(*dt).k] = (*dt).i;
 			(*dt).i++;
@@ -66,7 +66,7 @@ void	expand_cmd_quotes_2(t_parsing **tmp, t_data_qt *dt, char *arg)
 
 void	expand_cmd_quotes_3(t_parsing **tmp, t_data_qt *dt, char *arg)
 {
-	if (arg[(*dt).i] == DOUBLE_QUOTE)
+	if (arg[(*dt).i] == DOUBLE_QUOTE && ((*dt).i == 0 || arg[(*dt).i - 1] != '\a'))
 	{
 		(*tmp)->rmv_qt[(*dt).j][(*dt).k] = (*dt).i;
 		(*dt).k += 1;
