@@ -6,7 +6,7 @@
 /*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 11:56:11 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/08/01 10:48:23 by cbernaze         ###   ########.fr       */
+/*   Updated: 2023/08/01 14:08:26 by cbernaze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -217,6 +217,7 @@ void		free_cmd_struct(t_cmd_tab **cmd_struct);
 void		change_status(t_data *env, int status);
 int			prompt_execution(t_parsing **lexing, t_data **env);
 int			in_builtin(char *cmd);
+void		change_status(t_data *env, int status);
 char		**env_to_tab(t_data *env);
 
 /*cmd_struct_utils.c*/

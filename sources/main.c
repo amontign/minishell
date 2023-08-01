@@ -6,7 +6,7 @@
 /*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 12:00:49 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/08/01 11:19:31 by cbernaze         ###   ########.fr       */
+/*   Updated: 2023/08/01 14:08:40 by cbernaze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,8 @@ int	minishell_prompt(t_data **env)
 	while (42)
 	{
 		cmd_line = readline("minishell> ");
+		if (child_process == -1)
+			change_status(*env, 128 + SIGINT);
 		if (!cmd_line)
 			break ;
 		remove_newline(&cmd_line);

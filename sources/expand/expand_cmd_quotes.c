@@ -6,7 +6,7 @@
 /*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 18:09:15 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/08/01 10:09:29 by cbernaze         ###   ########.fr       */
+/*   Updated: 2023/08/01 14:09:11 by cbernaze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void	expand_cmd_quotes_2(t_parsing **tmp, t_data_qt *dt, char *arg)
 			(*tmp)->rmv_qt[(*dt).j][(*dt).k] = (*dt).i;
 			(*dt).i++;
 			(*dt).k++;
-			while (arg[(*dt).i] != SINGLE_QUOTE && arg[(*dt).i] != '\0')
+			while ((arg[(*dt).i] != SINGLE_QUOTE || ((*dt).i > 0 && arg[(*dt).i - 1] == '\a')) && arg[(*dt).i] != '\0')
 				(*dt).i++;
 			(*tmp)->rmv_qt[(*dt).j][(*dt).k] = (*dt).i;
 			(*dt).k++;
@@ -71,7 +71,7 @@ void	expand_cmd_quotes_3(t_parsing **tmp, t_data_qt *dt, char *arg)
 		(*tmp)->rmv_qt[(*dt).j][(*dt).k] = (*dt).i;
 		(*dt).k += 1;
 		(*dt).i += 1;
-		while (arg[(*dt).i] != DOUBLE_QUOTE && arg[(*dt).i] != '\0')
+		while ((arg[(*dt).i] != DOUBLE_QUOTE || ((*dt).i > 0 && arg[(*dt).i - 1] == '\a')) && arg[(*dt).i] != '\0')
 			(*dt).i += 1;
 		(*tmp)->rmv_qt[(*dt).j][(*dt).k] = (*dt).i;
 		(*dt).k += 1;
