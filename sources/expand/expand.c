@@ -6,7 +6,7 @@
 /*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 13:33:09 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/08/01 07:58:08 by amontign         ###   ########.fr       */
+/*   Updated: 2023/08/01 10:43:44 by amontign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	how_many_cmd_quotes_3(char *arg, int *i, int *quotes)
 	{
 		*quotes += 1;
 		*i += 1;
-		while (arg[*i] != SINGLE_QUOTE && arg[*i] != '\0')
+		while ((arg[*i] != SINGLE_QUOTE || (arg[*i] == SINGLE_QUOTE && *i > 0 && arg[*i - 1] == '\a')) && arg[*i] != '\0')
 			*i += 1;
 		*quotes += 1;
 	}
@@ -43,7 +43,7 @@ void	how_many_cmd_quotes_3(char *arg, int *i, int *quotes)
 	{
 		*quotes += 1;
 		*i += 1;
-		while (arg[*i] != DOUBLE_QUOTE && arg[*i] != '\0')
+		while ((arg[*i] != DOUBLE_QUOTE || (arg[*i] == DOUBLE_QUOTE && *i > 0 && arg[*i - 1] == '\a')) && arg[*i] != '\0')
 			*i += 1;
 		*quotes += 1;
 	}
