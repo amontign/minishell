@@ -6,7 +6,7 @@
 /*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 12:00:49 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/08/01 15:51:54 by cbernaze         ###   ########.fr       */
+/*   Updated: 2023/08/01 15:58:34 by cbernaze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	remove_newline(char **name_eval)
 /*This function launches the parsing, the tokenisation, the expand and
 returns the formated command line ready for the execution.*/
 
-void	parsing(t_parsing **lexing, t_data *env, char *cmd_line)
+void	parsing(t_parsing **lexing, t_data **env, char *cmd_line)
 {
 	int	i;
 
@@ -41,7 +41,7 @@ void	parsing(t_parsing **lexing, t_data *env, char *cmd_line)
 	if (cmd_line[i] == '\0')
 		return ;
 	if (syntax(cmd_line) == ERROR_SYNTAX)
-	 	return ;
+		return ;
 	*lexing = tokenisation(cmd_line);
 	final_parsing(lexing);
 	if (*lexing)
@@ -82,15 +82,10 @@ int	minishell_prompt(t_data **env)
 			add_history(cmd_line);
 		parsing(&lexing, *env, cmd_line);
 		free(cmd_line);
-		if (lexing)
-		{
-			ret = prompt_execution(&lexing, env);
-			ft_lstclear_minishell(&lexing);
-			if (ret != 257)
-				break ;
-		}
-		else
-			ft_lstclear_minishell(&lexing);
+		ret = prompt_execution(&lexing, env);
+		ft_lstclear_minishell(&lexing);
+		if (ret != 257)
+			break ;
 	}
 	printf("exit\n");
 	// free(prompt_char);
