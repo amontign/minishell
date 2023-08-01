@@ -6,38 +6,49 @@
 /*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/25 16:52:25 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/07/31 12:20:16 by amontign         ###   ########.fr       */
+/*   Updated: 2023/08/01 16:32:33 by amontign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void	change_pwd_env(char *old, char *new, t_data *env)
+void	change_pwd_env(char *new, t_data *env)
 {
-	while (env)
+	t_data	*old_env;
+	char	*old_env_char;
+
+	old_env = env;
+	while (old_env)
+	{
+		if (ft_strncmp(old_env->var, "PWD=", 4) == 0)
 		{
-			if (ft_strncmp(env->var, "PWD=", 4) == 0)
-			{
-				free(env->var);
-				env->var = ft_strjoin("PWD=", new);
-			}
-			else if (ft_strncmp(env->var, "OLDPWD=", 7) == 0)
-			{
-				free(env->var);
-				env->var = ft_strjoin("OLDPWD=", old);
-			}
-			env = env->next;
+			old_env_char = ft_strdup(old_env->var + 4);
+			free(old_env->var);
+			old_env->var = ft_strjoin("PWD=", new);
+			break ;
 		}
+		old_env = old_env->next;
+	}
+	while (env)
+	{
+		if (ft_strncmp(env->var, "OLDPWD=", 7) == 0)
+		{
+			free(env->var);
+			env->var = ft_strjoin("OLDPWD=", old_env_char);
+			break ;
+		}
+		env = env->next;
+	}
+	if (old_env_char)
+		free(old_env_char);
 }
 
 int	builtin_cd(char **dir_name, t_data *env)
 {
-	char	old_path[FILENAME_MAX];
 	char	new_path[FILENAME_MAX];
 	t_data	*env2;
 
 	env2 = env;
-	getcwd(old_path, FILENAME_MAX);
 	if (!dir_name[1])
 	{
 		while (env)
@@ -58,7 +69,7 @@ int	builtin_cd(char **dir_name, t_data *env)
 		return (1);
 	}
 	getcwd(new_path, FILENAME_MAX);
-	change_pwd_env(old_path, new_path, env2);
+	change_pwd_env(new_path, env2);
 	return (0);
 }
 

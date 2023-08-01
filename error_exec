@@ -7,3 +7,18 @@
 536
 
 test de 0 a 299 effectues
+
+
+a partir de 400 :
+
+410
+420
+431 : non gere
+433 ?
+435
+439 : code
+441 : code
+442
+444
+451 : pwd leak (aller chercher la var d'env)
+464
