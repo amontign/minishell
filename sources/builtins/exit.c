@@ -6,7 +6,7 @@
 /*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 11:38:26 by amontign          #+#    #+#             */
-/*   Updated: 2023/07/31 11:23:30 by amontign         ###   ########.fr       */
+/*   Updated: 2023/08/01 14:36:54 by amontign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,6 +119,7 @@ int	builtin_exit(char **args, t_norm_exec *normy, t_cmd_tab *current)
 			display_demon();
 		if (command_only_e(current))
 			normy->exit = ft_atoi(args[1]) % 256;
+		ret = ft_atoi(args[1]) % 256;
 	}
 	if (!command_only_e(current))
 		return (ret);

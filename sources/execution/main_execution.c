@@ -6,7 +6,7 @@
 /*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 09:57:58 by amontign          #+#    #+#             */
-/*   Updated: 2023/08/01 13:38:16 by amontign         ###   ########.fr       */
+/*   Updated: 2023/08/01 15:18:34 by amontign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,20 @@ char	*last_command(t_cmd_tab **cmd_struct)
 	return (NULL);
 }
 
+t_cmd_tab	*last_command_struct(t_cmd_tab **cmd_struct)
+{
+	t_cmd_tab	*current;
+	
+	current = *cmd_struct;
+	while (current && current->next)
+	{
+		current = current->next;
+	}
+	if (current)
+		return (current);
+	return (NULL);
+}
+
 void	change_status(t_data *env, int status)
 {
 	char		*tmp;
@@ -97,7 +111,7 @@ void	exit_env(t_norm_exec *normy, t_data *env, t_cmd_tab **cmd_struct)
 	while (++i < normy->num_cmds)
 		waitpid(normy->pids[i], &(normy->status), 0);
 	free(normy->pids);
-	if (!in_builtin(last_command(cmd_struct)) && count_cmds(*cmd_struct) > 0)
+	if (!in_builtin(last_command(cmd_struct)) && last_command_struct(cmd_struct)->exec != 0)
 	{
 		if (WIFEXITED(normy->status))
 			change_status(env, WEXITSTATUS(normy->status));
@@ -229,7 +243,8 @@ int	exec_builtin(char **args, t_norm_exec *normy, t_data **env, t_cmd_tab *curre
 	if (current->outfile)
 		close(fd);
 	normy->output = 0;
-	change_status(*env, status);
+	if (in_builtin(last_command(&current)))
+		change_status(*env, status);
 	return (0);
 }
 
