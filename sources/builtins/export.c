@@ -6,7 +6,7 @@
 /*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 11:35:58 by amontign          #+#    #+#             */
-/*   Updated: 2023/08/02 12:07:59 by cbernaze         ###   ########.fr       */
+/*   Updated: 2023/08/02 13:04:35 by cbernaze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,6 +159,7 @@ int	builtin_export(char **args, t_data *env, int fd, t_cmd_tab *current)
 	int	rslt;
 
 	i = 1;
+	rslt = 0;
 	if (!args[1])
 		export_no_args(env, fd);
 	else if (command_only(current))
@@ -178,5 +179,5 @@ int	builtin_export(char **args, t_data *env, int fd, t_cmd_tab *current)
 			i++;
 		}
 	}
-	return (0);
+	return (rslt);
 }
