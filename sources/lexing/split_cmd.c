@@ -6,7 +6,7 @@
 /*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 19:35:56 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/08/02 16:29:58 by cbernaze         ###   ########.fr       */
+/*   Updated: 2023/08/02 17:54:38 by cbernaze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,13 +104,11 @@ void	concatenate_cmds(t_parsing **lexing, t_parsing *node)
 		tmp->size += concat.to_concat->size;
 		(free_cmds(&concat.cmd1, &concat.cmd2), clear_node(&concat.to_concat));
 	}
-	else if (tmp && tmp->token_type != TOKEN_CMD)
+	else
 	{
 		tmp = *lexing;
 		ft_lstadd_at_index(&tmp, concat.to_concat, concat.to_concat->index - 1);
 	}
-	else
-		lexing = &original;
 	(set_index(lexing));
 }
 

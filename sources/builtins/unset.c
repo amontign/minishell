@@ -6,7 +6,7 @@
 /*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 11:14:23 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/07/30 15:11:19 by cbernaze         ###   ########.fr       */
+/*   Updated: 2023/08/02 17:38:07 by cbernaze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int	command_only2(t_cmd_tab *current)
 	return (1);
 }
 
-int	builtin_unset(t_data **data, char **to_unset, t_cmd_tab *current)
+int	builtin_unset(t_data **data, char **to_unset, t_cmd_tab *current, int fd)
 {
 	t_data	*tmp;
 	t_data	*next;
@@ -52,6 +52,12 @@ int	builtin_unset(t_data **data, char **to_unset, t_cmd_tab *current)
 	int		i;
 
 	tmp = *data;
+	i = -1;
+	while (to_unset[++i])
+	{
+		if (arg_is_valid(to_unset[i], fd) == 0)
+			return (change_status(*data, 1), 1);
+	}
 	i = 1;
 	if (!command_only2(current))
 		return (0);

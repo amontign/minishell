@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main_execution.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 09:57:58 by amontign          #+#    #+#             */
-/*   Updated: 2023/08/02 12:13:24 by amontign         ###   ########.fr       */
+/*   Updated: 2023/08/02 17:45:35 by cbernaze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ char	**env_to_tab(t_data *env)
 char	*last_command(t_cmd_tab **cmd_struct)
 {
 	t_cmd_tab	*current;
-	
+
 	current = *cmd_struct;
 	while (current && current->next)
 	{
@@ -58,7 +58,7 @@ char	*last_command(t_cmd_tab **cmd_struct)
 t_cmd_tab	*last_command_struct(t_cmd_tab **cmd_struct)
 {
 	t_cmd_tab	*current;
-	
+
 	current = *cmd_struct;
 	while (current && current->next)
 	{
@@ -231,9 +231,9 @@ int	exec_builtin(char **args, t_norm_exec *normy, t_data **env, t_cmd_tab *curre
 	if (ft_strcmp(args[0], "cd") == 0)
 		status = builtin_cd(args, *env);
 	if (ft_strcmp(args[0], "unset") == 0)
-		status = builtin_unset(env, args, current);
+		status = builtin_unset(env, args, current, fd);
 	if (ft_strcmp(args[0], "pwd") == 0)
-		status = builtin_pwd(args, fd, *env);
+		status = builtin_pwd(args, fd);
 	if (ft_strcmp(args[0], "export") == 0)
 		status = builtin_export(args, *env, fd, current);
 	if (ft_strcmp(args[0], "env") == 0)

@@ -1,19 +1,20 @@
-War! The Republic is crumbling
-under attacks by the ruthless
-Sith Lord, Count Dooku.
-There are heroes on both sides.
-Evil is everywhere.
+It is a dark time for the
+Rebellion. Although the Death
+Star has been destroyed,
+Imperial troops have driven the
+Rebel forces from their hidden
+base and pursued them across
+the galaxy.
 
-In a stunning move, the
-fiendish droid leader, General
-Grievous, has swept into the
-Republic capital and kidnapped
-Chancellor Palpatine, leader of
-the Galactic Senate.
+Evading the dreaded Imperial
+Starfleet, a group of freedom
+fighters led by Luke Skywalker
+has established a new secret
+base on the remote ice world
+of Hoth.
 
-As the Separatist Droid Army
-attempts to flee the besieged
-capital with their valuable
-hostage, two Jedi Knights lead a
-desperate mission to rescue the
-captive Chancellor....
+The evil lord Darth Vader,
+obsessed with finding young
+Skywalker, has dispatched
+thousands of remote probes into
+the far reaches of space....
