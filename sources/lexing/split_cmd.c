@@ -6,7 +6,7 @@
 /*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 19:35:56 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/08/02 18:39:45 by cbernaze         ###   ########.fr       */
+/*   Updated: 2023/08/02 19:01:20 by cbernaze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,13 +62,14 @@ char	*trim_cmd(char	*cmd_line, int *i, int *len)
 		*i += 1;
 		j++;
 	}
-	while (*i < ft_strlen(cmd_line) && (cmd_line[*i] == ' ' || cmd_line[*i] == '\t'))
+	while (*i < ft_strlen(cmd_line) && (cmd_line[*i] == ' '
+			|| cmd_line[*i] == '\t'))
 		*i += 1;
 	sub_tab[j] = '\0';
 	return (sub_tab);
 }
 
-void	ft_lstadd_at_index(t_parsing **lexing, t_parsing *new, int index)
+void	ft_lstadd_at_id(t_parsing **lexing, t_parsing *new, int index)
 {
 	t_parsing	*tmp;
 
@@ -105,13 +106,9 @@ void	concatenate_cmds(t_parsing **lexing, t_parsing *node)
 		(free_cmds(&concat.cmd1, &concat.cmd2), clear_node(&concat.to_concat));
 	}
 	else
-	{
-		tmp = *lexing;
-		ft_lstadd_at_index(&tmp, concat.to_concat, concat.to_concat->index - 1);
-	}
+		ft_lstadd_at_id(lexing, concat.to_concat, concat.to_concat->index - 1);
 	(set_index(lexing));
 }
-
 
 /*Parce que sinon ca serait trop simple, une petite fonction qui va concatener
 des commandes si elles sont coupees par des redirections.*/

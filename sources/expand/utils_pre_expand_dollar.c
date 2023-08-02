@@ -6,7 +6,7 @@
 /*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/30 11:55:24 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/07/30 18:32:35 by cbernaze         ###   ########.fr       */
+/*   Updated: 2023/08/02 19:13:23 by cbernaze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,9 @@ int	am_a_lonesome_dollar(char *cmd, int dollar_pos, int choice)
 	if (dollar_pos >= 3)
 	{
 		if (((cmd[dollar_pos - 1] == SINGLE_QUOTE
-			|| cmd[dollar_pos - 1] == DOUBLE_QUOTE) && cmd[dollar_pos - 2] == '<'
-			&& cmd[dollar_pos - 3] == '<'))
+					|| cmd[dollar_pos - 1] == DOUBLE_QUOTE)
+				&& cmd[dollar_pos - 2] == '<'
+				&& cmd[dollar_pos - 3] == '<'))
 			return (TRUE);
 	}
 	return (FALSE);

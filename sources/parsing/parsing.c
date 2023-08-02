@@ -6,7 +6,7 @@
 /*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/21 16:39:07 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/08/01 15:03:11 by cbernaze         ###   ########.fr       */
+/*   Updated: 2023/08/02 19:38:37 by cbernaze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,8 @@ int	pipe_at_end(char *cmd_line)
 	while (cmd_line[i])
 		i++;
 	i -= 1;
-	while (i > 0 && cmd_line[i] && (cmd_line[i] == ' ' || (cmd_line[i] > 8 && cmd_line[i] < 14)))
+	while (i > 0 && cmd_line[i] && (cmd_line[i] == ' '
+			|| (cmd_line[i] > 8 && cmd_line[i] < 14)))
 		i--;
 	if (i > 0 && cmd_line[i] == '|')
 		return (TRUE);

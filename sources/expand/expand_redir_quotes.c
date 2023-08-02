@@ -6,7 +6,7 @@
 /*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/30 09:44:18 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/07/08 19:02:40 by cbernaze         ###   ########.fr       */
+/*   Updated: 2023/08/02 19:06:51 by cbernaze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,22 +47,26 @@ int	expand_redir_quotes(t_parsing **expand)
 
 void	expand_redir_quotes_2(t_parsing **tmp, int *i, int *j)
 {
-	if ((*tmp)->cmd[*i] == SINGLE_QUOTE)
+	if ((*tmp)->cmd[*i] == SINGLE_QUOTE
+		&& (*i == 0 || (*tmp)->cmd[*i - 1] != '\a'))
 	{
 		(*tmp)->rmv_qt[0][*j] = *i;
 		*j += 1;
 		*i += 1;
-		while ((*tmp)->cmd[*i] != SINGLE_QUOTE && (*tmp)->cmd[*i] != '\0')
+		while (((*tmp)->cmd[*i] != SINGLE_QUOTE || (*i > 0
+					&& (*tmp)->cmd[*i - 1] == '\a')) && (*tmp)->cmd[*i] != '\0')
 			*i += 1;
 		(*tmp)->rmv_qt[0][*j] = *i;
 		*j += 1;
 	}
-	if ((*tmp)->cmd[*i] == DOUBLE_QUOTE)
+	if ((*tmp)->cmd[*i] == DOUBLE_QUOTE
+		&& (*i == 0 || (*tmp)->cmd[*i - 1] != '\a'))
 	{
 		(*tmp)->rmv_qt[0][*j] = *i;
 		*j += 1;
 		*i += 1;
-		while ((*tmp)->cmd[*i] != DOUBLE_QUOTE && (*tmp)->cmd[*i] != '\0')
+		while (((*tmp)->cmd[*i] != DOUBLE_QUOTE || (*i > 0
+					&& (*tmp)->cmd[*i - 1] == '\a')) && (*tmp)->cmd[*i] != '\0')
 			*i += 1;
 		(*tmp)->rmv_qt[0][*j] = *i;
 		*j += 1;

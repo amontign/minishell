@@ -6,7 +6,7 @@
 /*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 13:33:09 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/08/01 14:09:25 by cbernaze         ###   ########.fr       */
+/*   Updated: 2023/08/02 19:23:59 by cbernaze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,8 @@ void	how_many_cmd_quotes_3(char *arg, int *i, int *quotes)
 	{
 		*quotes += 1;
 		*i += 1;
-		while ((arg[*i] != SINGLE_QUOTE || (arg[*i] == SINGLE_QUOTE && *i > 0 && arg[*i - 1] == '\a')) && arg[*i] != '\0')
+		while ((arg[*i] != SINGLE_QUOTE || (arg[*i] == SINGLE_QUOTE
+					&& *i > 0 && arg[*i - 1] == '\a')) && arg[*i] != '\0')
 			*i += 1;
 		*quotes += 1;
 	}
@@ -43,7 +44,8 @@ void	how_many_cmd_quotes_3(char *arg, int *i, int *quotes)
 	{
 		*quotes += 1;
 		*i += 1;
-		while ((arg[*i] != DOUBLE_QUOTE || (arg[*i] == DOUBLE_QUOTE && *i > 0 && arg[*i - 1] == '\a')) && arg[*i] != '\0')
+		while ((arg[*i] != DOUBLE_QUOTE || (arg[*i] == DOUBLE_QUOTE
+					&& *i > 0 && arg[*i - 1] == '\a')) && arg[*i] != '\0')
 			*i += 1;
 		*quotes += 1;
 	}
@@ -67,59 +69,48 @@ char	*remove_cmd_quotes(t_data_qt *dt)
 		return (ft_printf("minishell: malloc error\n"),
 			free((*dt).tmp->cmd_split[(*dt).j]), NULL);
 	i = -1;
-	j = 0;
+	j = -1;
 	tab = 0;
 	while (++i < size_str && (*dt).tmp->cmd_split[(*dt).j][i])
 	{
-		while ((*dt).tmp->rmv_qt[dt->j][tab] >= 0 && i == (*dt).tmp->rmv_qt[(*dt).j][tab])
+		while ((*dt).tmp->rmv_qt[dt->j][tab] >= 0
+					&& i == (*dt).tmp->rmv_qt[(*dt).j][tab])
 		{
 			i++;
 			tab++;
 		}
-		new[j] = (*dt).tmp->cmd_split[(*dt).j][i];
-		j++;
+		new[++j] = (*dt).tmp->cmd_split[(*dt).j][i];
 	}
-	return (new[j] = '\0', free((*dt).tmp->cmd_split[(*dt).j]), new);
+	return (new[++j] = '\0', free((*dt).tmp->cmd_split[(*dt).j]), new);
 }
 
-char *removeChar(char *str)
+char	*remove_char(char *str)
 {
-    char		*newStr;
+	char		*new_str;
 	int			i;
 	int			j;
 
-	i = 0;
+	i = -1;
 	j = ft_strlen(str);
-	while (str[i])
+	while (str[++i])
 	{
 		if (str[i] == '\a')
 			j--;
-		i++;
 	}
-	newStr = malloc((j + 1) * sizeof(char));
-	if (newStr == NULL)
-	{
-		printf("Erreur d'allocation de mémoire\n");
-		exit(1);
-	}
-	i = 0;
+	new_str = malloc((j + 1) * sizeof(char));
+	if (new_str == NULL)
+		(printf("Erreur d'allocation de mémoire\n"), exit(1));
+	i = -1;
 	j = 0;
-	while (str[i])
+	while (str[++i])
 	{
 		if (str[i] != '\a')
-		{
-			newStr[j] = str[i];
-		}
+			new_str[j] = str[i];
 		else
-		{
 			j--;
-		}
 		j++;
-		i++;
 	}
-	free(str);
-	newStr[j] = '\0';
-	return (newStr);
+	return (new_str[j] = '\0', free(str), new_str);
 }
 
 void	special(t_parsing **expand)
@@ -133,7 +124,7 @@ void	special(t_parsing **expand)
 		i = 0;
 		while (actual->cmd_split && actual->cmd_split[i])
 		{
-			actual->cmd_split[i] = removeChar(actual->cmd_split[i]);
+			actual->cmd_split[i] = remove_char(actual->cmd_split[i]);
 			i++;
 		}
 		actual = actual->next;

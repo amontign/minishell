@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   create_env.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/09 15:54:47 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/07/23 13:29:31 by amontign         ###   ########.fr       */
+/*   Updated: 2023/08/02 19:38:04 by cbernaze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,8 +95,7 @@ int	ft_getenv(t_data **data, char **envp)
 		new = ft_lstnew_data(exit_val);
 		if (!new)
 			return (ft_lstclear_data(data), free(exit_val), ERROR);
-		free(exit_val);
-		ft_lstadd_back_data(data, new);
+		(free(exit_val), ft_lstadd_back_data(data, new));
 	}
 	return (0);
 }

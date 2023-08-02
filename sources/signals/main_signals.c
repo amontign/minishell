@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main_signals.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 16:37:01 by amontign          #+#    #+#             */
-/*   Updated: 2023/08/01 13:14:21 by amontign         ###   ########.fr       */
+/*   Updated: 2023/08/02 19:38:57 by cbernaze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ void	handle_sigint(int sig)
 	}
 	else
 	{
-
 		child_process = -1;
 		spaces = malloc(sizeof(char) * (50 + 1));
 		i = -1;

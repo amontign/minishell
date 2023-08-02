@@ -6,7 +6,7 @@
 /*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/11 11:18:06 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/07/30 18:08:49 by cbernaze         ###   ########.fr       */
+/*   Updated: 2023/08/02 19:11:53 by cbernaze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,8 +70,10 @@ int	pre_expand_dollar_3(t_parsing **tmp, int *i, int choice, int *tab)
 			return (ERROR);
 		*i -= set_back;
 	}
-	else if (choice == 2 && (*tmp)->cmd[*i] == '$' && ((*tmp)->cmd[*i + 1] == '?'
-		|| ft_isalnum_env((*tmp)->cmd[*i + 1]) == TRUE) && am_a_lonesome_dollar((*tmp)->cmd, *i, 2) == FALSE)
+	else if (choice == 2 && (*tmp)->cmd[*i] == '$'
+		&& ((*tmp)->cmd[*i + 1] == '?'
+			|| ft_isalnum_env((*tmp)->cmd[*i + 1]) == TRUE)
+		&& am_a_lonesome_dollar((*tmp)->cmd, *i, 2) == FALSE)
 	{
 		set_back = i_need_a_dollar(tmp, *i, choice, tab);
 		if (set_back == ERROR)

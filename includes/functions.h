@@ -6,7 +6,7 @@
 /*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 11:56:11 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/08/02 18:39:57 by cbernaze         ###   ########.fr       */
+/*   Updated: 2023/08/02 19:51:23 by cbernaze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,8 +105,10 @@ int			i_need_a_dollar(t_parsing **tmp, int dol_pos, int choice, int *tab);
 int			expand_dollars(t_parsing **expand, t_data *env);
 char		*substitute_dollars(t_parsing **tmp, t_data *env, int nb_dol);
 void		subst_dollars_2(char **new, t_exp_dol data, t_parsing **tmp, int tab);
+void		subst_dollars_3(t_exp_dol *data, int tab, char **new);
 int			f_dt_dol(t_exp_dol *data, t_data *env, t_parsing *tmp, int nb_dol);
 int			fill_data_dol_2(t_exp_dol *data, t_parsing *tmp, int *j, int tab);
+void		fill_data_dol_3(t_exp_dol *data, int tab);
 
 /*utils_expand_dollars.c*/
 
@@ -177,6 +179,7 @@ int			builtin_cd(char **dir_name, t_data *env,  t_cmd_tab *current);
 /*unset.c*/
 
 void		remove_env_var(t_data *tmp);
+void		unset_2(t_data **data, t_data *next, t_data *tmp, char **to_unset);
 int			builtin_unset(t_data **data, char **to_unset, t_cmd_tab *current, int fd);
 
 /*pwd.c*/

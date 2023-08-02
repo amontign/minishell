@@ -6,7 +6,7 @@
 /*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/03 16:21:58 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/08/01 17:39:54 by cbernaze         ###   ########.fr       */
+/*   Updated: 2023/08/02 19:36:40 by cbernaze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,18 +79,7 @@ void	subst_dollars_2(char **new, t_exp_dol data, t_parsing **tmp, int tab)
 		if (data.i == (*tmp)->to_substitute[tab])
 		{
 			if (data.size_value[tab] > 0)
-			{
-				while (data.value_var[tab][++data.k])
-				{
-					if (data.value_var[tab][data.k] == '"' || data.value_var[tab][data.k] == '\'')
-					{
-						new[0][++data.j] = '\a';
-						new[0][++data.j] = data.value_var[tab][data.k];
-					}
-					else
-						new[0][++data.j] = data.value_var[tab][data.k];
-				}
-			}
+				subst_dollars_3(&data, tab, new);
 			data.i += (*tmp)->dollar_size[tab] - 1;
 			tab++;
 		}
@@ -101,6 +90,21 @@ void	subst_dollars_2(char **new, t_exp_dol data, t_parsing **tmp, int tab)
 	{
 		if (new[0][data.j] != '\0')
 			new[0][++data.j] = '\0';
+	}
+}
+
+void	subst_dollars_3(t_exp_dol *data, int tab, char **new)
+{
+	while (data->value_var[tab][++data->k])
+	{
+		if (data->value_var[tab][data->k] == '"'
+			|| data->value_var[tab][data->k] == '\'')
+		{
+			new[0][++data->j] = '\a';
+			new[0][++data->j] = data->value_var[tab][data->k];
+		}
+		else
+			new[0][++data->j] = data->value_var[tab][data->k];
 	}
 }
 
@@ -152,20 +156,23 @@ int	fill_data_dol_2(t_exp_dol *data, t_parsing *tmp, int *j, int tab)
 	(*data).var_env[tab][i] = '\0';
 	(*data).value_var[tab] = getenv_minish((*data).env, (*data).var_env[tab]);
 	if ((*data).value_var[tab])
-	{
-		(*data).size_value[tab] = ft_strlen((*data).value_var[tab]);
-		/*   ajout de la place pour les \   */
-		for (i = 0; (*data).value_var[tab][i]; i++) {
-			if ((*data).value_var[tab][i] == '"' || (*data).value_var[tab][i] == '\'')
-				(*data).size_value[tab] += 1;
-		}/**/
-	}
+		fill_data_dol_3(data, tab);
 	else
 		(*data).size_value[tab] = 0;
 	// ft_printf("VAR = %s, VALUE = %s, SIZE = %d\n", (*data).var_env[tab], (*data).value_var[tab], (*data).size_value[tab]);
-	data->i = -1;
-	data->j = -1;
-	data->k = -1;
-	data->size_new = 0;
 	return (0);
+}
+
+void	fill_data_dol_3(t_exp_dol *data, int tab)
+{
+	int	i;
+
+	(*data).size_value[tab] = ft_strlen((*data).value_var[tab]);
+	i = -1;
+	while ((*data).value_var[tab][++i])
+	{
+		if ((*data).value_var[tab][i] == '"'
+			|| (*data).value_var[tab][i] == '\'')
+			(*data).size_value[tab] += 1;
+	}
 }

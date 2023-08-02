@@ -6,7 +6,7 @@
 /*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 09:54:46 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/08/02 14:30:24 by cbernaze         ###   ########.fr       */
+/*   Updated: 2023/08/02 19:34:55 by cbernaze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,10 @@ int	malloc_data_strs(t_exp_dol *data, int nb_dol)
 	(*data).size_value = malloc((nb_dol + 1) * sizeof(char *)); // malloc joli
 	if (!(*data).size_value)
 		return (free((*data).var_env), free((*data).value_var), ERROR);
+	data->i = -1;
+	data->j = -1;
+	data->k = -1;
+	data->size_new = 0;
 	return (0);
 }
 
@@ -67,14 +71,16 @@ void	go_through_quotes(char *str, int *i)
 		while (str[*i] != SINGLE_QUOTE && str[*i])
 			*i += 1;
 	}
-	if (*i < size_str && str[*i] == DOUBLE_QUOTE && *i > 0 && str[*i - 1] != '\a')
+	if (*i < size_str && str[*i] == DOUBLE_QUOTE
+		&& *i > 0 && str[*i - 1] != '\a')
 	{
 		*i += 1;
 		while (str[*i])
 		{
 			if (str[*i] != DOUBLE_QUOTE)
 				*i += 1;
-			else if (str[*i] == DOUBLE_QUOTE && *i > 0 && str[*i - 1] != '\a' && str[*i])
+			else if (str[*i] == DOUBLE_QUOTE
+				&& *i > 0 && str[*i - 1] != '\a' && str[*i])
 				break ;
 			else
 				*i += 1;
@@ -106,7 +112,7 @@ char	*getenv_minish(t_data *data, char *var)
 	return (free(var), NULL);
 }
 
-int ft_isalnum_dol(int c, int pos)
+int	ft_isalnum_dol(int c, int pos)
 {
 	if (pos == 1 && ft_isdigit(c) == 1)
 		return (FALSE);
