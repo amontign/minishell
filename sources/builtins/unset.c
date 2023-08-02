@@ -6,7 +6,7 @@
 /*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 11:14:23 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/08/02 17:38:07 by cbernaze         ###   ########.fr       */
+/*   Updated: 2023/08/02 18:09:52 by cbernaze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,27 @@ void	remove_env_var(t_data *tmp)
 	}
 }
 
+int	arg_is_valid_unset(char *arg, int fd)
+{
+	int	i;
+
+	i = 0;
+	while (arg[i])
+	{
+		if (!(arg[i] > 47 && arg[i] < 58) && !(arg[i] > 64 && arg[i] < 91) && !(arg[i] > 96 && arg[i] < 123) && arg[i] != '_')
+		{
+			ft_putstr_fd("minishell: export: `", fd);
+			ft_putstr_fd(arg, fd);
+			ft_putstr_fd("': not a valid identifier\n", fd);
+			return (0);
+		}
+		if (i == 0 && arg_zero_is_nb(fd, arg) == 0)
+			return (0);
+		i++;
+	}
+	return (i);
+}
+
 int	command_only2(t_cmd_tab *current)
 {
 	if (current->next || current->prev)
@@ -55,7 +76,7 @@ int	builtin_unset(t_data **data, char **to_unset, t_cmd_tab *current, int fd)
 	i = -1;
 	while (to_unset[++i])
 	{
-		if (arg_is_valid(to_unset[i], fd) == 0)
+		if (arg_is_valid_unset(to_unset[i], fd) == 0)
 			return (change_status(*data, 1), 1);
 	}
 	i = 1;

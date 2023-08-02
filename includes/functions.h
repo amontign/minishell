@@ -6,7 +6,7 @@
 /*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 11:56:11 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/08/02 17:45:19 by cbernaze         ###   ########.fr       */
+/*   Updated: 2023/08/02 18:31:11 by cbernaze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ int			split_cmd(t_parsing **lexing, char *cmd_line);
 void		set_index(t_parsing **lexing);
 void		is_redir(char *cmd_line, char c, char c_plus_one, int *i);
 void		is_redir_2(char *cmd_line, int *i);
+void		is_redir_3(char *cmd_line, int *i);
 int			is_meta(char c, char c_plus_one);
 int			which_token_type(char	*cmd);
 

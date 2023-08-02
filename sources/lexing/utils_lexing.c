@@ -6,7 +6,7 @@
 /*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 19:36:57 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/08/02 16:00:25 by cbernaze         ###   ########.fr       */
+/*   Updated: 2023/08/02 18:34:18 by cbernaze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,36 +46,41 @@ void	is_redir(char *cmd_line, char c, char c_plus_one, int *i)
 		&& is_meta(cmd_line[*i], cmd_line[*i + 1]) == FALSE
 		&& cmd_line[*i] != '\0' && cmd_line[*i] != ' ')
 	{
-		if (cmd_line[*i] == SINGLE_QUOTE)
-		{
-			*i += 1;
-			while (cmd_line[*i] != SINGLE_QUOTE)
-				*i += 1;
-			*i += 1;
-		}
-		if (cmd_line[*i] == DOUBLE_QUOTE)
-		{
-			*i += 1;
-			while (cmd_line[*i] != DOUBLE_QUOTE)
-				*i += 1;
-			*i += 1;
-		}
+		is_redir_3(cmd_line, i);
 		is_redir_2(cmd_line, i);
+	}
+}
+
+void	is_redir_3(char *cmd_line, int *i)
+{
+	if (cmd_line[*i] == SINGLE_QUOTE)
+	{
+		*i += 1;
+		while (cmd_line[*i] != SINGLE_QUOTE && cmd_line[*i])
+			*i += 1;
+		*i += 1;
+	}
+	if (cmd_line[*i] == DOUBLE_QUOTE)
+	{
+		*i += 1;
+		while (cmd_line[*i] != DOUBLE_QUOTE && cmd_line[*i])
+			*i += 1;
+		*i += 1;
 	}
 }
 
 void	is_redir_2(char *cmd_line, int *i)
 {
-	if (cmd_line[*i] == 34)
+	if (cmd_line[*i] == DOUBLE_QUOTE)
 	{
 		*i += 1;
-		while (cmd_line[*i] != 34 && cmd_line[*i])
+		while (cmd_line[*i] != DOUBLE_QUOTE && cmd_line[*i])
 			*i += 1;
 	}
-	if (cmd_line[*i] == 39)
+	if (cmd_line[*i] == SINGLE_QUOTE)
 	{
 		*i += 1;
-		while (cmd_line[*i] != 39 && cmd_line[*i])
+		while (cmd_line[*i] != SINGLE_QUOTE && cmd_line[*i])
 			*i += 1;
 	}
 	else
