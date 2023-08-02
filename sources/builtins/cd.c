@@ -6,7 +6,7 @@
 /*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/25 16:52:25 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/08/01 16:32:33 by amontign         ###   ########.fr       */
+/*   Updated: 2023/08/02 09:44:40 by amontign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,12 @@ int	builtin_cd(char **dir_name, t_data *env)
 	t_data	*env2;
 
 	env2 = env;
-	if (!dir_name[1])
+	if (dir_name[1] && dir_name[2])
+	{
+		ft_putstr_fd("minishell: cd: too many arguments\n", 2);
+		return (1);
+	}
+	else if (!dir_name[1])
 	{
 		while (env)
 		{
@@ -61,7 +66,10 @@ int	builtin_cd(char **dir_name, t_data *env)
 			env = env->next;
 		}
 		if (!env)
+		{
 			ft_printf("minishell: cd : HOME not set\n");
+			return (1);
+		}
 	}
 	else if (chdir(dir_name[1]) == -1)
 	{

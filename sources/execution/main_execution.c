@@ -6,7 +6,7 @@
 /*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 09:57:58 by amontign          #+#    #+#             */
-/*   Updated: 2023/08/01 15:18:34 by amontign         ###   ########.fr       */
+/*   Updated: 2023/08/02 12:13:24 by amontign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -233,7 +233,7 @@ int	exec_builtin(char **args, t_norm_exec *normy, t_data **env, t_cmd_tab *curre
 	if (ft_strcmp(args[0], "unset") == 0)
 		status = builtin_unset(env, args, current);
 	if (ft_strcmp(args[0], "pwd") == 0)
-		status = builtin_pwd(args, fd);
+		status = builtin_pwd(args, fd, *env);
 	if (ft_strcmp(args[0], "export") == 0)
 		status = builtin_export(args, *env, fd, current);
 	if (ft_strcmp(args[0], "env") == 0)
@@ -353,6 +353,12 @@ int	execute_cmds(t_cmd_tab **c_s, t_cmd_tab *cu, t_data **env, t_parsing **l)
 				normy.input_fd = normy.pipefd[0];
 			}
 			normy.num_cmds++;
+		}
+		else
+		{
+			if (normy.input_fd)
+				close(normy.input_fd);
+			normy.input_fd = open("/dev/null", O_RDONLY);
 		}
 		cu = cu->next;
 	}
