@@ -6,7 +6,7 @@
 /*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 19:35:56 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/08/01 11:06:18 by cbernaze         ###   ########.fr       */
+/*   Updated: 2023/08/02 12:45:27 by cbernaze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,9 @@ void	concatenate_cmds(t_parsing **lexing, t_parsing *node)
 {
 	t_parsing	*tmp;
 	t_concatcmd	concat;
+	t_parsing	*original;
 
+	original = *lexing;
 	tmp = *lexing;
 	while (tmp->index != node->index)
 		tmp = tmp->next;
@@ -81,20 +83,22 @@ void	concatenate_cmds(t_parsing **lexing, t_parsing *node)
 	tmp->next = concat.to_concat->next;
 	if (tmp->next)
 		tmp->next->previous = tmp;
-	while (tmp && tmp->token_type != TOKEN_CMD)
+	while (tmp && tmp->token_type == TOKEN_REDIR)
 		tmp = tmp->previous;
-	if (tmp)
+	if (tmp && tmp->token_type == TOKEN_CMD)
 	{
 		concat.cmd1 = tmp->cmd;
 		tmp->cmd = ft_strjoin(tmp->cmd, concat.to_concat->cmd);
 		tmp->size += concat.to_concat->size;
 		(free_cmds(&concat.cmd1, &concat.cmd2), clear_node(&concat.to_concat));
 	}
-	else
+	else if (tmp && tmp->token_type != TOKEN_CMD)
 	{
 		tmp = *lexing;
 		ft_lstadd_back_minishell(&tmp, concat.to_concat);
 	}
+	else
+		lexing = &original;
 	(set_index(lexing));
 }
 

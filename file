@@ -1,23 +1,0 @@
-[?2004hminishell> echo yo
-[?2004lyo
-[?2004hminishell> 
-[?2004l[?2004hminishell> ls
-[?2004lalban_maj.txt
-error_exec
-file
-includes
-libft
-Makefile
-minishell
-minishell.pdf
-minishell.supp
-old_includes
-outfile
-README.md
-sources
-test
-tests_cmds.txt
-yoou
-[?2004hminishell> [?2004lminishell> ^C
-minishell> [?2004h[?2004l
-exit
