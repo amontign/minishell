@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   split_args.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 10:07:22 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/08/01 07:58:43 by amontign         ###   ########.fr       */
+/*   Updated: 2023/08/02 14:36:42 by cbernaze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,15 @@ int	len_arg(char *str)
 		if (str[len] == DOUBLE_QUOTE && (len == 0 || str[len - 1] != '\a'))
 		{
 			len += 1;
-			while (str[len] != DOUBLE_QUOTE && str[len])
-				len += 1;
+			while (str[len])
+			{
+				if (str[len] != DOUBLE_QUOTE)
+					len += 1;
+				else if (str[len] == DOUBLE_QUOTE && len > 0 && str[len - 1] != '\a' && str[len])
+					break ;
+				else
+					len += 1;
+			}
 		}
 		len++;
 	}
