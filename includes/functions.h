@@ -6,7 +6,7 @@
 /*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 11:56:11 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/08/02 18:31:11 by cbernaze         ###   ########.fr       */
+/*   Updated: 2023/08/02 18:39:57 by cbernaze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,7 +172,7 @@ int			builtin_echo(char **echo, int fd);
 
 /*cd.c*/
 
-int			builtin_cd(char **dir_name, t_data *env);
+int			builtin_cd(char **dir_name, t_data *env,  t_cmd_tab *current);
 
 /*unset.c*/
 
@@ -186,6 +186,7 @@ int			builtin_pwd(char **args, int fd);
 /*exit.c*/
 
 int			builtin_exit(char **args, t_norm_exec *normy, t_cmd_tab *current);
+int			command_only_e(t_cmd_tab *current);
 
 /*env.c*/
 
@@ -206,7 +207,7 @@ int			builtin_export(char **args, t_data *env, int fd, t_cmd_tab *current);
 /*cmd_to_struct.c*/
 
 int			find_place_path(t_cmd_tab **cmd_struct, t_data *env);
-void		lexing_to_cmd_tab(t_parsing *lexing, t_cmd_tab **cmd_struct);
+void		lexing_to_cmd_tab(t_parsing *lexing, t_cmd_tab **cmd_struct, t_data *env);
 
 /*execution_utils.c*/
 

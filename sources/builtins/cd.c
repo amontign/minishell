@@ -6,7 +6,7 @@
 /*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/25 16:52:25 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/08/02 09:44:40 by amontign         ###   ########.fr       */
+/*   Updated: 2023/08/02 18:05:45 by amontign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ void	change_pwd_env(char *new, t_data *env)
 	t_data	*old_env;
 	char	*old_env_char;
 
+	old_env_char = NULL;
 	old_env = env;
 	while (old_env)
 	{
@@ -33,8 +34,11 @@ void	change_pwd_env(char *new, t_data *env)
 	{
 		if (ft_strncmp(env->var, "OLDPWD=", 7) == 0)
 		{
-			free(env->var);
-			env->var = ft_strjoin("OLDPWD=", old_env_char);
+			if (old_env_char)
+			{
+				free(env->var);
+				env->var = ft_strjoin("OLDPWD=", old_env_char);
+			}
 			break ;
 		}
 		env = env->next;
@@ -43,7 +47,7 @@ void	change_pwd_env(char *new, t_data *env)
 		free(old_env_char);
 }
 
-int	builtin_cd(char **dir_name, t_data *env)
+int	builtin_cd(char **dir_name, t_data *env, t_cmd_tab *current)
 {
 	char	new_path[FILENAME_MAX];
 	t_data	*env2;
@@ -53,6 +57,10 @@ int	builtin_cd(char **dir_name, t_data *env)
 	{
 		ft_putstr_fd("minishell: cd: too many arguments\n", 2);
 		return (1);
+	}
+	else if (!command_only_e(current))
+	{
+		return (0);
 	}
 	else if (!dir_name[1])
 	{

@@ -6,7 +6,11 @@
 /*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 09:57:58 by amontign          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2023/08/02 17:45:35 by cbernaze         ###   ########.fr       */
+=======
+/*   Updated: 2023/08/02 18:36:39 by amontign         ###   ########.fr       */
+>>>>>>> alban_branch
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -229,7 +233,7 @@ int	exec_builtin(char **args, t_norm_exec *normy, t_data **env, t_cmd_tab *curre
 	if (ft_strcmp(args[0], "echo") == 0)
 		status = builtin_echo(args, fd);
 	if (ft_strcmp(args[0], "cd") == 0)
-		status = builtin_cd(args, *env);
+		status = builtin_cd(args, *env, current);
 	if (ft_strcmp(args[0], "unset") == 0)
 		status = builtin_unset(env, args, current, fd);
 	if (ft_strcmp(args[0], "pwd") == 0)
@@ -371,7 +375,7 @@ int	prompt_execution(t_parsing **lexing, t_data **env)
 	t_cmd_tab	*first;
 
 	first = NULL;
-	lexing_to_cmd_tab(*lexing, &first);
+	lexing_to_cmd_tab(*lexing, &first, *env);
 	if (!find_place_path(&first, *env))
 	{
 		//printf("erreur dans le path\n");
