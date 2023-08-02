@@ -6,7 +6,7 @@
 /*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 19:35:56 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/08/02 12:45:27 by cbernaze         ###   ########.fr       */
+/*   Updated: 2023/08/02 13:56:28 by cbernaze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,16 @@ char	*trim_cmd(char	*cmd_line, int *i, int *len)
 	return (sub_tab);
 }
 
+void	ft_lstadd_at_index(t_parsing **lexing, t_parsing *new, int index)
+{
+	t_parsing	*tmp;
+
+	tmp = *lexing;
+	while (tmp->index != index)
+		tmp = tmp->next;
+	tmp->next = new;
+}
+
 /*Fonction qui concatene les cmds de deux maillons differents
 d'une liste de type t_parsing*/
 
@@ -95,12 +105,13 @@ void	concatenate_cmds(t_parsing **lexing, t_parsing *node)
 	else if (tmp && tmp->token_type != TOKEN_CMD)
 	{
 		tmp = *lexing;
-		ft_lstadd_back_minishell(&tmp, concat.to_concat);
+		ft_lstadd_at_index(&tmp, concat.to_concat, concat.to_concat->index - 1);
 	}
 	else
 		lexing = &original;
 	(set_index(lexing));
 }
+
 
 /*Parce que sinon ca serait trop simple, une petite fonction qui va concatener
 des commandes si elles sont coupees par des redirections.*/
