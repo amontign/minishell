@@ -6,7 +6,7 @@
 /*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 09:54:46 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/08/01 17:44:32 by cbernaze         ###   ########.fr       */
+/*   Updated: 2023/08/02 14:30:24 by cbernaze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,11 +67,18 @@ void	go_through_quotes(char *str, int *i)
 		while (str[*i] != SINGLE_QUOTE && str[*i])
 			*i += 1;
 	}
-	if (*i < size_str && str[*i] == DOUBLE_QUOTE)
+	if (*i < size_str && str[*i] == DOUBLE_QUOTE && *i > 0 && str[*i - 1] != '\a')
 	{
 		*i += 1;
-		while (str[*i] != DOUBLE_QUOTE && str[*i])
-			*i += 1;
+		while (str[*i])
+		{
+			if (str[*i] != DOUBLE_QUOTE)
+				*i += 1;
+			else if (str[*i] == DOUBLE_QUOTE && *i > 0 && str[*i - 1] != '\a' && str[*i])
+				break ;
+			else
+				*i += 1;
+		}
 	}
 }
 
