@@ -6,7 +6,7 @@
 /*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 11:56:11 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/08/01 14:08:26 by cbernaze         ###   ########.fr       */
+/*   Updated: 2023/08/02 09:07:00 by amontign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -180,7 +180,7 @@ int			builtin_unset(t_data **data, char **to_unset, t_cmd_tab *current);
 
 /*pwd.c*/
 
-int			builtin_pwd(char **args, int fd);
+int			builtin_pwd(char **args, int fd, t_data *env);
 
 /*exit.c*/
 
