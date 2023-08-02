@@ -6,7 +6,7 @@
 /*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 09:57:58 by amontign          #+#    #+#             */
-/*   Updated: 2023/08/02 18:46:18 by cbernaze         ###   ########.fr       */
+/*   Updated: 2023/08/02 20:11:27 by cbernaze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -231,11 +231,11 @@ int	exec_builtin(char **args, t_norm_exec *normy, t_data **env, t_cmd_tab *curre
 	if (ft_strcmp(args[0], "cd") == 0)
 		status = builtin_cd(args, *env, current);
 	if (ft_strcmp(args[0], "unset") == 0)
-		status = builtin_unset(env, args, current, fd);
+		status = unset(env, args, current, fd);
 	if (ft_strcmp(args[0], "pwd") == 0)
 		status = builtin_pwd(args, fd);
 	if (ft_strcmp(args[0], "export") == 0)
-		status = builtin_export(args, *env, fd, current);
+		status = export(args, *env, fd, current);
 	if (ft_strcmp(args[0], "env") == 0)
 		status = builtin_env(args, *env, fd);
 	if (ft_strcmp(args[0], "exit") == 0)
@@ -371,7 +371,7 @@ int	prompt_execution(t_parsing **lexing, t_data **env)
 	t_cmd_tab	*first;
 
 	first = NULL;
-	lexing_to_cmd_tab(*lexing, &first, *env);
+	lex_to_tab(*lexing, &first, *env);
 	if (!find_place_path(&first, *env))
 	{
 		//printf("erreur dans le path\n");

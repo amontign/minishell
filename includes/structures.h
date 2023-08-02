@@ -6,7 +6,7 @@
 /*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 11:52:17 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/08/01 17:39:27 by cbernaze         ###   ########.fr       */
+/*   Updated: 2023/08/02 20:13:52 by cbernaze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,6 +151,6 @@ typedef struct s_norm_exec
 //													//
 //////////////////////////////////////////////////////
 
-extern int child_process;
+extern int	child_process;
 
 #endif

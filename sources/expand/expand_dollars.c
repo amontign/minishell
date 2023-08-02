@@ -6,7 +6,7 @@
 /*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/03 16:21:58 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/08/02 19:36:40 by cbernaze         ###   ########.fr       */
+/*   Updated: 2023/08/02 20:07:58 by cbernaze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,11 +67,11 @@ char	*substitute_dollars(t_parsing **tmp, t_data *env, int nb_dol)
 	if (!new)
 		return (free_data(&data), free((*tmp)->cmd), "error");
 	tab = 0;
-	subst_dollars_2(&new, data, tmp, tab);
+	subst_dols_2(&new, data, tmp, tab);
 	return (free_data(&data), free((*tmp)->cmd), new);
 }
 
-void	subst_dollars_2(char **new, t_exp_dol data, t_parsing **tmp, int tab)
+void	subst_dols_2(char **new, t_exp_dol data, t_parsing **tmp, int tab)
 {
 	while (++data.i < ft_strlen((*tmp)->cmd))
 	{

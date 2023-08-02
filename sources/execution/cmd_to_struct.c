@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_to_struct.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:41:01 by amontign          #+#    #+#             */
-/*   Updated: 2023/08/02 18:36:16 by amontign         ###   ########.fr       */
+/*   Updated: 2023/08/02 20:11:30 by cbernaze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -305,7 +305,7 @@ void	add_true_cmd(t_parsing **lexing)
 	}
 }
 
-void	lexing_to_cmd_tab(t_parsing *lexing, t_cmd_tab **cmd_struct, t_data *env)
+void	lex_to_tab(t_parsing *lexing, t_cmd_tab **cmd_struct, t_data *env)
 {
 	int			id;
 	t_parsing	*lexing_start;

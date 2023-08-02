@@ -6,7 +6,7 @@
 /*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 11:35:58 by amontign          #+#    #+#             */
-/*   Updated: 2023/08/02 17:19:26 by cbernaze         ###   ########.fr       */
+/*   Updated: 2023/08/02 20:10:34 by cbernaze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,15 +58,11 @@ void	export_no_args(t_data *env, int fd)
 			j++;
 		tmp = malloc(sizeof(char) * (j + 2));
 		ft_strlcpy(tmp, env_tab[i], (j + 2));
-		ft_putstr_fd("declare -x ", fd);
-		ft_putstr_fd(tmp, fd);
+		(ft_putstr_fd("declare -x ", fd), ft_putstr_fd(tmp, fd));
 		free(tmp);
 		if (env_tab[i][j])
-		{
-			ft_putchar_fd('"', fd);
-			ft_putstr_fd(env_tab[i] + j + 1, fd);
-			ft_putchar_fd('"', fd);
-		}
+			(ft_putchar_fd('"', fd), ft_putstr_fd(env_tab[i] + j + 1, fd)
+				, ft_putchar_fd('"', fd));
 		ft_putchar_fd('\n', fd);
 		i++;
 	}
@@ -99,7 +95,8 @@ int	arg_is_valid(char *arg, int fd)
 	}
 	while (arg[i] != '=' && arg[i])
 	{
-		if (!(arg[i] > 47 && arg[i] < 58) && !(arg[i] > 64 && arg[i] < 91) && !(arg[i] > 96 && arg[i] < 123) && arg[i] != '_')
+		if (!(arg[i] > 47 && arg[i] < 58) && !(arg[i] > 64 && arg[i] < 91)
+			&& !(arg[i] > 96 && arg[i] < 123) && arg[i] != '_')
 		{
 			ft_putstr_fd("minishell: export: `", fd);
 			ft_putstr_fd(arg, fd);
@@ -123,13 +120,11 @@ int	export_in_env(char *arg, t_data *env, int fd)
 		return (1);
 	while (env) // si pas d'egal, ajouter quand meme sauf si la valeur existe deja
 	{
-		if (ft_strncmp(env->var, arg, i) == 0 && (env->var[i] == '\0' || env->var[i] == '='))
+		if (ft_strncmp(env->var, arg, i) == 0 && (env->var[i] == '\0'
+				|| env->var[i] == '='))
 		{
 			if (arg[i] == '=')
-			{
-				free(env->var);
-				env->var = ft_strdup(arg);
-			}
+				(free(env->var), env->var = ft_strdup(arg));
 			return (0);
 		}
 		if (!env->next)
@@ -153,7 +148,7 @@ int	command_only(t_cmd_tab *current)
 	return (1);
 }
 
-int	builtin_export(char **args, t_data *env, int fd, t_cmd_tab *current)
+int	export(char **args, t_data *env, int fd, t_cmd_tab *current)
 {
 	int	i;
 	int	rslt;

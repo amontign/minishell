@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 11:19:50 by amontign          #+#    #+#             */
-/*   Updated: 2023/07/31 12:23:54 by amontign         ###   ########.fr       */
+/*   Updated: 2023/08/02 20:01:13 by cbernaze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	equal_in_str(char *str)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (str[i])
