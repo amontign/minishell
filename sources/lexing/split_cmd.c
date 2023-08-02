@@ -6,7 +6,7 @@
 /*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 19:35:56 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/08/02 13:56:28 by cbernaze         ###   ########.fr       */
+/*   Updated: 2023/08/02 16:02:43 by cbernaze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,8 @@ char	*trim_cmd(char	*cmd_line, int *i, int *len)
 		*i += 1;
 		j++;
 	}
+	while (cmd_line[*i] && (cmd_line[*i] == ' ' || cmd_line[*i] == '\t'))
+		*i += 1;
 	sub_tab[j] = '\0';
 	return (sub_tab);
 }
