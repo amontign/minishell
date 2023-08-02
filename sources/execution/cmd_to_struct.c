@@ -6,7 +6,7 @@
 /*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:41:01 by amontign          #+#    #+#             */
-/*   Updated: 2023/08/02 15:35:31 by amontign         ###   ########.fr       */
+/*   Updated: 2023/08/02 18:36:16 by amontign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ int	custom_path(t_cmd_tab *cmd_struct, t_data *env)
 			ft_putstr_fd(cmd_struct->path, 2);
 			ft_putstr_fd(": Permission denied\n", 2);
 			cmd_struct->exec = 0;
-			change_status(env, 1);
+			change_status(env, 126);
 			return (0);
 		}
 		ft_putstr_fd("minishell: ", 2);
@@ -150,7 +150,28 @@ int	c_r_s(char *str)
 	return (i);
 }
 
-char	*heredoc_complete(char *str)
+void	expand_heredoc(char *str, t_data *env)
+{
+	int		i;
+	char	*prev;
+	char	*next;
+	(void)env;
+	(void)str;
+
+	i = 0;
+
+	prev = NULL;
+	next = NULL;
+	/*while (str[i])
+	{
+		if (str[i] == '$')
+		{
+
+		}
+	}*/
+}
+
+char	*heredoc_complete(char *str, t_data *env)
 {
 	char	*res;
 	char	*res2;
@@ -164,6 +185,7 @@ char	*heredoc_complete(char *str)
 	{
 		if (!current_line)
 			return (printf("warning: end-of-file detected in heredoc\n"), res);
+		expand_heredoc(current_line, env);
 		res2 = ft_strjoin(res, current_line);
 		free(current_line);
 		free(res);
@@ -176,7 +198,7 @@ char	*heredoc_complete(char *str)
 	return (res);
 }
 
-int	put_redirect(t_cmd_tab *cmd_struct, char *str, int id)
+int	put_redirect(t_cmd_tab *cmd_struct, char *str, int id, t_data *env)
 {
 	t_cmd_tab	*first;
 
@@ -203,14 +225,14 @@ int	put_redirect(t_cmd_tab *cmd_struct, char *str, int id)
 	else
 	{
 		if (str[1] == '<')
-			first->heredoc = heredoc_complete(str + c_r_s(str));
+			first->heredoc = heredoc_complete(str + c_r_s(str), env);
 		else
 			first->infile = str + c_r_s(str);
 	}
 	return (1);
 }
 
-void	put_redirects(t_parsing *lexing, t_cmd_tab **cmd_struct)
+void	put_redirects(t_parsing *lexing, t_cmd_tab **cmd_struct, t_data *env)
 {
 	t_parsing	*lexing2;
 	int			id;
@@ -228,11 +250,11 @@ void	put_redirects(t_parsing *lexing, t_cmd_tab **cmd_struct)
 			while (lexing2 && lexing2->token_type != TOKEN_PIPE)
 			{
 				if (lexing2->token_type == TOKEN_CMD)
-					put_r = put_redirect(*cmd_struct, lexing->cmd, (id - 1));
+					put_r = put_redirect(*cmd_struct, lexing->cmd, (id - 1), env);
 				lexing2 = lexing2->previous;
 			}
 			if (put_r == 0)
-				put_redirect(*cmd_struct, lexing->cmd, id);
+				put_redirect(*cmd_struct, lexing->cmd, id, env);
 		}
 		lexing = lexing->next;
 	}
@@ -283,7 +305,7 @@ void	add_true_cmd(t_parsing **lexing)
 	}
 }
 
-void	lexing_to_cmd_tab(t_parsing *lexing, t_cmd_tab **cmd_struct)
+void	lexing_to_cmd_tab(t_parsing *lexing, t_cmd_tab **cmd_struct, t_data *env)
 {
 	int			id;
 	t_parsing	*lexing_start;
@@ -302,5 +324,5 @@ void	lexing_to_cmd_tab(t_parsing *lexing, t_cmd_tab **cmd_struct)
 		}
 		lexing = lexing->next;
 	}
-	put_redirects(lexing_start, cmd_struct);
+	put_redirects(lexing_start, cmd_struct, env);
 }

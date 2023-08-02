@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   split_cmd.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 19:35:56 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/08/02 16:29:58 by cbernaze         ###   ########.fr       */
+/*   Updated: 2023/08/02 17:09:18 by amontign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,7 +146,7 @@ int	split_cmd(t_parsing **lexing, char *cmd_line)
 	int			i;
 
 	i = 0;
-	while (cmd_line[i])
+	while (i < ft_strlen(cmd_line) && cmd_line[i])
 	{
 		size_cmd = 0;
 		token_type = 0;
