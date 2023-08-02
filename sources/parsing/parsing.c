@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/21 16:39:07 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/07/31 17:47:41 by amontign         ###   ########.fr       */
+/*   Updated: 2023/08/01 15:03:11 by cbernaze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,11 +49,7 @@ matching `''\nminishell: syntax error: unexpected end of file\n")
 	{
 		*i += 1;
 		while (cmd_line[*i] != DOUBLE_QUOTE && cmd_line[*i])
-		{
-			// if (is_dq_spe_char(cmd_line[*i]) == TRUE)
-			// 	return (ERROR_SYNTAX);
 			*i += 1;
-		}
 		if (cmd_line[*i] == '\0')
 			return (ft_printf("minishell: unexpected EOF while looking for \
 matching `\"'\nminishell: syntax error: unexpected end of file\n")
@@ -112,8 +108,6 @@ int	syntax(char *cmd_line)
 	{
 		if (closed_quotes(cmd_line, &i) == ERROR_SYNTAX)
 			return (ERROR_SYNTAX);
-		// if (is_metachar(cmd_line[i]) == TRUE)
-		// 	return (ERROR_SYNTAX);
 		if (cmd_line[i] == '|' && cmd_line[i + 1] == '|')
 			return (ft_printf("minishell: '||' not treated\n")
 				, ERROR_SYNTAX);
@@ -161,7 +155,7 @@ unexpected token `%c'\n", cmd_line[*i]), ERROR_SYNTAX);
 
 /*This functions verifies that two pipe tokens are next to each other.*/
 
-void	final_parsing(t_parsing **lexing)
+void	final_parsing(t_parsing **lexing, t_data **env)
 {
 	t_parsing	*tmp;
 
@@ -175,6 +169,7 @@ void	final_parsing(t_parsing **lexing)
 				ft_printf("minishell: syntax error near \
 unexpected token `|'\n");
 				ft_lstclear_minishell(lexing);
+				change_status(*env, 2);
 				return ;
 			}
 		}

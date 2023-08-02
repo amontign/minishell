@@ -6,7 +6,7 @@
 /*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 11:52:17 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/07/30 08:37:49 by cbernaze         ###   ########.fr       */
+/*   Updated: 2023/08/01 17:39:27 by cbernaze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@
 # define CLOSING_QUOTE 31
 # define DOUBLE_QUOTE 34
 # define SINGLE_QUOTE 39
+# define EXPAND 41
+# define DONT_EXPAND 42
 
 //////////////////////////////////////////////////////
 //													//
@@ -102,6 +104,7 @@ typedef struct s_exp_dol
 	char		**var_env;
 	char		**value_var;
 	int			*size_value;
+	int			nb_tabs;
 	int			i;
 	int			j;
 	int			k;

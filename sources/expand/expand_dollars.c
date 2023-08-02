@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_dollars.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/03 16:21:58 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/07/31 16:46:46 by amontign         ###   ########.fr       */
+/*   Updated: 2023/08/01 17:39:54 by cbernaze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,6 +129,7 @@ int	f_dt_dol(t_exp_dol *data, t_data *env, t_parsing *tmp, int nb_dol)
 		}
 		i++;
 	}
+	(*data).nb_tabs = tab;
 	(*data).value_var[tab] = NULL;
 	(*data).var_env[tab] = NULL;
 	return (0);

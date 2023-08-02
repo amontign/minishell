@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   functions.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 11:56:11 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/08/01 13:13:29 by amontign         ###   ########.fr       */
+/*   Updated: 2023/08/02 09:07:00 by amontign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int			pipe_at_end(char *cmd_line);
 int			pipe_at_start(char *cmd_line);
 int			syntax(char *cmd_line);
 int			wrong_after_redir(char *cmd_line, int *i);
-void		final_parsing(t_parsing **lexing);
+void		final_parsing(t_parsing **lexing, t_data **env);
 
 //////////////////////////////////////////////////////
 //													//
@@ -79,7 +79,7 @@ void		remove_newline(char **name_eval);
 /*expand.c*/
 
 int			ft_isalnum_env(int c);
-char		*remove_cmd_quotes(t_data_qt dt);
+char		*remove_cmd_quotes(t_data_qt *dt);
 void		how_many_cmd_quotes_3(char *arg, int *i, int *quotes);
 void		expand(t_parsing **expand, t_data *env);
 
@@ -180,7 +180,7 @@ int			builtin_unset(t_data **data, char **to_unset, t_cmd_tab *current);
 
 /*pwd.c*/
 
-int			builtin_pwd(char **args, int fd);
+int			builtin_pwd(char **args, int fd, t_data *env);
 
 /*exit.c*/
 
@@ -214,6 +214,7 @@ void		free_cmd_struct(t_cmd_tab **cmd_struct);
 
 /*main_execution.c*/
 
+void		change_status(t_data *env, int status);
 int			prompt_execution(t_parsing **lexing, t_data **env);
 int			in_builtin(char *cmd);
 void		change_status(t_data *env, int status);

@@ -6,18 +6,25 @@
 /*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 10:46:22 by amontign          #+#    #+#             */
-/*   Updated: 2023/07/27 11:42:48 by amontign         ###   ########.fr       */
+/*   Updated: 2023/08/02 09:07:39 by amontign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-int	builtin_pwd(char **args, int fd)
+int	builtin_pwd(char **args, int fd, t_data *env)
 {
-	char	buf[FILENAME_MAX];
+	char	*env_char;
 
-	(void)fd;
-	getcwd(buf, FILENAME_MAX);
+	while (env)
+	{
+		if (ft_strncmp(env->var, "PWD=", 4) == 0)
+		{
+			env_char = ft_strdup(env->var + 4);
+			break ;
+		}
+		env = env->next;
+	}
 	if (args[1] && args[1][0] == '-')
 	{
 		ft_putstr_fd("minishell: pwd: -", 2);
@@ -28,8 +35,10 @@ int	builtin_pwd(char **args, int fd)
 	}
 	else
 	{
-		ft_putstr_fd(buf, fd);
+		ft_putstr_fd(env_char, fd);
 		ft_putchar_fd('\n', fd);
 	}
+	if (env_char)
+		free(env_char);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 09:54:46 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/07/30 09:34:33 by cbernaze         ###   ########.fr       */
+/*   Updated: 2023/08/01 17:44:32 by cbernaze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,16 +37,17 @@ void	free_data(t_exp_dol	*data)
 
 	i = 0;
 	free((*data).size_value);
-	while (i < ft_strlen_plus((*data).value_var))
+	while (i < data->nb_tabs)
 	{
-		// ft_printf("#%s\n", (*data).value_var[i]);
-		free((*data).value_var[i]);
+		if ((*data).value_var[i])
+			free((*data).value_var[i]);
 		i++;
 	}
 	i = 0;
-	while (i < ft_strlen_plus((*data).var_env))
+	while (i < data->nb_tabs)
 	{
-		free((*data).var_env[i]);
+		if ((*data).var_env[i])
+			free((*data).var_env[i]);
 		i++;
 	}
 	(free((*data).value_var), free((*data).var_env));
