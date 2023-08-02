@@ -6,7 +6,7 @@
 /*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:41:01 by amontign          #+#    #+#             */
-/*   Updated: 2023/08/02 14:12:55 by amontign         ###   ########.fr       */
+/*   Updated: 2023/08/02 15:35:31 by amontign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -181,7 +181,7 @@ int	put_redirect(t_cmd_tab *cmd_struct, char *str, int id)
 	t_cmd_tab	*first;
 
 	first = cmd_struct;
-	if (!str || !str[0] || !str[1] || ((str[1] == '>' || str[1] == '<') && !str[2]))
+	if (!str || !str[0] || !str[1])
 		return (2);
 	while (first)
 	{
