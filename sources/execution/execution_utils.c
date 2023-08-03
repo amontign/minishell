@@ -6,7 +6,7 @@
 /*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 14:59:25 by amontign          #+#    #+#             */
-/*   Updated: 2023/08/03 08:23:17 by cbernaze         ###   ########.fr       */
+/*   Updated: 2023/08/03 08:32:52 by cbernaze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ char	**str_tab_dup(char **str_tab)
 	}
 	new_str_tab = malloc(sizeof(char *) * (i + 1));
 	if (!new_str_tab)
-		exit(1);
+		exit (1);
 	i = 0;
 	while (str_tab[i])
 	{
@@ -72,9 +72,10 @@ char	**str_tab_dup(char **str_tab)
 
 void	free_cmd_struct(t_cmd_tab **cmd_struct)
 {
-	t_cmd_tab *current = *cmd_struct;
-	t_cmd_tab *next_node;
+	t_cmd_tab	*current;
+	t_cmd_tab	*next_node;
 
+	current = *cmd_struct;
 	while (current != NULL)
 	{
 		next_node = current->next;
