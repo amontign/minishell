@@ -6,7 +6,7 @@
 /*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 09:57:58 by amontign          #+#    #+#             */
-/*   Updated: 2023/08/03 08:31:23 by cbernaze         ###   ########.fr       */
+/*   Updated: 2023/08/03 08:35:18 by cbernaze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -220,7 +220,7 @@ void	exec_builtin2(char **args, int *status, t_cmd_tab *c, t_data **env)
 	if (ft_strcmp(args[0], "cd") == 0)
 		*status = builtin_cd(args, *env, c);
 	if (ft_strcmp(args[0], "unset") == 0)
-		*status = unset(env, args, c, fd);
+		*status = unset(env, args, c);
 }
 
 int	exec_builtin(char **args, t_norm_exec *normy, t_data **env, t_cmd_tab *c)

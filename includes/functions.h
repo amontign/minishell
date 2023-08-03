@@ -6,7 +6,7 @@
 /*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 11:56:11 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/08/02 20:11:46 by cbernaze         ###   ########.fr       */
+/*   Updated: 2023/08/03 08:34:43 by cbernaze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -180,7 +180,7 @@ int			builtin_cd(char **dir_name, t_data *env, t_cmd_tab *current);
 
 void		remove_env_var(t_data *tmp);
 void		unset_2(t_data **data, t_data *next, t_data *tmp, char **to_unset);
-int			unset(t_data **data, char **to_unset, t_cmd_tab *current, int fd);
+int			unset(t_data **data, char **to_unset, t_cmd_tab *current);
 
 /*pwd.c*/
 
@@ -210,7 +210,7 @@ int			export(char **args, t_data *env, int fd, t_cmd_tab *current);
 /*cmd_to_struct.c*/
 
 int			find_place_path(t_cmd_tab **cmd_struct, t_data *env);
-void		lex_to_tab(t_parsing *lexing, t_cmd_tab **cmd_struct, t_data *env);
+void		lexing_to_cmd_tab(t_parsing *lexing, t_cmd_tab **c, t_data *env);
 
 /*execution_utils.c*/
 

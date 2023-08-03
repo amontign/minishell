@@ -6,7 +6,7 @@
 /*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 11:14:23 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/08/02 20:09:28 by cbernaze         ###   ########.fr       */
+/*   Updated: 2023/08/03 08:34:23 by cbernaze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ void	unset_2(t_data **data, t_data *next, t_data *tmp, char **to_unset)
 	}
 }
 
-int	unset(t_data **data, char **to_unset, t_cmd_tab *current, int fd)
+int	unset(t_data **data, char **to_unset, t_cmd_tab *current)
 {
 	t_data	*tmp;
 	t_data	*next;
@@ -100,7 +100,7 @@ int	unset(t_data **data, char **to_unset, t_cmd_tab *current, int fd)
 	next = NULL;
 	while (to_unset[++i])
 	{
-		if (arg_is_valid_unset(to_unset[i], fd) == 0)
+		if (arg_is_valid_unset(to_unset[i], 2) == 0)
 			return (change_status(*data, 1), 1);
 	}
 	if (!command_only2(current))
