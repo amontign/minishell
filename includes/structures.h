@@ -6,7 +6,7 @@
 /*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 11:52:17 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/08/02 20:13:52 by cbernaze         ###   ########.fr       */
+/*   Updated: 2023/08/03 08:48:31 by cbernaze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,12 +124,12 @@ typedef struct s_cmd_tab
 	char				*cmd_name;
 	char				**args;
 	char				*path;
-	char				*infile; // null = default
-	char				*outfile; // null = default
-	int					outfile_delete; // 1 = normal | 0 = ne pas supprimer
+	char				*infile;
+	char				*outfile;
+	int					outfile_delete;
 	char				*heredoc;
-	char				*errfile; // null = default
-	int					exec; // 1 = default = executer | 0 = ne pas executer
+	char				*errfile;
+	int					exec;
 	struct s_cmd_tab	*prev;
 	struct s_cmd_tab	*next;
 }						t_cmd_tab;
@@ -151,6 +151,6 @@ typedef struct s_norm_exec
 //													//
 //////////////////////////////////////////////////////
 
-extern int	child_process;
+extern int	g_child_process;
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 11:56:11 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/08/03 08:34:43 by cbernaze         ###   ########.fr       */
+/*   Updated: 2023/08/03 09:00:33 by cbernaze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,13 +34,14 @@ void		final_parsing(t_parsing **lexing, t_data **env);
 //													//
 //////////////////////////////////////////////////////
 
+void		print_cmd(t_parsing *lexing);
+
 /*lexing.c*/
 
 t_concatcmd	init_concatcmd(t_parsing *tmp);
 void		free_cmds(char **cmd1, char **cmd2);
 int			check_empty_cmd(t_parsing **lexing);
 t_parsing	*tokenisation(char	*cmd_line);
-void		print_cmd(t_parsing *lexing);
 
 /*split_cmd.c*/
 
@@ -52,7 +53,6 @@ int			split_cmd(t_parsing **lexing, char *cmd_line);
 
 /*utils_lexing.c*/
 
-void		set_index(t_parsing **lexing);
 void		is_redir(char *cmd_line, char c, char c_plus_one, int *i);
 void		is_redir_2(char *cmd_line, int *i);
 void		is_redir_3(char *cmd_line, int *i);
@@ -66,6 +66,12 @@ void		ft_lstclear_minishell(t_parsing **lexing);
 void		clear_node(t_parsing **node);
 void		ft_lstadd_back_minishell(t_parsing **lexing, t_parsing *new);
 void		free_quotes(t_parsing *lexing);
+
+/*utils_list.c*/
+
+void		set_index(t_parsing **lexing);
+void		ft_lstadd_at_id(t_parsing **lexing, t_parsing *new, int index);
+
 
 /*main.c*/
 

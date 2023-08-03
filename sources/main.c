@@ -6,14 +6,13 @@
 /*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 12:00:49 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/08/02 18:46:58 by cbernaze         ###   ########.fr       */
+/*   Updated: 2023/08/03 08:57:20 by cbernaze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int child_process;
-
+int g_child_process;
 /*This function removes the newline at the end of a command line.*/
 
 void	remove_newline(char **name_eval)
@@ -62,21 +61,15 @@ int	minishell_prompt(t_data **env)
 {
 	t_parsing	*lexing;
 	char		*cmd_line;
-	// char		*name_eval;
-	// char		*prompt_char;
 	int			ret;
 
 	lexing = NULL;
 	ret = 0;
-	// name_eval = readline("Hello evaluator, tell me your name : ");
-	// remove_newline(&name_eval);
-	// prompt_char = ft_strjoin(name_eval, "@minishell> ");
-	// free(name_eval);
 	main_signal();
 	while (42)
 	{
 		cmd_line = readline("minishell> ");
-		if (child_process == -1)
+		if (g_child_process == -1)
 			change_status(*env, 128 + SIGINT);
 		if (!cmd_line)
 			break ;
@@ -96,7 +89,6 @@ int	minishell_prompt(t_data **env)
 			ft_lstclear_minishell(&lexing);
 	}
 	printf("exit\n");
-	// free(prompt_char);
 	return (ret);
 }
 

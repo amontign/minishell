@@ -6,6 +6,7 @@ SOURCES =	./sources/main.c										\
 			./sources/lexing/split_cmd.c							\
 			./sources/lexing/utils_lexing.c							\
 			./sources/lexing/utils_list.c							\
+			./sources/lexing/utils_list_2.c							\
 			./sources/builtins/echo.c								\
 			./sources/builtins/pwd.c								\
 			./sources/builtins/export.c								\
@@ -29,7 +30,6 @@ SOURCES =	./sources/main.c										\
 			./sources/execution/cmd_to_struct.c						\
 			./sources/parsing/parsing.c								\
 			./sources/signals/main_signals.c						\
-			# ./sources/main_tester.c								\
 
 CC = cc
 
