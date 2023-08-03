@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   functions.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 11:56:11 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/08/03 08:34:43 by cbernaze         ###   ########.fr       */
+/*   Updated: 2023/08/03 08:59:39 by amontign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -197,9 +197,12 @@ int			builtin_env(char **args, t_data *env, int fd);
 
 /*export.c*/
 
+int			export(char **args, t_data *env, int fd, t_cmd_tab *current);
+
+/*export_verif.c*/
+
 int			arg_zero_is_nb(int fd, char *arg);
 int			arg_is_valid(char *arg, int fd);
-int			export(char **args, t_data *env, int fd, t_cmd_tab *current);
 
 //////////////////////////////////////////////////////
 //													//

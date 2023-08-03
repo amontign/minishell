@@ -9,6 +9,7 @@ SOURCES =	./sources/main.c										\
 			./sources/builtins/echo.c								\
 			./sources/builtins/pwd.c								\
 			./sources/builtins/export.c								\
+			./sources/builtins/export_verif.c						\
 			./sources/builtins/env.c								\
 			./sources/builtins/exit.c								\
 			./sources/builtins/cd.c									\
