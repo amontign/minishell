@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 14:59:25 by amontign          #+#    #+#             */
-/*   Updated: 2023/07/30 13:42:53 by amontign         ###   ########.fr       */
+/*   Updated: 2023/08/03 08:23:17 by cbernaze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,8 @@ char	**str_tab_dup(char **str_tab)
 		i++;
 	}
 	new_str_tab = malloc(sizeof(char *) * (i + 1));
+	if (!new_str_tab)
+		exit(1);
 	i = 0;
 	while (str_tab[i])
 	{

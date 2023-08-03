@@ -6,7 +6,7 @@
 /*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 11:35:58 by amontign          #+#    #+#             */
-/*   Updated: 2023/08/02 20:10:34 by cbernaze         ###   ########.fr       */
+/*   Updated: 2023/08/03 08:21:44 by cbernaze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,13 +57,13 @@ void	export_no_args(t_data *env, int fd)
 		while (env_tab[i][j] != '=' && env_tab[i][j])
 			j++;
 		tmp = malloc(sizeof(char) * (j + 2));
-		ft_strlcpy(tmp, env_tab[i], (j + 2));
-		(ft_putstr_fd("declare -x ", fd), ft_putstr_fd(tmp, fd));
-		free(tmp);
+		if (!tmp)
+			exit(1);
+		(ft_strlcpy(tmp, env_tab[i], (j + 2)), ft_putstr_fd("declare -x ", fd));
+		(ft_putstr_fd(tmp, fd), free(tmp));
 		if (env_tab[i][j])
 			(ft_putchar_fd('"', fd), ft_putstr_fd(env_tab[i] + j + 1, fd)
-				, ft_putchar_fd('"', fd));
-		ft_putchar_fd('\n', fd);
+				, ft_putchar_fd('"', fd), ft_putchar_fd('\n', fd));
 		i++;
 	}
 	free_char_tab(env_tab);
