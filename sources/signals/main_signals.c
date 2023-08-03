@@ -6,7 +6,7 @@
 /*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 16:37:01 by amontign          #+#    #+#             */
-/*   Updated: 2023/08/03 08:33:04 by cbernaze         ###   ########.fr       */
+/*   Updated: 2023/08/03 08:36:49 by cbernaze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ void	handle_sigint(int sig)
 			spaces[i] = ' ';
 		spaces[i] = '\0';
 		printf("%s%s^C%s\n", rl_prompt, rl_line_buffer, spaces);
-		free(spaces);
 		rl_on_new_line();
 		rl_replace_line("", 0);
 		rl_redisplay();
