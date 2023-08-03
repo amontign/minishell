@@ -6,7 +6,7 @@
 /*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 11:56:11 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/08/03 09:02:34 by amontign         ###   ########.fr       */
+/*   Updated: 2023/08/03 09:46:14 by amontign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -219,6 +219,7 @@ int			arg_is_valid(char *arg, int fd);
 /*cmd_to_struct.c*/
 
 int			find_place_path(t_cmd_tab **cmd_struct, t_data *env);
+int			c_r_s(char *str);
 void		lexing_to_cmd_tab(t_parsing *lexing, t_cmd_tab **c, t_data *env);
 
 /*execution_utils.c*/
@@ -230,11 +231,32 @@ void		free_cmd_struct(t_cmd_tab **cmd_struct);
 
 /*main_execution.c*/
 
-void		change_status(t_data *env, int status);
 int			prompt_execution(t_parsing **lexing, t_data **env);
-int			in_builtin(char *cmd);
-void		change_status(t_data *env, int status);
+
+/*main_execution2.c*/
+
+void		exit_env(t_norm_exec *normy, t_data *env, t_cmd_tab **cmd_struct);
+t_cmd_tab	*last_command_struct(t_cmd_tab **cmd_struct);
+char		*last_command(t_cmd_tab **cmd_struct);
+int			execute_cmds_exit(t_cmd_tab **cmd_struct, t_norm_exec *normy);
+void		e_c_i_c2(t_norm_exec *normy, t_cmd_tab *c, t_data **env);
+
+/*main_execution_utilc.s*/
+
 char		**env_to_tab(t_data *env);
+int			count_cmds(t_cmd_tab *cmd);
+void		change_status(t_data *env, int status);
+void		init_exec(t_norm_exec *normy, t_cmd_tab **c_s);
+int			in_builtin(char *cmd);
+
+/*child_execution.c*/
+
+void		execute_child1(t_cmd_tab *current, int input_fd, int *pipefd);
+int			e_c2(t_cmd_tab *cu, t_data *env, t_parsing **l, t_cmd_tab **c);
+
+/*builtins_execution.c*/
+
+int			exec_builtin(char **a, t_norm_exec *n, t_data **env, t_cmd_tab *c);
 
 /*cmd_struct_utils.c*/
 
@@ -242,6 +264,22 @@ t_cmd_tab	*cmd_struct_last(t_cmd_tab *lst);
 void		cmd_struct_add_back(t_cmd_tab **lst, t_cmd_tab *new);
 t_cmd_tab	*cmd_struct_new(char **args, void *content2, int id);
 void		cmd_struct_iter(t_cmd_tab *lst, void (*f)(void *));
+
+/*heredoc.c*/
+
+char		*heredoc_complete(char *str, t_data *env);
+
+/*struct_redirects.c*/
+
+void		put_redirects(t_parsing *lexing, t_cmd_tab **c, t_data *env);
+
+/*struct_paths.c*/
+
+int			find_place_path(t_cmd_tab **cmd_struct, t_data *env);
+
+/*struct_custom_path.c*/
+
+int			custom_path(t_cmd_tab *cmd_struct, t_data *env);
 
 /*main_signals.c*/
 
