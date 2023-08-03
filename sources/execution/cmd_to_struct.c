@@ -6,17 +6,17 @@
 /*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 15:41:01 by amontign          #+#    #+#             */
-/*   Updated: 2023/08/02 18:36:16 by amontign         ###   ########.fr       */
+/*   Updated: 2023/08/03 06:56:33 by amontign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-int is_directory(t_cmd_tab *cmd_struct, t_data *env)
+int	is_directory(t_cmd_tab *cmd_struct, t_data *env)
 {
-	struct stat s;
+	struct stat	s;
 
-	if (stat(cmd_struct->path,&s) == 0)
+	if (stat(cmd_struct->path, &s) == 0)
 	{
 		if (s.st_mode & S_IFDIR)
 		{
@@ -28,6 +28,26 @@ int is_directory(t_cmd_tab *cmd_struct, t_data *env)
 			return (1);
 		}
 	}
+	return (0);
+}
+
+int	custom_path_e1(t_cmd_tab *cmd_struct, t_data *env)
+{
+	ft_putstr_fd("minishell: ", 2);
+	ft_putstr_fd(cmd_struct->path, 2);
+	ft_putstr_fd(": Permission denied\n", 2);
+	cmd_struct->exec = 0;
+	change_status(env, 126);
+	return (0);
+}
+
+int	custom_path_e2(t_cmd_tab *cmd_struct, t_data *env)
+{
+	ft_putstr_fd("minishell: ", 2);
+	ft_putstr_fd(cmd_struct->path, 2);
+	ft_putstr_fd(": No such file or directory\n", 2);
+	change_status(env, 127);
+	cmd_struct->exec = 0;
 	return (0);
 }
 
@@ -55,25 +75,14 @@ int	custom_path(t_cmd_tab *cmd_struct, t_data *env)
 	else
 	{
 		if (access(cmd_struct->path, F_OK) == 0)
-		{
-			ft_putstr_fd("minishell: ", 2);
-			ft_putstr_fd(cmd_struct->path, 2);
-			ft_putstr_fd(": Permission denied\n", 2);
-			cmd_struct->exec = 0;
-			change_status(env, 126);
-			return (0);
-		}
-		ft_putstr_fd("minishell: ", 2);
-		ft_putstr_fd(cmd_struct->path, 2);
-		ft_putstr_fd(": No such file or directory\n", 2);
-		change_status(env, 127);
-		cmd_struct->exec = 0;
-		return (0);
+			return (custom_path_e1(cmd_struct, env));
+		return (custom_path_e2(cmd_struct, env));
 	}
 }
 
-void	path_error(char *str, t_data *env)
+void	path_error(t_cmd_tab *c, char *str, t_data *env)
 {
+	c->exec = 0;
 	ft_putstr_fd("minishell: ", 2);
 	ft_putstr_fd(str, 2);
 	ft_putstr_fd(": command not found\n", 2);
@@ -103,10 +112,7 @@ int	place_path(char **paths, t_cmd_tab *c, t_data *env)
 			free(path2);
 		}
 		if (!custom_path(c, env) && !c->path && !in_builtin(c->cmd_name))
-		{
-			c->exec = 0;
-			path_error(c->cmd_name, env);
-		}
+			path_error(c, c->cmd_name, env);
 		c = c->next;
 	}
 	return (1);
@@ -150,25 +156,94 @@ int	c_r_s(char *str)
 	return (i);
 }
 
-void	expand_heredoc(char *str, t_data *env)
+char	*var_value(t_data *env, char *str)
 {
+	char	*str_equal;
+	char	*return_str;
+
+	str_equal = ft_strjoin(str, "=");
+	free(str);
+	while (env)
+	{
+		if (ft_strncmp(env->var, str_equal, ft_strlen(str_equal)) == 0)
+		{
+			return_str = ft_strdup(env->var + ft_strlen(str_equal));
+			free(str_equal);
+			return (return_str);
+		}
+		env = env->next;
+	}
+	free(str_equal);
+	return (ft_strdup(""));
+}
+
+char	*extract_var_name(const char *str, int *i)
+{
+	char	varname[256];
+	int		varlen;
+
+	varlen = 0;
+	while (str[*i] != ' ' && str[*i] != '\t' && str[*i] != '\0'
+		&& str[*i] != '$')
+		varname[varlen++] = str[(*i)++];
+	varname[varlen] = '\0';
+	return (ft_strdup(varname));
+}
+
+char	*expand_var(char *result, int *j, const char *value)
+{
+	int		len;
 	int		i;
-	char	*prev;
-	char	*next;
-	(void)env;
-	(void)str;
+	int		k;
+	char	*ret;
 
 	i = 0;
+	k = 0;
+	len = ft_strlen(value);
+	ret = malloc(sizeof(char) * (*j + len + 1));
+	while (i < *j)
+	{
+		ret[i] = result[i];
+		i++;
+	}
+	while (value[k])
+	{
+		ret[i + k] = value[k];
+		k++;
+	}
+	ret[i + k] = '\0';
+	free(result);
+	*j += len;
+	return (ret);
+}
 
-	prev = NULL;
-	next = NULL;
-	/*while (str[i])
+char	*expand_heredoc(char *str, t_data *env)
+{
+	int		i;
+	int		j;
+	char	*result;
+	char	*varname;
+	char	*value;
+
+	result = malloc(sizeof(char) * (ft_strlen(str) + 1));
+	result[0] = '\0';
+	i = 0;
+	j = 0;
+	while (str[i] != '\0')
 	{
 		if (str[i] == '$')
 		{
-
+			i++;
+			varname = extract_var_name(str, &i);
+			value = var_value(env, varname);
+			result = expand_var(result, &j, value);
+			free(value);
 		}
-	}*/
+		else
+			result[j++] = str[i++];
+	}
+	result[j] = '\0';
+	return (free(str), result);
 }
 
 char	*heredoc_complete(char *str, t_data *env)
@@ -185,7 +260,7 @@ char	*heredoc_complete(char *str, t_data *env)
 	{
 		if (!current_line)
 			return (printf("warning: end-of-file detected in heredoc\n"), res);
-		expand_heredoc(current_line, env);
+		current_line = expand_heredoc(current_line, env);
 		res2 = ft_strjoin(res, current_line);
 		free(current_line);
 		free(res);
@@ -196,6 +271,17 @@ char	*heredoc_complete(char *str, t_data *env)
 	}
 	free(current_line);
 	return (res);
+}
+
+void	create_files(t_cmd_tab	*first, char *str)
+{
+	if (str[1] == '>')
+	{
+		first->outfile_delete = 0;
+		close(open(first->outfile, O_WRONLY | O_CREAT | O_APPEND, 0644));
+	}
+	else
+		close(open(first->outfile, O_WRONLY | O_CREAT | O_TRUNC, 0644));
 }
 
 int	put_redirect(t_cmd_tab *cmd_struct, char *str, int id, t_data *env)
@@ -214,13 +300,7 @@ int	put_redirect(t_cmd_tab *cmd_struct, char *str, int id, t_data *env)
 	if (str[0] == '>')
 	{
 		first->outfile = str + c_r_s(str);
-		if (str[1] == '>')
-		{
-			first->outfile_delete = 0;
-			close(open(first->outfile, O_WRONLY | O_CREAT | O_APPEND, 0644));
-		}
-		else
-			close(open(first->outfile, O_WRONLY | O_CREAT | O_TRUNC, 0644));
+		create_files(first, str);
 	}
 	else
 	{
@@ -250,7 +330,8 @@ void	put_redirects(t_parsing *lexing, t_cmd_tab **cmd_struct, t_data *env)
 			while (lexing2 && lexing2->token_type != TOKEN_PIPE)
 			{
 				if (lexing2->token_type == TOKEN_CMD)
-					put_r = put_redirect(*cmd_struct, lexing->cmd, (id - 1), env);
+					put_r = put_redirect(*cmd_struct, lexing->cmd,
+							(id - 1), env);
 				lexing2 = lexing2->previous;
 			}
 			if (put_r == 0)
@@ -260,39 +341,46 @@ void	put_redirects(t_parsing *lexing, t_cmd_tab **cmd_struct, t_data *env)
 	}
 }
 
+int	command_find(t_parsing *iter)
+{
+	int			cmd_find;
+	t_parsing	*tmp;
+
+	cmd_find = 0;
+	tmp = iter;
+	while (tmp->previous)
+	{
+		tmp = tmp->previous;
+		if (tmp->token_type == TOKEN_CMD)
+			cmd_find = 1;
+		else if (tmp->token_type == TOKEN_PIPE)
+			break ;
+	}
+	tmp = iter;
+	while (tmp->next)
+	{
+		tmp = tmp->next;
+		if (tmp->token_type == TOKEN_CMD)
+			cmd_find = 1;
+		else if (tmp->token_type == TOKEN_PIPE)
+			break ;
+	}
+	return (cmd_find);
+}
+
 void	add_true_cmd(t_parsing **lexing)
 {
-	t_parsing	*tmp;
 	t_parsing	*iter;
-	int			cmd_find;
+	t_parsing	*new_cmd;
 
 	iter = *lexing;
 	while (iter)
 	{
 		if (iter->token_type == TOKEN_REDIR)
 		{
-			cmd_find = 0;
-			tmp = iter;
-			while (tmp->previous)
+			if (!command_find(iter))
 			{
-				tmp = tmp->previous;
-				if (tmp->token_type == TOKEN_CMD)
-					cmd_find = 1;
-				else if (tmp->token_type == TOKEN_PIPE)
-					break ;
-			}
-			tmp = iter;
-			while (tmp->next)
-			{
-				tmp = tmp->next;
-				if (tmp->token_type == TOKEN_CMD)
-					cmd_find = 1;
-				else if (tmp->token_type == TOKEN_PIPE)
-					break ;
-			}
-			if (!cmd_find)
-			{
-				t_parsing *new_cmd = ft_lstnew_minishell("true", 4, TOKEN_CMD);
+				new_cmd = ft_lstnew_minishell("true", 4, TOKEN_CMD);
 				new_cmd->next = iter->next;
 				new_cmd->previous = iter;
 				new_cmd->cmd_split = ft_split(new_cmd->cmd, ' ');
@@ -305,7 +393,7 @@ void	add_true_cmd(t_parsing **lexing)
 	}
 }
 
-void	lexing_to_cmd_tab(t_parsing *lexing, t_cmd_tab **cmd_struct, t_data *env)
+void	lexing_to_cmd_tab(t_parsing *lexing, t_cmd_tab **c, t_data *env)
 {
 	int			id;
 	t_parsing	*lexing_start;
@@ -317,12 +405,12 @@ void	lexing_to_cmd_tab(t_parsing *lexing, t_cmd_tab **cmd_struct, t_data *env)
 	{
 		if (lexing->token_type == TOKEN_CMD)
 		{
-			cmd_struct_add_back(cmd_struct,
+			cmd_struct_add_back(c,
 				cmd_struct_new(lexing->cmd_split,
 					ft_strdup(lexing->cmd_split[0]), id));
 			id++;
 		}
 		lexing = lexing->next;
 	}
-	put_redirects(lexing_start, cmd_struct, env);
+	put_redirects(lexing_start, c, env);
 }
