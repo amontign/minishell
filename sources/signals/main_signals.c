@@ -6,7 +6,7 @@
 /*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 16:37:01 by amontign          #+#    #+#             */
-/*   Updated: 2023/08/01 13:14:21 by amontign         ###   ########.fr       */
+/*   Updated: 2023/08/03 08:26:07 by amontign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	handle_sigint(int sig)
 {
 	int		i;
-	char	*spaces;
+	char	spaces[51];
 
 	(void)sig;
 	if (child_process == 1)
@@ -28,7 +28,6 @@ void	handle_sigint(int sig)
 	{
 
 		child_process = -1;
-		spaces = malloc(sizeof(char) * (50 + 1));
 		i = -1;
 		while (++i < 50)
 			spaces[i] = ' ';
