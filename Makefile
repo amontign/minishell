@@ -15,6 +15,7 @@ SOURCES =	./sources/main.c										\
 			./sources/builtins/cd.c									\
 			./sources/builtins/unset.c								\
 			./sources/expand/expand.c								\
+			./sources/expand/expand_2.c								\
 			./sources/expand/pre_expand_dollars.c					\
 			./sources/expand/expand_dollars.c						\
 			./sources/expand/utils_expand_dollars.c					\
@@ -29,6 +30,7 @@ SOURCES =	./sources/main.c										\
 			./sources/execution/execution_utils.c					\
 			./sources/execution/cmd_to_struct.c						\
 			./sources/parsing/parsing.c								\
+			./sources/parsing/parsing_utils.c								\
 			./sources/signals/main_signals.c						\
 
 CC = cc

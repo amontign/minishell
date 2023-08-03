@@ -6,7 +6,7 @@
 /*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/03 16:21:58 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/08/02 20:07:58 by cbernaze         ###   ########.fr       */
+/*   Updated: 2023/08/03 09:12:06 by cbernaze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ char	*substitute_dollars(t_parsing **tmp, t_data *env, int nb_dol)
 	while (++tab < nb_dol)
 		diff_size -= (*tmp)->dollar_size[tab];
 	data.size_new = ft_strlen((*tmp)->cmd) + diff_size + 1;
-	new = malloc(data.size_new * sizeof(char)); // malloc bon
+	new = malloc(data.size_new * sizeof(char));
 	new[0] = '\0';
 	if (!new)
 		return (free_data(&data), free((*tmp)->cmd), "error");
@@ -90,21 +90,6 @@ void	subst_dols_2(char **new, t_exp_dol data, t_parsing **tmp, int tab)
 	{
 		if (new[0][data.j] != '\0')
 			new[0][++data.j] = '\0';
-	}
-}
-
-void	subst_dollars_3(t_exp_dol *data, int tab, char **new)
-{
-	while (data->value_var[tab][++data->k])
-	{
-		if (data->value_var[tab][data->k] == '"'
-			|| data->value_var[tab][data->k] == '\'')
-		{
-			new[0][++data->j] = '\a';
-			new[0][++data->j] = data->value_var[tab][data->k];
-		}
-		else
-			new[0][++data->j] = data->value_var[tab][data->k];
 	}
 }
 
@@ -144,7 +129,7 @@ int	fill_data_dol_2(t_exp_dol *data, t_parsing *tmp, int *j, int tab)
 	int	i;
 
 	i = 0;
-	(*data).var_env[tab] = malloc((tmp->dollar_size[tab] + 1) * sizeof(char)); //malloc bien protege
+	(*data).var_env[tab] = malloc((tmp->dollar_size[tab] + 1) * sizeof(char));
 	if (!(*data).var_env[tab])
 		return (ft_printf("minishell: malloc error\n"), ERROR);
 	while (i < tmp->dollar_size[tab] - 1)
@@ -159,20 +144,5 @@ int	fill_data_dol_2(t_exp_dol *data, t_parsing *tmp, int *j, int tab)
 		fill_data_dol_3(data, tab);
 	else
 		(*data).size_value[tab] = 0;
-	// ft_printf("VAR = %s, VALUE = %s, SIZE = %d\n", (*data).var_env[tab], (*data).value_var[tab], (*data).size_value[tab]);
 	return (0);
-}
-
-void	fill_data_dol_3(t_exp_dol *data, int tab)
-{
-	int	i;
-
-	(*data).size_value[tab] = ft_strlen((*data).value_var[tab]);
-	i = -1;
-	while ((*data).value_var[tab][++i])
-	{
-		if ((*data).value_var[tab][i] == '"'
-			|| (*data).value_var[tab][i] == '\'')
-			(*data).size_value[tab] += 1;
-	}
 }

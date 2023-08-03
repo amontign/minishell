@@ -6,13 +6,13 @@
 /*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 12:00:49 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/08/03 08:57:20 by cbernaze         ###   ########.fr       */
+/*   Updated: 2023/08/03 09:27:49 by cbernaze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int g_child_process;
+int	g_child_process;
 /*This function removes the newline at the end of a command line.*/
 
 void	remove_newline(char **name_eval)
@@ -47,15 +47,20 @@ void	parsing(t_parsing **lexing, t_data **env, char *cmd_line)
 	*lexing = tokenisation(cmd_line);
 	final_parsing(lexing, env);
 	if (*lexing)
-	{
 		expand(lexing, *env);
-		if (*lexing)
-			print_cmd(*lexing);
-	}
 }
 
 /*This function makes a prompt on the terminal, reads the command line
 then launches the parsing and the execution.*/
+
+int	minishell_prompt_2(t_data **env, t_parsing **lexing, int *ret)
+{
+	*ret = prompt_execution(lexing, env);
+	ft_lstclear_minishell(lexing);
+	if (*ret != 257)
+		return (1);
+	return (0);
+}
 
 int	minishell_prompt(t_data **env)
 {
@@ -76,20 +81,13 @@ int	minishell_prompt(t_data **env)
 		remove_newline(&cmd_line);
 		if (cmd_line[0] != '\0')
 			add_history(cmd_line);
-		parsing(&lexing, env, cmd_line);
-		free(cmd_line);
-		if (lexing)
-		{
-			ret = prompt_execution(&lexing, env);
-			ft_lstclear_minishell(&lexing);
-			if (ret != 257)
-				break ;
-		}
+		(parsing(&lexing, env, cmd_line), free(cmd_line));
+		if (lexing && minishell_prompt_2(env, &lexing, &ret) == 1)
+			break ;
 		else
 			ft_lstclear_minishell(&lexing);
 	}
-	printf("exit\n");
-	return (ret);
+	return (printf("exit\n"), ret);
 }
 
 /*The environment is transformed into a chained list,
@@ -97,11 +95,11 @@ then either the prompt or non_interactive shell is launched.*/
 
 int	main(int argc, char **argv, char **envp)
 {
-	t_data	*env;
-	void	*verif;
-	struct	termios oldt;
-	struct	termios newt;
-	int		ret;
+	t_data			*env;
+	void			*verif;
+	struct termios	oldt;
+	struct termios	newt;
+	int				ret;
 
 	(void)argc;
 	(void)argv;

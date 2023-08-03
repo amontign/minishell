@@ -6,7 +6,7 @@
 /*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 18:09:15 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/08/02 19:03:37 by cbernaze         ###   ########.fr       */
+/*   Updated: 2023/08/03 09:05:56 by cbernaze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ int	how_many_cmd_quotes(t_parsing **tmp)
 	tab = 0;
 	nb_quotes = 0;
 	size_tab = ft_strlen_plus((*tmp)->cmd_split);
-	(*tmp)->rmv_qt = malloc((size_tab + 1) * sizeof(int *)); //malloc superr
+	(*tmp)->rmv_qt = malloc((size_tab + 1) * sizeof(int *));
 	if (!(*tmp)->rmv_qt)
 		return (ft_printf("minishell: malloc error\n"), ERROR);
 	while (tab < size_tab && (*tmp)->cmd_split[tab])
@@ -122,7 +122,7 @@ int	how_many_cmd_quotes_2(t_parsing **tmp, int tab)
 	size_str = ft_strlen((*tmp)->cmd_split[tab]);
 	while (i < size_str && (*tmp)->cmd_split[tab][i])
 		how_many_cmd_quotes_3((*tmp)->cmd_split[tab], &i, &quotes);
-	(*tmp)->rmv_qt[tab] = malloc((quotes + 1) * sizeof(int)); //malloc ok
+	(*tmp)->rmv_qt[tab] = malloc((quotes + 1) * sizeof(int));
 	if (!(*tmp)->rmv_qt[tab])
 		return (ft_printf("minishell: malloc error\n"), ERROR);
 	i = 0;

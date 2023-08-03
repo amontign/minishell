@@ -6,7 +6,7 @@
 /*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/30 09:44:18 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/08/02 19:06:51 by cbernaze         ###   ########.fr       */
+/*   Updated: 2023/08/03 09:07:03 by cbernaze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,10 +87,10 @@ int	how_many_redir_quotes(t_parsing **tmp)
 		how_many_redir_quotes_2(tmp, &i, &size_tab);
 	if (size_tab == 0)
 		return (-2);
-	(*tmp)->rmv_qt = malloc(sizeof(int *) * 2); //malloc fabuleux
+	(*tmp)->rmv_qt = malloc(sizeof(int *) * 2);
 	if (!((*tmp)->rmv_qt))
 		return (ft_printf("minishell: malloc error\n"), ERROR);
-	(*tmp)->rmv_qt[0] = malloc((size_tab + 1) * sizeof(int)); //malloc incroyable
+	(*tmp)->rmv_qt[0] = malloc((size_tab + 1) * sizeof(int));
 	if (!((*tmp)->rmv_qt[0]))
 		return (ft_printf("minishell: malloc error\n"), ERROR);
 	(*tmp)->rmv_qt[1] = NULL;
@@ -135,7 +135,7 @@ char	*rmv_redir_quotes(char *str, int *quote_pos)
 	int		j;
 
 	size_str = ft_strlen(str);
-	new = malloc((size_str + 1) * sizeof(char)); //malloc bg
+	new = malloc((size_str + 1) * sizeof(char));
 	if (!new)
 		return (ft_printf("minishell: malloc error\n"), free(str), NULL);
 	i = 0;

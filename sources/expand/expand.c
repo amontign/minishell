@@ -6,7 +6,7 @@
 /*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 13:33:09 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/08/02 19:23:59 by cbernaze         ###   ########.fr       */
+/*   Updated: 2023/08/03 09:11:27 by cbernaze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ char	*remove_cmd_quotes(t_data_qt *dt)
 	int		j;
 
 	size_str = ft_strlen((*dt).tmp->cmd_split[(*dt).j]);
-	new = malloc((size_str + 1) * sizeof(char)); //malloc fantastique
+	new = malloc((size_str + 1) * sizeof(char));
 	if (!new)
 		return (ft_printf("minishell: malloc error\n"),
 			free((*dt).tmp->cmd_split[(*dt).j]), NULL);
@@ -111,24 +111,6 @@ char	*remove_char(char *str)
 		j++;
 	}
 	return (new_str[j] = '\0', free(str), new_str);
-}
-
-void	special(t_parsing **expand)
-{
-	int			i;
-	t_parsing	*actual;
-
-	actual = *expand;
-	while (actual)
-	{
-		i = 0;
-		while (actual->cmd_split && actual->cmd_split[i])
-		{
-			actual->cmd_split[i] = remove_char(actual->cmd_split[i]);
-			i++;
-		}
-		actual = actual->next;
-	}
 }
 
 /*This function organizes the different expands done before

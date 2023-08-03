@@ -6,7 +6,7 @@
 /*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 11:56:11 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/08/03 09:00:33 by cbernaze         ###   ########.fr       */
+/*   Updated: 2023/08/03 09:13:17 by cbernaze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,16 +16,24 @@
 # include "structures.h"
 # include "libft.h"
 
+//////////////////////////////////////////////////////
+//													//
+//						PARSING						//
+//													//
+//////////////////////////////////////////////////////
+
 /*parsing.c*/
 
-int			is_dq_spe_char(char c);
-int			is_metachar(char c);
 int			closed_quotes(char *cmd_line, int	*i);
-int			untreat_redir(char *cmd_line, int *i);
 int			pipe_at_end(char *cmd_line);
 int			pipe_at_start(char *cmd_line);
 int			syntax(char *cmd_line);
 int			wrong_after_redir(char *cmd_line, int *i);
+
+/*parsing_utils.c*/
+
+int			is_dq_spe_char(char c);
+int			is_metachar(char c);
 void		final_parsing(t_parsing **lexing, t_data **env);
 
 //////////////////////////////////////////////////////
@@ -86,9 +94,17 @@ void		remove_newline(char **name_eval);
 /*expand.c*/
 
 int			ft_isalnum_env(int c);
-char		*remove_cmd_quotes(t_data_qt *dt);
 void		how_many_cmd_quotes_3(char *arg, int *i, int *quotes);
+char		*remove_cmd_quotes(t_data_qt *dt);
+char		*remove_char(char *str);
 void		expand(t_parsing **expand, t_data *env);
+
+/*expand.c*/
+
+void		special(t_parsing **expand);
+void		subst_dollars_3(t_exp_dol *data, int tab, char **new);
+void		fill_data_dol_3(t_exp_dol *data, int tab);
+void		len_arg_2(char *str, int *len);
 
 /*pre_expand_dollars.c*/
 
@@ -111,10 +127,8 @@ int			i_need_a_dollar(t_parsing **tmp, int dol_pos, int choice, int *tab);
 int			expand_dollars(t_parsing **expand, t_data *env);
 char		*substitute_dollars(t_parsing **tmp, t_data *env, int nb_dol);
 void		subst_dols_2(char **new, t_exp_dol data, t_parsing **tmp, int tab);
-void		subst_dollars_3(t_exp_dol *data, int tab, char **new);
 int			f_dt_dol(t_exp_dol *data, t_data *env, t_parsing *tmp, int nb_dol);
 int			fill_data_dol_2(t_exp_dol *data, t_parsing *tmp, int *j, int tab);
-void		fill_data_dol_3(t_exp_dol *data, int tab);
 
 /*utils_expand_dollars.c*/
 

@@ -6,7 +6,7 @@
 /*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 10:07:22 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/08/02 19:09:42 by cbernaze         ###   ########.fr       */
+/*   Updated: 2023/08/03 09:12:24 by cbernaze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,21 +32,6 @@ void	arg_count(t_parsing *tmp, int *nb_arg)
 			go_through_quotes(tmp->cmd, &i);
 			i++;
 		}
-	}
-}
-
-void	len_arg_2(char *str, int *len)
-{
-	*len += 1;
-	while (str[*len])
-	{
-		if (str[*len] != DOUBLE_QUOTE)
-			*len += 1;
-		else if (str[*len] == DOUBLE_QUOTE
-			&& *len > 0 && str[*len - 1] != '\a' && str[*len])
-			break ;
-		else
-			*len += 1;
 	}
 }
 
@@ -85,7 +70,7 @@ int	create_arg(char *str, char ***split, int *i, int *j)
 	len = len_arg(str + *i);
 	if (len == 0)
 		return (0);
-	split[0][*j] = malloc((len + 1) * sizeof(char)); //malloc ouiii
+	split[0][*j] = malloc((len + 1) * sizeof(char));
 	if (!split[0][*j])
 		return (ft_printf("minishell: malloc error\n"), ERROR);
 	while (k < len && str[*i])
@@ -135,7 +120,7 @@ int	split_args(t_parsing **expand)
 		{
 			nb_arg = 0;
 			arg_count(tmp, &nb_arg);
-			tmp->cmd_split = malloc((nb_arg + 1) * sizeof(char *)); //malloc choueeette
+			tmp->cmd_split = malloc((nb_arg + 1) * sizeof(char *));
 			if (!tmp->cmd_split)
 				return (ft_printf("minishell: malloc error\n"), ERROR);
 			tmp->cmd_split[nb_arg] = NULL;

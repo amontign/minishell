@@ -6,7 +6,7 @@
 /*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 09:54:46 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/08/02 19:34:55 by cbernaze         ###   ########.fr       */
+/*   Updated: 2023/08/03 09:06:37 by cbernaze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,13 @@ in the structure type t_exp_dol.*/
 
 int	malloc_data_strs(t_exp_dol *data, int nb_dol)
 {
-	(*data).var_env = malloc((nb_dol + 1) * sizeof(char *)); // malloc bieng
+	(*data).var_env = malloc((nb_dol + 1) * sizeof(char *));
 	if (!(*data).var_env)
 		return (ERROR);
-	(*data).value_var = malloc((nb_dol + 1) * sizeof(char *)); // malloc beau
+	(*data).value_var = malloc((nb_dol + 1) * sizeof(char *));
 	if (!(*data).value_var)
 		return (free((*data).var_env), ERROR);
-	(*data).size_value = malloc((nb_dol + 1) * sizeof(char *)); // malloc joli
+	(*data).size_value = malloc((nb_dol + 1) * sizeof(char *));
 	if (!(*data).size_value)
 		return (free((*data).var_env), free((*data).value_var), ERROR);
 	data->i = -1;

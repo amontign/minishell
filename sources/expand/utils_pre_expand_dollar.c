@@ -6,7 +6,7 @@
 /*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/30 11:55:24 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/08/02 19:13:23 by cbernaze         ###   ########.fr       */
+/*   Updated: 2023/08/03 09:07:36 by cbernaze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,10 +48,10 @@ int	how_many_dollars(t_parsing **tmp)
 		how_many_dollars_2(tmp, &i, &size_subt_tab);
 	if (size_subt_tab == 0)
 		return (-2);
-	(*tmp)->to_substitute = malloc((size_subt_tab + 1) * sizeof(int)); //malloc jtm
+	(*tmp)->to_substitute = malloc((size_subt_tab + 1) * sizeof(int));
 	if (!((*tmp)->to_substitute))
 		return (ft_printf("minishell: malloc error\n"), ERROR);
-	(*tmp)->dollar_size = malloc((size_subt_tab + 1) * sizeof(int)); //malloc sublime
+	(*tmp)->dollar_size = malloc((size_subt_tab + 1) * sizeof(int));
 	if (!((*tmp)->dollar_size))
 		return (ft_printf("minishell: malloc error\n"), ERROR);
 	i = 0;
@@ -98,7 +98,7 @@ char	*remove_dollar(char *str, int dol_pos)
 	int		j;
 
 	size_str = ft_strlen(str);
-	new = malloc((size_str) * sizeof(char)); // malloc cool
+	new = malloc((size_str) * sizeof(char));
 	if (!new)
 		return (ft_printf("minishell: malloc error\n"), free(str), NULL);
 	i = 0;
