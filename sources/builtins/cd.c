@@ -6,11 +6,30 @@
 /*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/25 16:52:25 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/08/02 18:05:45 by amontign         ###   ########.fr       */
+/*   Updated: 2023/08/03 08:55:19 by amontign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+
+void	change_oldpwd_env(t_data *env, char *old_env_char)
+{
+	while (env)
+	{
+		if (ft_strncmp(env->var, "OLDPWD=", 7) == 0)
+		{
+			if (old_env_char)
+			{
+				free(env->var);
+				env->var = ft_strjoin("OLDPWD=", old_env_char);
+			}
+			break ;
+		}
+		env = env->next;
+	}
+	if (old_env_char)
+		free(old_env_char);
+}
 
 void	change_pwd_env(char *new, t_data *env)
 {
@@ -30,21 +49,26 @@ void	change_pwd_env(char *new, t_data *env)
 		}
 		old_env = old_env->next;
 	}
+	change_oldpwd_env(env, old_env_char);
+}
+
+int	cd_home(t_data *env)
+{
 	while (env)
 	{
-		if (ft_strncmp(env->var, "OLDPWD=", 7) == 0)
+		if (ft_strncmp(env->var, "HOME=", 5) == 0)
 		{
-			if (old_env_char)
-			{
-				free(env->var);
-				env->var = ft_strjoin("OLDPWD=", old_env_char);
-			}
+			chdir(env->var + 5);
 			break ;
 		}
 		env = env->next;
 	}
-	if (old_env_char)
-		free(old_env_char);
+	if (!env)
+	{
+		ft_printf("minishell: cd : HOME not set\n");
+		return (1);
+	}
+	return (0);
 }
 
 int	builtin_cd(char **dir_name, t_data *env, t_cmd_tab *current)
@@ -59,25 +83,11 @@ int	builtin_cd(char **dir_name, t_data *env, t_cmd_tab *current)
 		return (1);
 	}
 	else if (!command_only_e(current))
-	{
 		return (0);
-	}
 	else if (!dir_name[1])
 	{
-		while (env)
-		{
-			if (ft_strncmp(env->var, "HOME=", 5) == 0)
-			{
-				chdir(env->var + 5);
-				break ;
-			}
-			env = env->next;
-		}
-		if (!env)
-		{
-			ft_printf("minishell: cd : HOME not set\n");
+		if (cd_home(env))
 			return (1);
-		}
 	}
 	else if (chdir(dir_name[1]) == -1)
 	{

@@ -3,301 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   main_execution.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 09:57:58 by amontign          #+#    #+#             */
-/*   Updated: 2023/08/03 08:50:07 by cbernaze         ###   ########.fr       */
+/*   Updated: 2023/08/03 09:44:31 by amontign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-
-char	**env_to_tab(t_data *env)
-{
-	int		i;
-	char	**env_tab;
-	t_data	*first;
-
-	i = 0;
-	first = env;
-	while (env)
-	{
-		env = env->next;
-		i++;
-	}
-	env_tab = malloc(sizeof(char *) * (i + 1));
-	if (!env_tab)
-		return (NULL);
-	i = 0;
-	while (first)
-	{
-		env_tab[i] = ft_strdup(first->var);
-		if (!env_tab[i])
-			return (NULL);
-		first = first->next;
-		i++;
-	}
-	env_tab[i] = NULL;
-	return (env_tab);
-}
-
-char	*last_command(t_cmd_tab **cmd_struct)
-{
-	t_cmd_tab	*current;
-
-	current = *cmd_struct;
-	while (current && current->next)
-	{
-		current = current->next;
-	}
-	if (current)
-		return (current->cmd_name);
-	return (NULL);
-}
-
-t_cmd_tab	*last_command_struct(t_cmd_tab **cmd_struct)
-{
-	t_cmd_tab	*current;
-
-	current = *cmd_struct;
-	while (current && current->next)
-	{
-		current = current->next;
-	}
-	if (current)
-		return (current);
-	return (NULL);
-}
-
-void	change_status(t_data *env, int status)
-{
-	char		*tmp;
-	char		*tmp2;
-
-	while (env)
-	{
-		if (ft_strncmp(env->var, "?=", 2) == 0)
-		{
-			free(env->var);
-			tmp = ft_itoa(status);
-			tmp2 = ft_strjoin("?=", tmp);
-			free(tmp);
-			env->var = ft_strdup(tmp2);
-			free(tmp2);
-			break ;
-		}
-		env = env->next;
-	}
-}
-
-int	count_cmds(t_cmd_tab *cmd)
-{
-	int	i;
-
-	i = 0;
-	while (cmd)
-	{
-		if (cmd->exec)
-			i++;
-		cmd = cmd->next;
-	}
-	return (i);
-}
-
-void	exit_env(t_norm_exec *normy, t_data *env, t_cmd_tab **cmd_struct)
-{
-	int			i;
-
-	i = -1;
-	while (++i < normy->num_cmds)
-		waitpid(normy->pids[i], &(normy->status), 0);
-	free(normy->pids);
-	if (!in_builtin(last_command(cmd_struct))
-		&& last_command_struct(cmd_struct)->exec != 0)
-	{
-		if (WIFEXITED(normy->status))
-			change_status(env, WEXITSTATUS(normy->status));
-		if (WIFSIGNALED(normy->status))
-			change_status(env, WTERMSIG(normy->status) + 128);
-	}
-}
-
-int	handle_infile(t_cmd_tab *current)
-{
-	int	new_fd_in;
-
-	new_fd_in = open(current->infile, O_RDONLY);
-	if (new_fd_in < 0)
-	{
-		printf("minishell: no such file or directory: %s\n", current->infile);
-		exit(1);
-	}
-	dup2(new_fd_in, 0);
-	close(new_fd_in);
-	return (new_fd_in);
-}
-
-int	handle_heredoc(t_cmd_tab *current)
-{
-	int	heredoc_fd;
-
-	heredoc_fd = open("heredoc_tmp.txt", O_WRONLY | O_CREAT | O_TRUNC, 0666);
-	write(heredoc_fd, current->heredoc, strlen(current->heredoc));
-	close(heredoc_fd);
-	heredoc_fd = open("heredoc_tmp.txt", O_RDONLY);
-	dup2(heredoc_fd, 0);
-	close(heredoc_fd);
-	return (heredoc_fd);
-}
-
-int	handle_outfile(t_cmd_tab *current)
-{
-	int	new_fd_out;
-
-	if (current->outfile_delete)
-		new_fd_out = open(current->outfile,
-				O_WRONLY | O_CREAT | O_TRUNC, 0666);
-	else
-		new_fd_out = open(current->outfile,
-				O_WRONLY | O_CREAT | O_APPEND, 0666);
-	if (new_fd_out < 0)
-		exit(1);
-	dup2(new_fd_out, 1);
-	close(new_fd_out);
-	return (new_fd_out);
-}
-
-void	execute_child1(t_cmd_tab *current, int input_fd, int *pipefd)
-{
-	if (current->infile)
-		handle_infile(current);
-	else if (current->heredoc)
-		handle_heredoc(current);
-	else if (input_fd)
-	{
-		dup2(input_fd, 0);
-		close(input_fd);
-	}
-	if (current->outfile)
-		handle_outfile(current);
-	else if (current->next)
-	{
-		dup2(pipefd[1], 1);
-	}
-	close(pipefd[0]);
-	close(pipefd[1]);
-}
-
-int	in_builtin(char *cmd)
-{
-	if (ft_strcmp(cmd, "echo") == 0 || ft_strcmp(cmd, "cd") == 0
-		|| ft_strcmp(cmd, "pwd") == 0 || ft_strcmp(cmd, "env") == 0
-		|| ft_strcmp(cmd, "export") == 0 || ft_strcmp(cmd, "unset") == 0
-		|| ft_strcmp(cmd, "exit") == 0)
-	{
-		return (1);
-	}
-	return (0);
-}
-
-int	handle_outfile_builtin(t_cmd_tab *current)
-{
-	int	new_fd_out;
-
-	if (current->outfile_delete)
-		new_fd_out = open(current->outfile,
-				O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	else
-		new_fd_out = open(current->outfile,
-				O_WRONLY | O_CREAT | O_APPEND, 0644);
-	if (new_fd_out < 0)
-		exit(1);
-	return (new_fd_out);
-}
-
-void	exec_builtin2(char **args, int *status, t_cmd_tab *c, t_data **env)
-{
-	if (ft_strcmp(args[0], "cd") == 0)
-		*status = builtin_cd(args, *env, c);
-	if (ft_strcmp(args[0], "unset") == 0)
-		*status = unset(env, args, c);
-}
-
-int	exec_builtin(char **args, t_norm_exec *normy, t_data **env, t_cmd_tab *c)
-{
-	int	status;
-	int	fd;
-
-	fd = normy->pipefd[1];
-	if (normy->output)
-		fd = 1;
-	if (c->outfile)
-		fd = handle_outfile_builtin(c);
-	if (ft_strcmp(args[0], "echo") == 0)
-		status = builtin_echo(args, fd);
-	if (ft_strcmp(args[0], "pwd") == 0)
-		status = builtin_pwd(args, fd);
-	if (ft_strcmp(args[0], "export") == 0)
-		status = export(args, *env, fd, c);
-	if (ft_strcmp(args[0], "env") == 0)
-		status = builtin_env(args, *env, fd);
-	if (ft_strcmp(args[0], "exit") == 0)
-		status = builtin_exit(args, normy, c);
-	exec_builtin2(args, &status, c, env);
-	if (c->outfile)
-		close(fd);
-	normy->output = 0;
-	if (in_builtin(last_command(&c)))
-		change_status(*env, status);
-	return (0);
-}
-
-int	execute_child2(t_cmd_tab *cu, t_data *env, t_parsing **l, t_cmd_tab **c)
-{
-	char		**env_tab;
-	char		*path;
-	char		**args;
-
-	env_tab = env_to_tab(env);
-	if (!env_tab)
-		return (0);
-	if (cu->path)
-		path = ft_strdup(cu->path);
-	else
-		path = NULL;
-	args = str_tab_dup(cu->args);
-	ft_lstclear_data(&env);
-	free_cmd_struct(c);
-	ft_lstclear_minishell(l);
-	execve(path, args, env_tab);
-	free_char_tab(args);
-	free_char_tab(env_tab);
-	free(path);
-	exit(EXIT_FAILURE);
-}
-
-int	execute_cmds_exit(t_cmd_tab **cmd_struct, t_norm_exec *normy)
-{
-	g_child_process = 0;
-	unlink("heredoc_tmp.txt");
-	free_cmd_struct(cmd_struct);
-	if (normy->exit != 257)
-		return (normy->exit % 256);
-	return (257);
-}
-
-void	e_c_i_c2(t_norm_exec *normy, t_cmd_tab *c, t_data **env)
-{
-	int	saved_stdout;
-
-	pipe(normy->pipefd);
-	saved_stdout = dup(STDOUT_FILENO);
-	dup2(normy->pipefd[1], STDOUT_FILENO);
-	exec_builtin(c->args, normy, env, c);
-	dup2(saved_stdout, STDOUT_FILENO);
-	close(saved_stdout);
-	close(normy->pipefd[1]);
-}
 
 void	e_c_i_c(t_norm_exec *normy, pid_t *pid, t_cmd_tab *c, t_data **env)
 {
@@ -309,9 +22,7 @@ void	e_c_i_c(t_norm_exec *normy, pid_t *pid, t_cmd_tab *c, t_data **env)
 			exec_builtin(c->args, normy, env, c);
 		}
 		else
-		{
 			e_c_i_c2(normy, c, env);
-		}
 	}
 	else
 	{
@@ -327,16 +38,6 @@ void	execute_cmds_parent(t_norm_exec *normy, t_cmd_tab *cu)
 		close(normy->input_fd);
 	normy->input_fd = (!in_builtin(cu->cmd_name) && close(normy->pipefd[1]));
 	normy->input_fd = normy->pipefd[0];
-}
-
-void	init_exec(t_norm_exec *normy, t_cmd_tab **c_s)
-{
-	normy->num_cmds = 0;
-	normy->input_fd = 0;
-	normy->status = 0;
-	normy->exit = 257;
-	normy->output = 0;
-	normy->pids = ft_calloc(sizeof(pid_t), count_cmds(*c_s));
 }
 
 void	execute_cmds_no_exec(t_norm_exec *normy)
@@ -359,7 +60,7 @@ int	execute_cmds(t_cmd_tab **c_s, t_cmd_tab *cu, t_data **env, t_parsing **l)
 			if (normy.pids[normy.num_cmds] == 0 && !in_builtin(cu->cmd_name))
 			{
 				execute_child1(cu, normy.input_fd, normy.pipefd);
-				execute_child2(cu, *env, l, c_s);
+				e_c2(cu, *env, l, c_s);
 			}
 			else if (normy.pids[normy.num_cmds] < 0)
 				return (0);
