@@ -6,7 +6,7 @@
 /*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 09:57:58 by amontign          #+#    #+#             */
-/*   Updated: 2023/08/03 08:35:18 by cbernaze         ###   ########.fr       */
+/*   Updated: 2023/08/03 08:50:07 by cbernaze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -278,7 +278,7 @@ int	execute_child2(t_cmd_tab *cu, t_data *env, t_parsing **l, t_cmd_tab **c)
 
 int	execute_cmds_exit(t_cmd_tab **cmd_struct, t_norm_exec *normy)
 {
-	child_process = 0;
+	g_child_process = 0;
 	unlink("heredoc_tmp.txt");
 	free_cmd_struct(cmd_struct);
 	if (normy->exit != 257)
@@ -316,7 +316,7 @@ void	e_c_i_c(t_norm_exec *normy, pid_t *pid, t_cmd_tab *c, t_data **env)
 	else
 	{
 		pipe(normy->pipefd);
-		child_process = 1;
+		g_child_process = 1;
 		*pid = fork();
 	}
 }

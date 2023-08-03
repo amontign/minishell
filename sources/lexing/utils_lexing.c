@@ -6,28 +6,11 @@
 /*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 19:36:57 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/08/02 18:34:18 by cbernaze         ###   ########.fr       */
+/*   Updated: 2023/08/03 08:59:27 by cbernaze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-
-/*Attribue a un maillon l'index correspondant a sa position
-dans une liste de type t_parsing*/
-
-void	set_index(t_parsing **lexing)
-{
-	t_parsing	*tmp;
-	int			i;
-
-	i = 0;
-	tmp = *lexing;
-	while (tmp)
-	{
-		tmp->index = ++i;
-		tmp = tmp->next;
-	}
-}
 
 /* Dans le cas ou on a une redir, j'avance de un ou plus
 selon la redir et son premiere argument dans ma string

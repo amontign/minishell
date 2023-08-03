@@ -6,7 +6,7 @@
 /*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 15:26:31 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/07/27 15:58:40 by cbernaze         ###   ########.fr       */
+/*   Updated: 2023/08/03 08:59:38 by cbernaze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,5 @@ t_parsing	*tokenisation(char	*cmd_line)
 	lexing = NULL;
 	if (split_cmd(&lexing, cmd_line) == ERROR)
 		return (NULL);
-	// if (check_empty_cmd(&lexing) == TRUE)
-		// return (NULL);
 	return (lexing);
 }

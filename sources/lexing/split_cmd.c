@@ -6,7 +6,7 @@
 /*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 19:35:56 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/08/02 19:01:20 by cbernaze         ###   ########.fr       */
+/*   Updated: 2023/08/03 08:55:55 by cbernaze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,16 +67,6 @@ char	*trim_cmd(char	*cmd_line, int *i, int *len)
 		*i += 1;
 	sub_tab[j] = '\0';
 	return (sub_tab);
-}
-
-void	ft_lstadd_at_id(t_parsing **lexing, t_parsing *new, int index)
-{
-	t_parsing	*tmp;
-
-	tmp = *lexing;
-	while (tmp->index != index)
-		tmp = tmp->next;
-	tmp->next = new;
 }
 
 /*Fonction qui concatene les cmds de deux maillons differents

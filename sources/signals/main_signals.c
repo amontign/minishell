@@ -6,7 +6,7 @@
 /*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 16:37:01 by amontign          #+#    #+#             */
-/*   Updated: 2023/08/03 08:36:49 by cbernaze         ###   ########.fr       */
+/*   Updated: 2023/08/03 08:49:36 by cbernaze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	handle_sigint(int sig)
 	char	spaces[51];
 
 	(void)sig;
-	if (child_process == 1)
+	if (g_child_process == 1)
 	{
 		printf("\n^C\n");
 		rl_replace_line("", 0);
@@ -26,7 +26,7 @@ void	handle_sigint(int sig)
 	}
 	else
 	{
-		child_process = -1;
+		g_child_process = -1;
 		i = -1;
 		while (++i < 50)
 			spaces[i] = ' ';
@@ -41,7 +41,7 @@ void	handle_sigint(int sig)
 void	handle_sigquit(int sig)
 {
 	(void)sig;
-	if (child_process == 1)
+	if (g_child_process == 1)
 	{
 		printf("^\\Quit (core dumped)\n");
 		rl_replace_line("", 0);
