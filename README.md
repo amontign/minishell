@@ -1,19 +1,39 @@
 # Minishell
 
-Ce qui doit etre implemente :
- - Les simple quotes ' et les double quotes " (un sur les deux)
- - Les redirections : < > << et >> (deux sur quatre)
- - Les pipes |
- - Gerer les variables d'environnement (je veux le faire)
- - Gerer le $?
- - Gerer ctrl-C ctrl-D et ctrl-\
- - Recoder les commandes : echo (avec l'option -n), cd, pwd, export, unset, env et exit (je veux faire la moitie)
+## Description
 
-A faire :
- - Un testeur pour tester les commandes
- - Chacun gere les erreurs et les leaks dans ses parties
- - On push sur le git chaque fois qu'on fait un nouveau truc sur notre branche perso
- - Pour push sur la main branch on se concerte
- - Avoir un historique des commandes
- - Mettre le bon numero de sortie (127) en cas d'erreur
- - Mettre les bons messages d'erreur
+Minishell is a simple project aimed at creating a minimalist UNIX command interpreter. This command interpreter, also known as a shell, allows users to execute basic commands in a UNIX environment.
+
+## Features
+
+- Interpretation of basic UNIX commands.
+- Managing the working environment with commands like `cd`, `pwd`, `export`, `unset`, etc.
+- Execution of external commands with arguments.
+- Correct handling of paths.
+- Implementation of certain bash shell features such as double and single quotes.
+
+## Installation
+
+To install and compile Minishell, follow the steps below:
+
+```sh
+git clone https://github.com/your_username/minishell.git
+cd minishell
+make
+```
+
+## Usage
+
+After compiling the project, you can launch Minishell using:
+
+```sh
+./minishell
+```
+
+Within the Minishell, you can run commands just as you would in a normal UNIX terminal. For example :
+
+```sh
+ls -la
+cd /path/to/directory
+echo Hello, world!
+```
