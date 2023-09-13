@@ -76,9 +76,7 @@ void	concatenate_cmds(t_parsing **lexing, t_parsing *node)
 {
 	t_parsing	*tmp;
 	t_concatcmd	concat;
-	t_parsing	*original;
 
-	original = *lexing;
 	tmp = *lexing;
 	while (tmp->index != node->index)
 		tmp = tmp->next;
