@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main_signals.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amontign <amontign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 16:37:01 by amontign          #+#    #+#             */
-/*   Updated: 2023/08/03 08:49:36 by cbernaze         ###   ########.fr       */
+/*   Updated: 2023/08/03 10:27:49 by amontign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,8 @@ void	handle_sigint(int sig)
 
 void	handle_sigquit(int sig)
 {
+	char	*old_buffer;
+
 	(void)sig;
 	if (g_child_process == 1)
 	{
@@ -49,9 +51,11 @@ void	handle_sigquit(int sig)
 	}
 	else
 	{
+		old_buffer = ft_strdup(rl_line_buffer);
 		rl_on_new_line();
-		rl_replace_line("", 0);
+		rl_replace_line(old_buffer, 0);
 		rl_redisplay();
+		free(old_buffer);
 	}
 }
 

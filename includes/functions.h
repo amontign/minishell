@@ -6,7 +6,7 @@
 /*   By: cbernaze <cbernaze@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 11:56:11 by cbernaze          #+#    #+#             */
-/*   Updated: 2023/08/03 09:48:53 by cbernaze         ###   ########.fr       */
+/*   Updated: 2023/08/03 09:56:09 by cbernaze         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,6 @@ void		free_quotes(t_parsing *lexing);
 void		set_index(t_parsing **lexing);
 void		ft_lstadd_at_id(t_parsing **lexing, t_parsing *new, int index);
 
-
 /*main.c*/
 
 void		remove_newline(char **name_eval);
@@ -99,7 +98,7 @@ char		*remove_cmd_quotes(t_data_qt *dt);
 char		*remove_char(char *str);
 void		expand(t_parsing **expand, t_data *env);
 
-/*expand.c*/
+/*expand_2.c*/
 
 void		special(t_parsing **expand);
 void		subst_dollars_3(t_exp_dol *data, int tab, char **new);
@@ -235,6 +234,7 @@ int			arg_is_valid(char *arg, int fd);
 int			find_place_path(t_cmd_tab **cmd_struct, t_data *env);
 int			c_r_s(char *str);
 void		lexing_to_cmd_tab(t_parsing *lexing, t_cmd_tab **c, t_data *env);
+int			is_directory(t_cmd_tab *cmd_struct, t_data *env);
 
 /*execution_utils.c*/
 

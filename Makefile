@@ -1,7 +1,6 @@
 NAME = minishell
 
 SOURCES =	./sources/main.c										\
-			./sources/print_cmds.c									\
 			./sources/lexing/lexing.c								\
 			./sources/lexing/split_cmd.c							\
 			./sources/lexing/utils_lexing.c							\
@@ -39,12 +38,12 @@ SOURCES =	./sources/main.c										\
 			./sources/execution/struct_paths.c						\
 			./sources/execution/struct_custom_path.c				\
 			./sources/parsing/parsing.c								\
-			./sources/parsing/parsing_utils.c								\
+			./sources/parsing/parsing_utils.c						\
 			./sources/signals/main_signals.c						\
 
 CC = cc
 
-CFLAGS = -Wall -Werror -Wextra -g
+CFLAGS = -Wall -Werror -Wextra
 
 OBJETS = $(SOURCES:.c=.o)
 
