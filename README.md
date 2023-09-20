@@ -17,7 +17,7 @@ Minishell is a simple project aimed at creating a minimalist UNIX command interp
 To install and compile Minishell, follow the steps below:
 
 ```sh
-git clone https://github.com/your_username/minishell.git
+git clone https://github.com/amontign/minishell.git
 cd minishell
 make
 ```
